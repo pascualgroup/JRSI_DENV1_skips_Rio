@@ -1,7 +1,7 @@
 ---
 title: "Supporting Information: Implementation of Stochastic SIR Cosine Model"
 author: "Rahul Subramanian"
-date: "February 1, 2020"
+date: "March 23, 2020"
 output:
   html_document: 
     toc: true
@@ -31,7 +31,7 @@ source("rahul_theme.R")
 
 ##Load POMP2
 ```{r}
-library(pomp2)
+library(pomp)
 ```
 We consider fitting a simple SEIR spline model to monthly case counts of DENV1 incidence in the municipality of Rio de Janeiro from April 1,1986 to December 31, 1987. The data consist of monthly case counts that are reported each week and then aggregated by month. The dates correspond to notification dates, not date of disease onset. For example, if 535 cases were reported for April 1986, it means that 535 cases were observed between April 1st,1986-April 30th,1986.
 
@@ -47,14 +47,14 @@ rds_index = 0
 
 ## Load dengue case data
 ```{r}
-load(file ="../Down_Data/denguerj1986-2017.RData")
+load(file ="../Down_Data/denguerj1986-1996.RData")
 #head(dengue.ts)
 ```
 
 ## Clean up data into correct time scale for POMP object
 ```{r}
 library(zoo)
-library(pomp2)
+library(pomp)
 Rio_city_DENV1_clean = data.frame(Y = as.matrix(dengue.ts),
                                   Date = as.Date(as.yearmon(time(dengue.ts))))
 Rio_city_DENV1_clean = filter(Rio_city_DENV1_clean, Date >= "1986-05-01")
@@ -262,9 +262,8 @@ In this instance, we assume that $h = 0$.
     \frac{dR}{dt} = \gamma I(t) - \mu_{\text{H}}R(t)
 \end{equation}
 
-\begin{equation}
-    \frac{dC}{dt} = \rho  \lambda(t) S(t)
-\end{equation}
+Cases $C$ are summed over each month. 
+
 
 The expression for $\frac{dS}{dt}$ can be further specified into separate terms for the net population growth and replacement of deaths. 
 
