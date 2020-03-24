@@ -439,7 +439,7 @@ The profileDesign function was used to generate a set of starting points at 30 d
 
 ```{r, cache=FALSE}
 
-knitr::read_chunk('generate_profile_combinations_SIR_Spline.R')
+knitr::read_chunk('generate_profile_combinations_SIR_Cosine.R')
 ```
 
 ```{r generate_profile_combinataions, eval = FALSE, echo = TRUE}
@@ -454,7 +454,7 @@ used to parallelize a single job between multiple cores on the cluster. However,
 
 ```{r, cache=FALSE}
 
-knitr::read_chunk('MIF_run_Model_A_6.R')
+knitr::read_chunk('MIF_run_Model_A_7.R')
 ```
 The R code below  was run on Midway for each of 50 array jobs.
 
@@ -589,17 +589,12 @@ combine_profile_output(profile_var = "sigma_M", model_name = model_name)
 combine_profile_output(profile_var = "I_0", model_name = model_name)
 combine_profile_output(profile_var = "Beta_0", model_name = model_name)
 combine_profile_output(profile_var = "delta", model_name = model_name)
-# combine_profile_output(profile_var = "E_0", model_name = model_name)
 
 combine_profile_output(profile_var = "rho", model_name = model_name)
 
 combine_profile_output(profile_var = "phi", model_name = model_name)
 
-#combine_profile_output(profile_var = "R_0", model_name = model_name)
 
-#combine_profile_output(profile_var = "epsilon", model_name = model_name)
-
-#combine_profile_output(profile_var = "N_0", model_name = model_name)
 
 
 
@@ -618,8 +613,6 @@ profile_data = read.csv(file = paste0("../Generated_Data/Profiles/", model_name,
                           profile_var, "_", model_name, "_profile_combined_data.csv"))
 #head(profile_data)
 
-na_data = filter(profile_data, is.na(LL) == TRUE)
-print(paste("There are ", nrow(na_data), " entries with NA likelihoods"))
 
 profile_data_clean = na.omit(profile_data)
 
@@ -629,14 +622,7 @@ cutoff_thres_20_LL_from_ML = ML - 20
 
 
 
-p = ggplot(data = profile_data_clean, aes_string(x = eval(profile_var), y = "LL")) + geom_point() + geom_hline(yintercept = cutoff_thres_20_LL_from_ML,
-                                                                                                               color = 'red')+
-  rahul_theme
-print(p)
-png(paste0("../Figures/Profiles/", model_name, "_Model/", profile_var, "_Profile/all_clean_data_points_",
-           profile_var,"_", model_name, "_profile.png"))
-print(p)
-dev.off()
+
 
 cutoff_thres_2_LL_from_ML = ML - 2
 
@@ -645,14 +631,8 @@ cutoff_thres_2_LL_from_ML = ML - 2
 
 ### Take trace of profile (max at each value of profile variable)
 profile_var_profile = aggregate(formula(paste0("LL ~ ",eval(profile_var))), profile_data_clean, max)
-#head(profile_var_profile)
-p = ggplot(data = profile_var_profile, aes_string(x = eval(profile_var), y = "LL")) +
-  geom_point() + geom_hline(yintercept = cutoff_thres_20_LL_from_ML, color = 'red') + rahul_theme
-print(p)
-png(paste0("../Figures/Profiles/", model_name, "_Model/", profile_var, "_Profile/full_",
-           profile_var, "_", model_name, "_profile.png"))
-print(p)
-dev.off()
+
+
 
 
 top_20_LL_units = filter(profile_var_profile, LL > cutoff_thres_20_LL_from_ML)
@@ -1084,15 +1064,7 @@ Sup_Fig_3_A_small_legend = Sup_Fig_3_A +
   theme(legend.key=element_blank()) 
 legend <- cowplot::get_legend(Sup_Fig_3_A_small_legend)
 
-#legend = load(file = "../Generated_Data/Data_for_Supplemental_Figures/Sup_Fig_3_A_small_legend.Rdata")
-#legend <- cowplot::get_legend(Sup_Fig_3_A_small_legend)
 
-pdf("../Figures/Manuscript_Figures/Figure_4/Man_Fig_3_v3.pdf")
-# print(grid.arrange(Sup_Fig_3_A_comb, Sup_Fig_3_B_comb, legend,Sup_Fig_3_C_comb, Sup_Fig_3_D_comb,
-#                    ncol = 3, widths = c(1,1,0.9)))
-print(grid.arrange(Sup_Fig_3_A_comb, Sup_Fig_3_B_comb, Sup_Fig_3_C_comb,legend,
-                   ncol = 2, widths = c(1,1)))
-dev.off()
 
 
 
