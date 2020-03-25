@@ -1083,7 +1083,7 @@ Fig_3_ABC_Legend = legend
 
 model_name  = "A_7"
 
-bio_good_2_LL = read.csv(paste0("../Generated_Data/Profiles/", model_name, "_Model/",model_name, "_Model_BP_top_2_LL_all_params_bio_good_2_LL_sim_4_years.csv"))
+bio_good_2_LL = read.csv(paste0("../Generated_Data/Profiles/", model_name, "_Model/",model_name, "_Model_BP_top_2_LL_all_params_bio_good_2_LL.csv"))
 ML_combo_num = which(bio_good_2_LL$LL == max(bio_good_2_LL$LL))
 all_R0_data = 
   read.csv(paste0("../Generated_Data/Profiles/",
@@ -1462,7 +1462,7 @@ source("rahul_theme.R")
 library(stringr)
 library(gridExtra)
 library(zoo)
-load("../Down_Data/Skip_Data/nCritics.Rdata")
+load("../Generated_Data/Skip_Data/nCritics.Rdata")
 head(nCritics)
 row.names(nCritics)
 colnames(nCritics)
@@ -1588,10 +1588,7 @@ p = ggplot(data = only_delta_07, aes(x = r0, y = Num_Skips,
   rahul_man_figure_theme 
 p
 
-pdf("../Figures/Manuscript_Figures/Figure_3/Man_Fig_3_single_delta_07.pdf",
-    height = 5, width = 10)
-print(p)
-dev.off()
+
 
 
 #only_delta_07$Type = "Simulated"
@@ -1628,7 +1625,7 @@ A_7_bio_good_2_LL$skips = -1
 A_7_bio_good_2_LL$nearest_skip_delta_index = NA
 A_7_bio_good_2_LL$nearest_skip_rho_index = NA
 for(param_index in seq(1, nrow(A_7_bio_good_2_LL))){
-  load("../Down_Data/Skip_Data/nCritics_detailedRepRate_From2to5.Rdata")
+  load("../Generated_Data/Skip_Data/nCritics_detailedRepRate_From2to5.Rdata")
   head(nCritics_detailedRepRate_From2to5)
   row.names(nCritics_detailedRepRate_From2to5)
   colnames(nCritics_detailedRepRate_From2to5)
@@ -1732,14 +1729,7 @@ p = p + scale_x_continuous(labels=scaleFUN) + aes(color =
                      name = c("Number \n of Skips"))
 p
 range(A_7_bio_good_2_LL$rho)
-pdf("../Figures/Manuscript_Figures/Figure_7/Figure_7_Cleaned_Skips_Could.pdf",
-    width = 10, height = 10)
-print(p)
-dev.off()
 
-pdf("../Figures/Manuscript_Figures/Figure_7/Figure_7_Cleaned_Skips_no_zoom.pdf")
-print(p)
-dev.off()
 relevant_skip_plot_data$r0 =
   relevant_skip_plot_data$`R[0]`
 
@@ -1838,7 +1828,7 @@ rahul_poster_theme = theme(
                              color = "black")
 )
 
-Rio_data_clean = read.csv("../Generated_Data/Rio_DENV1_Data_3_75_years_clean.csv")
+Rio_data_clean = read.csv("../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
 head(Rio_data_clean)
 Rio_clean_data = Rio_data_clean
 t0 = as.numeric(as.Date("1986/05/01") - as.Date("1986/01/01"))
@@ -1854,7 +1844,7 @@ Rio_data_first_three_years_only = filter(Rio_data_clean, times < 365*4)
 
 
 # Data plot
-load(file = "../Down_Data/denguerj1986-2017.RData")
+load(file = "../Down_Data/denguerj1986-1996.RData")
 
 Rio_city_DENV1_clean = data.frame(Y = as.matrix(dengue.ts),
                                   Date = as.Date(as.yearmon(time(dengue.ts))))

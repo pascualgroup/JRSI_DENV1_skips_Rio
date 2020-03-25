@@ -45,7 +45,7 @@ n<-c(0:20)
 sc<-Boundary_2(n,delta,growth,mu,r0)
 
 par(cex=2)
-plot(n,sc,pch=19,col=1,xlab="n (number of skips)", ylab="sc")
+#plot(n,sc,pch=19,col=1,xlab="n (number of skips)", ylab="sc")
 plot_df = data.frame(n, sc)
 source("rahul_theme.R")
 Fig_1_Panel_A = ggplot(data = plot_df, aes(x = n, y = sc)) +
@@ -53,7 +53,7 @@ Fig_1_Panel_A = ggplot(data = plot_df, aes(x = n, y = sc)) +
   theme_white_background + rahul_man_figure_theme +
   ylab(expression(S[c](n))) +
   geom_hline(yintercept = 0.70, color = 'red')
-Fig_1_Panel_A
+#Fig_1_Panel_A
 # 
 # tiff(
 #   paste0(

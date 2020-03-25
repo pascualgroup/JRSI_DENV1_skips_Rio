@@ -5,7 +5,7 @@
 
 only_rho_03 = filter(skip_df, rho == 0.03)
 
-load("../Down_Data/Skip_Data/FromRepo_to_SN.Rdata")
+load("../Generated_Data/Skip_Data/FromRepo_to_SN.Rdata")
 head(FromRepo_to_SN)
 FromRepo_to_SN_df = as.data.frame(FromRepo_to_SN)
 FromRepo_to_SN_df$rho = FromRepo_to_SN_df$Rep/100
@@ -23,10 +23,7 @@ p = ggplot(data = only_S_over_N_70, aes(x = r0, y = Num_Skips,
   labs(y = expression(paste("Number of skips (", n[c], ")")))
   rahul_man_figure_theme 
 p
-pdf("../Figures/Manuscript_Figures/Figure_3/Man_Fig_3B_single_S_over_N_70.pdf",
-    height = 5, width = 10)
-print(p)
-dev.off()
+
 
 tiff(
   paste0(
@@ -70,7 +67,7 @@ p_comb = p_comb +
 q_comb = q_comb +
   theme(legend.position = c(.50, .75))
 source("TIFF_Man_Fig_1_Panel_A.R")
-Fig_1_Panel_A
+#Fig_1_Panel_A
 
 tiff(
   paste0(
