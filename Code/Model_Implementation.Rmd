@@ -2011,7 +2011,7 @@ cat A_7_Man_Fig_4_re_emerge_calc.pbs
 rm(list = ls())
 source("load_libraries_essential.R")
 library(zoo)
-library(pomp2)
+library(pomp)
 source("rahul_theme.R")
 args = commandArgs(trailingOnly = TRUE)
 
@@ -2019,11 +2019,11 @@ args = commandArgs(trailingOnly = TRUE)
 model_name = "A_7"
 print(model_name)
 
-Rio_data_clean = read.csv("../Generated_Data/Rio_DENV1_Data_3_75_years_clean.csv")
+Rio_data_clean = read.csv("../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
 head(Rio_data_clean)
 Rio_clean_data = Rio_data_clean
 t0 = as.numeric(as.Date("1986/05/01") - as.Date("1986/01/01"))
-load(file = "../Down_Data/denguerj1986-2017.RData")
+load(file = "../Down_Data/denguerj1986-1996.RData")
 Rio_city_DENV1_clean = data.frame(Y = as.matrix(dengue.ts),
                                   Date = as.Date(as.yearmon(time(dengue.ts))))
 Rio_city_DENV1_clean = filter(Rio_city_DENV1_clean, Date >= "1986-05-01")
@@ -2064,7 +2064,7 @@ single_test_subset_output = read.csv(
   paste0(
     "../Generated_Data/Profiles/",
     model_name,
-    "_Model/spark_month_heat_maps/",
+    "_Model/stoch_re_emerge_test/",
     model_name,
     "_re_mergence_spark_probability_data_subset_", test_param_index,
     ".csv"
@@ -2120,7 +2120,7 @@ no_na_20 = na.omit(spark_90_size_20)
 p = ggplot(data = no_na_20,
            aes(x =R_naught, y =  total_re_emergence_prob_1_year)) + geom_point() +
   rahul_theme+ theme_white_background
-p
+#p
 
 ML_df = MLE_params
 ML_df$r = unique(no_na_20$r)
@@ -2133,7 +2133,7 @@ p = ggplot(data = no_na_20,
              aes(x = sigma_P, y = total_re_emergence_prob_1_year),
              color = 'red', fill = "NA", size = 5, shape = 21, stroke = 3)
   
-p
+#p
 
 
 tiff(
