@@ -1454,7 +1454,147 @@ dev.off()
 
 ```
 
-# Plot Figures 1 and 2
+#  Figure 1 Revised
+
+```{r}
+rm(list =ls())
+source("load_libraries_essential.R")
+source("rahul_theme.R")
+library(stringr)
+library(gridExtra)
+library(zoo)
+load("../Generated_Data/Skip_Data/nCritics.Rdata")
+head(nCritics)
+row.names(nCritics)
+colnames(nCritics)
+skip_raw_data = as.numeric(as.character(nCritics))
+skip_data = as.data.frame(as.matrix(nCritics))
+
+dim(nCritics) #18 (Reporitng rate) x 11 (delta) x 491 (R_0 value)
+# Row name: Reporting rate (18 from 1% to 50%)
+
+
+#reporting_rates = strsplit(reporting_rate, "%")
+rep_rate_header = str_split(row.names(nCritics), pattern = "%", n = Inf,
+              simplify = TRUE)
+delta_col_header = str_split(colnames(nCritics), pattern = "_", n = Inf,
+                             simplify = TRUE)
+reporting_rate = as.numeric(rep_rate_header[,2])/100
+delta_val = as.numeric(delta_col_header[,2])
+
+# Reporitng Rates corresponding to S_0 values of 70%, 85%, and 90%
+nine_percent_rho_index = which(reporting_rate == .09) 
+six_percent_rho_index = which(reporting_rate == .06) 
+three_percent_rho_index = which(reporting_rate == .03) 
+
+
+
+R_0_col_header = str_split(names(nCritics[1,1,]), pattern = "_", n = Inf,
+                             simplify = TRUE)
+R_0_skip_val = as.numeric(R_0_col_header[,2])
+
+#Get 9% rho skip data
+skip_data_rho_nine_percent = 
+  nCritics[nine_percent_rho_index,
+           c(3,5,7,8,9),
+           c(91:181)]
+skip_df_rho_9 = as.data.frame(skip_data_rho_nine_percent)
+skip_df_rho_9 <- tibble::rownames_to_column(skip_df_rho_9, "delta")
+strsplit(skip_df_rho_9$delta, split = "_")
+colnames(skip_df_rho_9)
+rownames(skip_df_rho_9)
+library(stringr)
+skip_df_rho_9$delta = str_split(skip_df_rho_9$delta,
+                                pattern = "_", simplify = TRUE)[,2]
+head(skip_df_rho_9)
+
+skip_df_rho_9 = melt(skip_df_rho_9, id.vars = c("delta"))
+skip_df_rho_9 = dplyr::select(skip_df_rho_9, delta, r0 = variable,
+                              Num_Skips = value)
+skip_df_rho_9$r0 = str_split(skip_df_rho_9$r0,
+                             pattern = "_", simplify = TRUE)[,2]
+skip_df_rho_9$rho = 0.09
+skip_df_rho_9$rho_lab = "\rho~=~0.09" 
+
+
+#Get 6% rho skip data
+skip_data_rho_six_percent = 
+  nCritics[six_percent_rho_index,
+           c(3,5,7,8,9),
+           c(91:181)]
+skip_df_rho_6 = as.data.frame(skip_data_rho_six_percent)
+skip_df_rho_6 <- tibble::rownames_to_column(skip_df_rho_6, "delta")
+strsplit(skip_df_rho_6$delta, split = "_")
+colnames(skip_df_rho_6)
+rownames(skip_df_rho_6)
+library(stringr)
+skip_df_rho_6$delta = str_split(skip_df_rho_6$delta,
+                          pattern = "_", simplify = TRUE)[,2]
+head(skip_df_rho_6)
+
+skip_df_rho_6 = melt(skip_df_rho_6, id.vars = c("delta"))
+skip_df_rho_6 = dplyr::select(skip_df_rho_6, delta, r0 = variable,
+                        Num_Skips = value)
+skip_df_rho_6$r0 = str_split(skip_df_rho_6$r0,
+                          pattern = "_", simplify = TRUE)[,2]
+skip_df_rho_6$rho = 0.06
+skip_df_rho_6$rho_lab = "\rho~=~0.06" 
+
+
+#Get 3% rho skip data
+skip_data_rho_three_percent = 
+  nCritics[three_percent_rho_index,
+           c(3,5,7,8,9),
+           c(91:181)]
+skip_df_rho_3 = as.data.frame(skip_data_rho_three_percent)
+skip_df_rho_3 <- tibble::rownames_to_column(skip_df_rho_3, "delta")
+strsplit(skip_df_rho_3$delta, split = "_")
+colnames(skip_df_rho_3)
+rownames(skip_df_rho_3)
+library(stringr)
+skip_df_rho_3$delta = str_split(skip_df_rho_3$delta,
+                                 pattern = "_", simplify = TRUE)[,2]
+head(skip_df_rho_3)
+
+skip_df_rho_3 = melt(skip_df_rho_3, id.vars = c("delta"))
+skip_df_rho_3 = dplyr::select(skip_df_rho_3, delta, r0 = variable,
+                               Num_Skips = value)
+skip_df_rho_3$r0 = str_split(skip_df_rho_3$r0,
+                              pattern = "_", simplify = TRUE)[,2]
+skip_df_rho_3$rho = 0.03
+skip_df_rho_3$rho_lab = "\rho~=~0.03" 
+
+skip_df = rbind(skip_df_rho_3,
+                skip_df_rho_6)
+skip_df = rbind(skip_df,
+                skip_df_rho_9)
+skip_df$r0 = as.numeric(as.character(skip_df$r0))
+skip_df$Num_Skips = as.numeric(as.character(skip_df$Num_Skips))
+
+
+library(latex2exp)
+
+
+
+
+only_delta_07 = filter(skip_df, delta == 0.7)
+head(only_delta_07)
+only_delta_07$rho = as.factor(as.character(only_delta_07$rho))
+p = ggplot(data = only_delta_07, aes(x = r0, y = Num_Skips,
+                               color = rho)) + geom_point(size = 3) +
+  rahul_theme +
+  theme_white_background + scale_color_viridis_d(direction = -1)+
+  ylab("Number of skips")  + labs(x = expression(R[0])) +
+  labs(color = expression(rho))+
+  rahul_man_figure_theme 
+p
+
+# TIFF Figure 1 -----------------------------------------------------------
+source("TIFF_Man_Fig_1.R")
+
+```
+
+# Plot Figure 2 Revised 
 ```{r}
 rm(list =ls())
 source("load_libraries_essential.R")
@@ -1483,7 +1623,6 @@ delta_val = as.numeric(delta_col_header[,2])
 
 #10% Reporitng Rates
 ten_percent_rho_index = which(reporting_rate == .10) 
-four_percent_rho_index = which(reporting_rate == .04) 
 three_percent_rho_index = which(reporting_rate == .03) 
 
 
@@ -1516,28 +1655,6 @@ skip_df_rho_10$rho = 0.10
 skip_df_rho_10$rho_lab = "\rho~=~0.10" 
 
 
-#Get 4% rho skip data
-skip_data_rho_four_percent = 
-  nCritics[four_percent_rho_index,
-           c(3,5,7,8,9),
-           c(91:181)]
-skip_df_rho_4 = as.data.frame(skip_data_rho_four_percent)
-skip_df_rho_4 <- tibble::rownames_to_column(skip_df_rho_4, "delta")
-strsplit(skip_df_rho_4$delta, split = "_")
-colnames(skip_df_rho_4)
-rownames(skip_df_rho_4)
-library(stringr)
-skip_df_rho_4$delta = str_split(skip_df_rho_4$delta,
-                          pattern = "_", simplify = TRUE)[,2]
-head(skip_df_rho_4)
-
-skip_df_rho_4 = melt(skip_df_rho_4, id.vars = c("delta"))
-skip_df_rho_4 = dplyr::select(skip_df_rho_4, delta, r0 = variable,
-                        Num_Skips = value)
-skip_df_rho_4$r0 = str_split(skip_df_rho_4$r0,
-                          pattern = "_", simplify = TRUE)[,2]
-skip_df_rho_4$rho = 0.04
-skip_df_rho_4$rho_lab = "\rho~=~0.04" 
 
 
 #Get 3% rho skip data
@@ -1563,9 +1680,8 @@ skip_df_rho_3$r0 = str_split(skip_df_rho_3$r0,
 skip_df_rho_3$rho = 0.03
 skip_df_rho_3$rho_lab = "\rho~=~0.03" 
 
+
 skip_df = rbind(skip_df_rho_3,
-                skip_df_rho_4)
-skip_df = rbind(skip_df,
                 skip_df_rho_10)
 skip_df$r0 = as.numeric(as.character(skip_df$r0))
 skip_df$Num_Skips = as.numeric(as.character(skip_df$Num_Skips))
@@ -1579,17 +1695,36 @@ library(latex2exp)
 only_delta_07 = filter(skip_df, delta == 0.7)
 head(only_delta_07)
 only_delta_07$rho = as.factor(as.character(only_delta_07$rho))
-p = ggplot(data = only_delta_07, aes(x = r0, y = Num_Skips,
-                               color = rho)) + geom_point(size = 3) +
+# p = ggplot(data = only_delta_07, aes(x = r0, y = Num_Skips,
+#                                shape = rho)) + geom_point(size = 3) +
+#   rahul_theme +
+#   scale_shape_manual(values = c(15,17))+
+#   theme_white_background + scale_color_viridis_d(direction = -1)+
+#   ylab("Number of skips")  + labs(x = expression(R[0])) +
+#   labs(shape = expression(rho))+
+#   rahul_man_figure_theme 
+# p
+
+
+Fig_2_B = ggplot(data = only_delta_07) + geom_point(data = only_delta_07,
+                          aes(x = r0, y = Num_Skips,
+                              shape = rho),size = 3 )+
+  labs(shape = expression(rho)) +
   rahul_theme +
-  theme_white_background + scale_color_viridis_d(direction = -1)+
-  ylab("Number of skips")  + labs(x = expression(R[0])) +
-  labs(color = expression(rho))+
-  rahul_man_figure_theme 
-p
+  theme_white_background + scale_shape_manual(values = c(18,17))+
+  labs(x = expression(R[0])) +
+  labs(y = expression(n[c])) +
+  labs(y = expression(paste("Number of skips (", n[c], ")")))
+  labs(shape = expression(rho))+
+  rahul_man_figure_theme
+Fig_2_B
 
-
-
+tiff(
+  paste0(
+    "../Figures/Manuscript_Figures/TIFF_Files/Fig2B.tiff"),
+  height = 5, width = 10, res = 300, units = "in")
+print(Fig_2_B)
+dev.off()
 
 #only_delta_07$Type = "Simulated"
 ##### Load data from old figure 8 
@@ -1624,185 +1759,335 @@ A_7_bio_good_2_LL$skips = -1
 #single_param_data$nearest_skip_R_naught_index = NA
 A_7_bio_good_2_LL$nearest_skip_delta_index = NA
 A_7_bio_good_2_LL$nearest_skip_rho_index = NA
-for(param_index in seq(1, nrow(A_7_bio_good_2_LL))){
-  load("../Generated_Data/Skip_Data/nCritics_detailedRepRate_From2to5.Rdata")
-  head(nCritics_detailedRepRate_From2to5)
-  row.names(nCritics_detailedRepRate_From2to5)
-  colnames(nCritics_detailedRepRate_From2to5)
-  
-  dim(nCritics) #18 (Reporitng rate) x 11 (delta) x 491 (R_0 value)
-  # Row name: Reporting rate (18 from 1% to 50%)
-  
-  
-  rep_rate_header_det = str_split(row.names(
-    nCritics_detailedRepRate_From2to5), pattern = "%", n = Inf,
-                              simplify = TRUE)
-  delta_col_header_det = str_split(colnames(
-    nCritics_detailedRepRate_From2to5), pattern = "_", n = Inf,
-                               simplify = TRUE)
-  reporting_rate_det = as.numeric(rep_rate_header_det[,2])/100
-  delta_val_det = as.numeric(delta_col_header_det[,2])
-  
-  #10% Reporitng Rates
-  ten_percent_rho_index_det = which(reporting_rate == .10) 
-  four_percent_rho_index = which(reporting_rate == .04) 
-  three_percent_rho_index = which(reporting_rate == .03) 
-  
-  
-  
-  R_0_col_header_det = str_split(names(
-    nCritics_detailedRepRate_From2to5[1,1,]), pattern = "_", n = Inf,
-                             simplify = TRUE)
-  R_0_skip_val_det = as.numeric(R_0_col_header_det[,2])
-  
-  
-  #single_param_data = A_7_bio_good_2_LL[param_index,]
-  #Get R_naught ref on skip plot
-  A_7_bio_good_2_LL$nearest_skip_R_naught_index[param_index] =
-    which.min(abs(R_0_skip_val_det -
-                    A_7_bio_good_2_LL$R_naught_theo[param_index] ))
-  A_7_bio_good_2_LL$nearest_skip_R_naught[param_index] =
-    R_0_skip_val_det[
-      A_7_bio_good_2_LL$nearest_skip_R_naught_index[param_index]]
-  #Get rho ref on skip plot
-  
-  A_7_bio_good_2_LL$nearest_skip_rho_index[param_index] = 
-    which.min(abs(reporting_rate_det -
-                    A_7_bio_good_2_LL$rho[param_index] ))
-  A_7_bio_good_2_LL$nearest_skip_rho[param_index] =
-    reporting_rate_det[
-      A_7_bio_good_2_LL$nearest_skip_rho_index[param_index]]
-  
-  #Get delta ref on skip plot
-  A_7_bio_good_2_LL$nearest_skip_delta_index[param_index] =
-    which.min(abs(delta_val_det -A_7_bio_good_2_LL$delta[param_index] ))
-  A_7_bio_good_2_LL$nearest_skip_delta[param_index] =
-    delta_val[
-      A_7_bio_good_2_LL$nearest_skip_delta_index[param_index]]
-  A_7_bio_good_2_LL$skips[param_index] =
-    nCritics_detailedRepRate_From2to5[
-      A_7_bio_good_2_LL$nearest_skip_rho_index[param_index],
-      A_7_bio_good_2_LL$nearest_skip_delta_index[param_index],
-      A_7_bio_good_2_LL$nearest_skip_R_naught_index[param_index]]
-}
-
-p = ggplot(data = A_7_bio_good_2_LL, aes(x = R_naught_theo,
-                                         y = skips)) + geom_point() +
-  rahul_theme
-p
-
-relevant_skip_plot_data = dplyr::select(A_7_bio_good_2_LL,
-                                        "R[0]" = nearest_skip_R_naught,
-                                        skips,
-                                        rho = nearest_skip_rho,
-                                        delta = nearest_skip_delta)
-min(A_7_bio_good_2_LL$skips, na.rm = TRUE)
-
-relevant_skip_plot_data_melt = melt(
-  relevant_skip_plot_data, id.vars = c("skips"))
-relevant_skip_plot_data_melt$value = signif(
-  relevant_skip_plot_data_melt$value, digits = 3)
-relevant_skip_plot_data_melt$skip_category = cut(
-  relevant_skip_plot_data_melt$skips,breaks = c(0,1,100,101),
-  include.lowest = TRUE)
-p = ggplot(data = relevant_skip_plot_data_melt,
-           aes(x = value, y = skips)) + geom_point(size = 2) +
-  rahul_theme +
-  xlab("Parameter Value") +
-  ylab("Number of skips \n (Deterministic) ") +
-  theme_white_background +
-  facet_grid(cols = vars(variable),
-             scales = "free",
-             labeller = label_parsed) +
-  theme(panel.spacing = unit(2, "lines")) +
-  theme(strip.text  = element_text(size = 12,
-                                   face = "bold",
-                                   color = "black"))
-p = p + theme(axis.text.x = element_text(size = 16))
-p
-scaleFUN <- function(x) sprintf("%.2f", x)
-p = p + scale_x_continuous(labels=scaleFUN) + aes(color =
-                                                    skip_category) +
-  scale_color_manual(values = c("black","red"),
-                     labels = c("1-100 ",
-                                "> 100 "),
-                     name = c("Number \n of Skips"))
-p
-range(A_7_bio_good_2_LL$rho)
-
-relevant_skip_plot_data$r0 =
-  relevant_skip_plot_data$`R[0]`
-
-
-relevant_skip_plot_data$rho = as.factor(as.character(relevant_skip_plot_data$rho))
-relevant_skip_plot_data_delta_07 = filter(
-  relevant_skip_plot_data, delta == 0.7)
-
-
-#relevant_skip_plot_data_delta_07$Type = "Fitted"
-
-skip_plot_data_comb = join(
-  relevant_skip_plot_data_delta_07,only_delta_07)
-
-p = ggplot(data = only_delta_07, aes(x = r0, y = Num_Skips,
-                                     color = rho)) +
-  geom_point(size = 3) +
-  rahul_theme +
-  theme_white_background + scale_color_viridis_d(direction = -1)+
-  ylab("Number of skips")  + labs(x = expression(R[0])) +
-  labs(color = expression(rho))+
-  rahul_man_figure_theme 
-p
-
-Fig_2_B = ggplot(data = only_delta_07) + geom_point(data = only_delta_07,
-                          aes(x = r0, y = Num_Skips,
-                              color = rho),size = 3 )+
-  labs(color = expression(rho))+
-  geom_point(data = relevant_skip_plot_data_delta_07,
-             aes(x = r0, y = skips),
-             color = 'red', size = 3,
-             shape =  "circle open") +
-  rahul_theme +
-  theme_white_background + scale_color_viridis_d(direction = -1)+
-  labs(x = expression(R[0])) +
-  labs(y = expression(n[c])) +
-  labs(y = expression(paste("Number of skips (", n[c], ")")))
-  labs(color = expression(rho))+
-  rahul_man_figure_theme 
-Fig_2_B
-
-tiff(
-  paste0(
-    "../Figures/Manuscript_Figures/TIFF_Files/Fig2B.tiff"),
-  height = 5, width = 10, res = 300, units = "in")
-print(Fig_2_B)
-dev.off()
-
-
 
 
 ```
 
-### Supplemental Figure S17
-```{r}
-Sup_Fig_S17 = ggplot() +
-  geom_point(data = relevant_skip_plot_data,
-             aes(x = r0, y = skips),
-             color = 'red', size = 4,
-             shape =  "cross") +
-  rahul_theme +
-  theme_white_background + scale_color_viridis_d(direction = -1)+
-  ylab("Number of skips")  + labs(x = expression(R[0])) +
-  labs(color = expression(rho))+
-  rahul_man_figure_theme 
-Sup_Fig_S17
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_17/Supplemental_Figure_S_17.pdf")
-print(Sup_Fig_S17)
-dev.off()
-```
+# Plot Figure 2
+<!-- ### Old Figure 2B -->
+<!-- ```{r} -->
+<!-- rm(list =ls()) -->
+<!-- source("load_libraries_essential.R") -->
+<!-- source("rahul_theme.R") -->
+<!-- library(stringr) -->
+<!-- library(gridExtra) -->
+<!-- library(zoo) -->
+<!-- load("../Generated_Data/Skip_Data/nCritics.Rdata") -->
+<!-- head(nCritics) -->
+<!-- row.names(nCritics) -->
+<!-- colnames(nCritics) -->
+<!-- skip_raw_data = as.numeric(as.character(nCritics)) -->
+<!-- skip_data = as.data.frame(as.matrix(nCritics)) -->
+
+<!-- dim(nCritics) #18 (Reporitng rate) x 11 (delta) x 491 (R_0 value) -->
+<!-- # Row name: Reporting rate (18 from 1% to 50%) -->
 
 
-## TIFF Figure 2_A
+<!-- #reporting_rates = strsplit(reporting_rate, "%") -->
+<!-- rep_rate_header = str_split(row.names(nCritics), pattern = "%", n = Inf, -->
+<!--               simplify = TRUE) -->
+<!-- delta_col_header = str_split(colnames(nCritics), pattern = "_", n = Inf, -->
+<!--                              simplify = TRUE) -->
+<!-- reporting_rate = as.numeric(rep_rate_header[,2])/100 -->
+<!-- delta_val = as.numeric(delta_col_header[,2]) -->
+
+<!-- #10% Reporitng Rates -->
+<!-- ten_percent_rho_index = which(reporting_rate == .10) -->
+<!-- three_percent_rho_index = which(reporting_rate == .03) -->
+
+
+
+<!-- R_0_col_header = str_split(names(nCritics[1,1,]), pattern = "_", n = Inf, -->
+<!--                              simplify = TRUE) -->
+<!-- R_0_skip_val = as.numeric(R_0_col_header[,2]) -->
+
+<!-- #Get 10% rho skip data -->
+<!-- skip_data_rho_ten_percent = -->
+<!--   nCritics[ten_percent_rho_index, -->
+<!--            c(3,5,7,8,9), -->
+<!--            c(91:181)] -->
+<!-- skip_df_rho_10 = as.data.frame(skip_data_rho_ten_percent) -->
+<!-- skip_df_rho_10 <- tibble::rownames_to_column(skip_df_rho_10, "delta") -->
+<!-- strsplit(skip_df_rho_10$delta, split = "_") -->
+<!-- colnames(skip_df_rho_10) -->
+<!-- rownames(skip_df_rho_10) -->
+<!-- library(stringr) -->
+<!-- skip_df_rho_10$delta = str_split(skip_df_rho_10$delta, -->
+<!--                                 pattern = "_", simplify = TRUE)[,2] -->
+<!-- head(skip_df_rho_10) -->
+
+<!-- skip_df_rho_10 = melt(skip_df_rho_10, id.vars = c("delta")) -->
+<!-- skip_df_rho_10 = dplyr::select(skip_df_rho_10, delta, r0 = variable, -->
+<!--                               Num_Skips = value) -->
+<!-- skip_df_rho_10$r0 = str_split(skip_df_rho_10$r0, -->
+<!--                              pattern = "_", simplify = TRUE)[,2] -->
+<!-- skip_df_rho_10$rho = 0.10 -->
+<!-- skip_df_rho_10$rho_lab = "\rho~=~0.10" -->
+
+
+
+
+<!-- #Get 3% rho skip data -->
+<!-- skip_data_rho_three_percent = -->
+<!--   nCritics[three_percent_rho_index, -->
+<!--            c(3,5,7,8,9), -->
+<!--            c(91:181)] -->
+<!-- skip_df_rho_3 = as.data.frame(skip_data_rho_three_percent) -->
+<!-- skip_df_rho_3 <- tibble::rownames_to_column(skip_df_rho_3, "delta") -->
+<!-- strsplit(skip_df_rho_3$delta, split = "_") -->
+<!-- colnames(skip_df_rho_3) -->
+<!-- rownames(skip_df_rho_3) -->
+<!-- library(stringr) -->
+<!-- skip_df_rho_3$delta = str_split(skip_df_rho_3$delta, -->
+<!--                                  pattern = "_", simplify = TRUE)[,2] -->
+<!-- head(skip_df_rho_3) -->
+
+<!-- skip_df_rho_3 = melt(skip_df_rho_3, id.vars = c("delta")) -->
+<!-- skip_df_rho_3 = dplyr::select(skip_df_rho_3, delta, r0 = variable, -->
+<!--                                Num_Skips = value) -->
+<!-- skip_df_rho_3$r0 = str_split(skip_df_rho_3$r0, -->
+<!--                               pattern = "_", simplify = TRUE)[,2] -->
+<!-- skip_df_rho_3$rho = 0.03 -->
+<!-- skip_df_rho_3$rho_lab = "\rho~=~0.03" -->
+
+
+<!-- skip_df = rbind(skip_df_rho_3, -->
+<!--                 skip_df_rho_10) -->
+<!-- skip_df$r0 = as.numeric(as.character(skip_df$r0)) -->
+<!-- skip_df$Num_Skips = as.numeric(as.character(skip_df$Num_Skips)) -->
+
+
+<!-- library(latex2exp) -->
+
+
+
+
+<!-- only_delta_07 = filter(skip_df, delta == 0.7) -->
+<!-- head(only_delta_07) -->
+<!-- only_delta_07$rho = as.factor(as.character(only_delta_07$rho)) -->
+<!-- p = ggplot(data = only_delta_07, aes(x = r0, y = Num_Skips, -->
+<!--                                color = rho)) + geom_point(size = 3) + -->
+<!--   rahul_theme + -->
+<!--   theme_white_background + scale_color_viridis_d(direction = -1)+ -->
+<!--   ylab("Number of skips")  + labs(x = expression(R[0])) + -->
+<!--   labs(color = expression(rho))+ -->
+<!--   rahul_man_figure_theme -->
+<!-- p -->
+
+
+
+
+<!-- #only_delta_07$Type = "Simulated" -->
+<!-- ##### Load data from old figure 8 -->
+
+
+<!-- #Load bio_good LL -->
+
+<!-- model_name = "A_7" -->
+
+
+<!-- ## R_naught_act_data -->
+<!-- profile_data_with_R_naught_act = read.csv(file = paste0("../Generated_Data/Profiles/", model_name, -->
+<!--                                                         "_Model/combined_", model_name, "_profile_data_directory_with_mean_R_0.csv")) -->
+
+<!-- head(profile_data_with_R_naught_act) -->
+<!-- MLE_with_R_naught_act = filter(profile_data_with_R_naught_act, LL == max(LL)) -->
+<!-- bio_good_2_LL_with_R_naught = read.csv(file = paste0("../Generated_Data/Profiles/", model_name, -->
+<!--                                                      "_Model/combined_", model_name, "_bio_good_2_LL_param_list.csv")) -->
+<!-- A_7_MLE_R_naught_act = MLE_with_R_naught_act$R_naught -->
+<!-- A_7_min_R_naught_act = min(bio_good_2_LL_with_R_naught$R_naught) -->
+<!-- A_7_max_R_naught_act = max(bio_good_2_LL_with_R_naught$R_naught) -->
+
+<!-- A_7_bio_good_2_LL = read.csv(paste0("../Generated_Data/Profiles/", model_name, "_Model/",model_name, "_Model_BP_top_2_LL_all_params_bio_good_2_LL.csv")) -->
+
+<!-- A_7_bio_good_2_LL$R_naught_theo = A_7_bio_good_2_LL$Beta_0/(A_7_bio_good_2_LL$gamma + A_7_bio_good_2_LL$mu_H) -->
+
+<!-- head(A_7_bio_good_2_LL) -->
+<!-- A_7_bio_good_2_LL$nearest_skip_rho = 0 -->
+<!-- A_7_bio_good_2_LL$nearest_skip_R_naught = 0 -->
+<!-- A_7_bio_good_2_LL$nearest_skip_delta = 0 -->
+<!-- A_7_bio_good_2_LL$skips = -1 -->
+<!-- #single_param_data$nearest_skip_R_naught_index = NA -->
+<!-- A_7_bio_good_2_LL$nearest_skip_delta_index = NA -->
+<!-- A_7_bio_good_2_LL$nearest_skip_rho_index = NA -->
+<!-- for(param_index in seq(1, nrow(A_7_bio_good_2_LL))){ -->
+<!--   load("../Generated_Data/Skip_Data/nCritics_detailedRepRate_From2to5.Rdata") -->
+<!--   head(nCritics_detailedRepRate_From2to5) -->
+<!--   row.names(nCritics_detailedRepRate_From2to5) -->
+<!--   colnames(nCritics_detailedRepRate_From2to5) -->
+
+<!--   dim(nCritics) #18 (Reporitng rate) x 11 (delta) x 491 (R_0 value) -->
+<!--   # Row name: Reporting rate (18 from 1% to 50%) -->
+
+
+<!--   rep_rate_header_det = str_split(row.names( -->
+<!--     nCritics_detailedRepRate_From2to5), pattern = "%", n = Inf, -->
+<!--                               simplify = TRUE) -->
+<!--   delta_col_header_det = str_split(colnames( -->
+<!--     nCritics_detailedRepRate_From2to5), pattern = "_", n = Inf, -->
+<!--                                simplify = TRUE) -->
+<!--   reporting_rate_det = as.numeric(rep_rate_header_det[,2])/100 -->
+<!--   delta_val_det = as.numeric(delta_col_header_det[,2]) -->
+
+<!--   #10% Reporitng Rates -->
+<!--   ten_percent_rho_index_det = which(reporting_rate == .10) -->
+<!--   four_percent_rho_index = which(reporting_rate == .04) -->
+<!--   three_percent_rho_index = which(reporting_rate == .03) -->
+
+
+
+<!--   R_0_col_header_det = str_split(names( -->
+<!--     nCritics_detailedRepRate_From2to5[1,1,]), pattern = "_", n = Inf, -->
+<!--                              simplify = TRUE) -->
+<!--   R_0_skip_val_det = as.numeric(R_0_col_header_det[,2]) -->
+
+
+<!--   #single_param_data = A_7_bio_good_2_LL[param_index,] -->
+<!--   #Get R_naught ref on skip plot -->
+<!--   A_7_bio_good_2_LL$nearest_skip_R_naught_index[param_index] = -->
+<!--     which.min(abs(R_0_skip_val_det - -->
+<!--                     A_7_bio_good_2_LL$R_naught_theo[param_index] )) -->
+<!--   A_7_bio_good_2_LL$nearest_skip_R_naught[param_index] = -->
+<!--     R_0_skip_val_det[ -->
+<!--       A_7_bio_good_2_LL$nearest_skip_R_naught_index[param_index]] -->
+<!--   #Get rho ref on skip plot -->
+
+<!--   A_7_bio_good_2_LL$nearest_skip_rho_index[param_index] = -->
+<!--     which.min(abs(reporting_rate_det - -->
+<!--                     A_7_bio_good_2_LL$rho[param_index] )) -->
+<!--   A_7_bio_good_2_LL$nearest_skip_rho[param_index] = -->
+<!--     reporting_rate_det[ -->
+<!--       A_7_bio_good_2_LL$nearest_skip_rho_index[param_index]] -->
+
+<!--   #Get delta ref on skip plot -->
+<!--   A_7_bio_good_2_LL$nearest_skip_delta_index[param_index] = -->
+<!--     which.min(abs(delta_val_det -A_7_bio_good_2_LL$delta[param_index] )) -->
+<!--   A_7_bio_good_2_LL$nearest_skip_delta[param_index] = -->
+<!--     delta_val[ -->
+<!--       A_7_bio_good_2_LL$nearest_skip_delta_index[param_index]] -->
+<!--   A_7_bio_good_2_LL$skips[param_index] = -->
+<!--     nCritics_detailedRepRate_From2to5[ -->
+<!--       A_7_bio_good_2_LL$nearest_skip_rho_index[param_index], -->
+<!--       A_7_bio_good_2_LL$nearest_skip_delta_index[param_index], -->
+<!--       A_7_bio_good_2_LL$nearest_skip_R_naught_index[param_index]] -->
+<!-- } -->
+
+<!-- p = ggplot(data = A_7_bio_good_2_LL, aes(x = R_naught_theo, -->
+<!--                                          y = skips)) + geom_point() + -->
+<!--   rahul_theme -->
+<!-- p -->
+
+<!-- relevant_skip_plot_data = dplyr::select(A_7_bio_good_2_LL, -->
+<!--                                         "R[0]" = nearest_skip_R_naught, -->
+<!--                                         skips, -->
+<!--                                         rho = nearest_skip_rho, -->
+<!--                                         delta = nearest_skip_delta) -->
+<!-- min(A_7_bio_good_2_LL$skips, na.rm = TRUE) -->
+
+<!-- relevant_skip_plot_data_melt = melt( -->
+<!--   relevant_skip_plot_data, id.vars = c("skips")) -->
+<!-- relevant_skip_plot_data_melt$value = signif( -->
+<!--   relevant_skip_plot_data_melt$value, digits = 3) -->
+<!-- relevant_skip_plot_data_melt$skip_category = cut( -->
+<!--   relevant_skip_plot_data_melt$skips,breaks = c(0,1,100,101), -->
+<!--   include.lowest = TRUE) -->
+<!-- p = ggplot(data = relevant_skip_plot_data_melt, -->
+<!--            aes(x = value, y = skips)) + geom_point(size = 2) + -->
+<!--   rahul_theme + -->
+<!--   xlab("Parameter Value") + -->
+<!--   ylab("Number of skips \n (Deterministic) ") + -->
+<!--   theme_white_background + -->
+<!--   facet_grid(cols = vars(variable), -->
+<!--              scales = "free", -->
+<!--              labeller = label_parsed) + -->
+<!--   theme(panel.spacing = unit(2, "lines")) + -->
+<!--   theme(strip.text  = element_text(size = 12, -->
+<!--                                    face = "bold", -->
+<!--                                    color = "black")) -->
+<!-- p = p + theme(axis.text.x = element_text(size = 16)) -->
+<!-- p -->
+<!-- scaleFUN <- function(x) sprintf("%.2f", x) -->
+<!-- p = p + scale_x_continuous(labels=scaleFUN) + aes(color = -->
+<!--                                                     skip_category) + -->
+<!--   scale_color_manual(values = c("black","red"), -->
+<!--                      labels = c("1-100 ", -->
+<!--                                 "> 100 "), -->
+<!--                      name = c("Number \n of Skips")) -->
+<!-- p -->
+<!-- range(A_7_bio_good_2_LL$rho) -->
+
+<!-- relevant_skip_plot_data$r0 = -->
+<!--   relevant_skip_plot_data$`R[0]` -->
+
+
+<!-- relevant_skip_plot_data$rho = as.factor(as.character(relevant_skip_plot_data$rho)) -->
+<!-- relevant_skip_plot_data_delta_07 = filter( -->
+<!--   relevant_skip_plot_data, delta == 0.7) -->
+
+
+<!-- #relevant_skip_plot_data_delta_07$Type = "Fitted" -->
+
+<!-- skip_plot_data_comb = join( -->
+<!--   relevant_skip_plot_data_delta_07,only_delta_07) -->
+
+<!-- p = ggplot(data = only_delta_07, aes(x = r0, y = Num_Skips, -->
+<!--                                      color = rho)) + -->
+<!--   geom_point(size = 3) + -->
+<!--   rahul_theme + -->
+<!--   theme_white_background + scale_color_viridis_d(direction = -1)+ -->
+<!--   ylab("Number of skips")  + labs(x = expression(R[0])) + -->
+<!--   labs(color = expression(rho))+ -->
+<!--   rahul_man_figure_theme -->
+<!-- p -->
+
+<!-- Fig_2_B = ggplot(data = only_delta_07) + geom_point(data = only_delta_07, -->
+<!--                           aes(x = r0, y = Num_Skips, -->
+<!--                               color = rho),size = 3 )+ -->
+<!--   labs(color = expression(rho))+ -->
+<!--   geom_point(data = relevant_skip_plot_data_delta_07, -->
+<!--              aes(x = r0, y = skips), -->
+<!--              color = 'red', size = 3, -->
+<!--              shape =  "circle open") + -->
+<!--   rahul_theme + -->
+<!--   theme_white_background + scale_color_viridis_d(direction = -1)+ -->
+<!--   labs(x = expression(R[0])) + -->
+<!--   labs(y = expression(n[c])) + -->
+<!--   labs(y = expression(paste("Number of skips (", n[c], ")"))) -->
+<!--   labs(color = expression(rho))+ -->
+<!--   rahul_man_figure_theme -->
+<!-- Fig_2_B -->
+
+<!-- tiff( -->
+<!--   paste0( -->
+<!--     "../Figures/Manuscript_Figures/TIFF_Files/Fig2B.tiff"), -->
+<!--   height = 5, width = 10, res = 300, units = "in") -->
+<!-- print(Fig_2_B) -->
+<!-- dev.off() -->
+
+
+
+
+<!-- ``` -->
+
+<!-- <!-- ### Supplemental Figure S17 --> -->
+<!-- <!-- ```{r} --> -->
+<!-- <!-- Sup_Fig_S17 = ggplot() + --> -->
+<!-- <!--   geom_point(data = relevant_skip_plot_data, --> -->
+<!-- <!--              aes(x = r0, y = skips), --> -->
+<!-- <!--              color = 'red', size = 4, --> -->
+<!-- <!--              shape =  "cross") + --> -->
+<!-- <!--   rahul_theme + --> -->
+<!-- <!--   theme_white_background + scale_color_viridis_d(direction = -1)+ --> -->
+<!-- <!--   ylab("Number of skips")  + labs(x = expression(R[0])) + --> -->
+<!-- <!--   labs(color = expression(rho))+ --> -->
+<!-- <!--   rahul_man_figure_theme  --> -->
+<!-- <!-- Sup_Fig_S17 --> -->
+<!-- <!-- pdf("../Figures/Supplemental_Figures/Supplemental_Figure_17/Supplemental_Figure_S_17.pdf") --> -->
+<!-- <!-- print(Sup_Fig_S17) --> -->
+<!-- <!-- dev.off() --> -->
+<!-- <!-- ``` --> -->
+
+## TIFF Figure 2_A Revised
 ```{r}
 # TIFF Figure 2_A -----------------------------------------------------------
 
@@ -1866,7 +2151,7 @@ dengue_data_with_serotype$Scale = rep("Observed Monthly Cases",
                                       nrow(dengue_data_with_serotype))
 dengue_data_with_serotype$Scale_index = rep(1, nrow(dengue_data_with_serotype))
 dengue_data_with_serotype$Serotype = as.factor(dengue_data_with_serotype$Serotype)
-dengue_data_with_serotype$Serotype = 
+dengue_data_with_serotype$Serotype =
   ordered(dengue_data_with_serotype$Serotype,
           levels = c( "DENV1","DENV1 or \n DENV2"
           ))
@@ -1903,49 +2188,38 @@ dengue_data_both_scales = rbind(dengue_data_with_serotype,
 #dengue_data_both_scales$Scale = relevel(c("Observed Monthly Cases",
 #                                          "log(Observed Monthly Cases)"))
 s_0_calc_point = as.Date("1987-9-01")
-dengue_data_both_scales$Rect_max_x = as.Date("1988-07-01")
-dengue_data_both_scales$Rect_min_x = as.Date("1986-05-01")
-dengue_data_both_scales$Rect_max_re_emerge_x = as.Date("1990-01-01")
-dengue_data_both_scales$Rect_min_re_emerge_x = as.Date("1991-01-01")
+dengue_data_with_serotype$Rect_max_x = as.Date("1988-07-01")
+dengue_data_with_serotype$Rect_min_x = as.Date("1986-05-01")
+
 dengue_data_both_scales$spark_start_date = as.Date("1990-01-01")
 dengue_data_both_scales$spark_end_date = as.Date("1990-01-31")
 
-Fig_2_A = ggplot(data = dengue_data_both_scales,
+Fig_2_A = ggplot(data = dengue_data_with_serotype,
                aes(x = Date, y = Y))+
   geom_rect(aes(xmin = as.Date(Rect_max_x),
                 xmax = as.Date(Rect_min_x),ymin = Rect_min,
-                ymax = Rect_max), fill = 'skyblue', alpha = 0.9) +
-  geom_rect(aes(xmin = as.Date(Rect_max_re_emerge_x),
-                xmax = as.Date(Rect_min_re_emerge_x),ymin = Rect_min,
-                ymax = Rect_max), fill = 'springgreen', alpha = 0.9)+
-  geom_rect(aes(xmin = as.Date(spark_start_date),
-                xmax = as.Date(spark_end_date),ymin = Rect_min,
-                ymax = Spark_Rect_max), fill = 'lightpink', alpha = 0.9)+
-  geom_line(aes(color = Serotype)) +
-  geom_point(aes(color = Serotype), size = 3) + rahul_poster_theme + 
+                ymax = Rect_max), fill = 'grey70', alpha = 0.9) +
+  geom_line() +
+  geom_point(size = 3) + rahul_poster_theme +
   theme(axis.line = element_line(colour = "black"),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
         panel.background = element_blank())+
   theme(legend.position = c(.75,.87)) + xlab("Date") +
-  ylab("log(Observed           Observed \n Monthly Cases)    Monthly Cases") +
-  scale_color_manual(name = "Serotype", values = c("blue","red","darkgreen"))+
-  facet_wrap(~Scale_index, ncol = 1, scales = "free_y") +
+  ylab("Observed \n Monthly Cases") +
   theme(axis.title.y = element_text(size = 20,
                                     face = "bold",
                                     color = "black"),
         legend.text = element_text(size = 18,
                                    face = "bold",
-                                   color = "black"), 
+                                   color = "black"),
         legend.title = element_text(size = 21,
                                     face = "bold",
                                     color = "black"),
         legend.background = element_blank(),
         strip.background = element_blank(),
-        strip.text.x = element_blank()) + rahul_man_figure_theme +
-  geom_vline(xintercept = s_0_calc_point, color = 'red',
-             size = 2, linetype = 2) 
+        strip.text.x = element_blank()) + rahul_man_figure_theme 
 Fig_2_A
 
 
@@ -1972,17 +2246,189 @@ dev.off()
 ```
 
 
-## TIFF Figure 1
-```{r}
-# TIFF Figure 1 -----------------------------------------------------------
-source("TIFF_Man_Fig_1.R")
 
-```
 
-```{r, cache=FALSE}
+<!-- ### Old TIFF Figure 2_A -->
+<!-- ```{r} -->
+<!-- # TIFF Figure 2_A ----------------------------------------------------------- -->
 
-knitr::read_chunk('TIFF_Man_Fig_1.R')
-```
+
+<!-- rahul_poster_theme = theme( -->
+<!--   axis.title.x = element_text(size = 23, -->
+<!--                               face = "bold", -->
+<!--                               color = "black"), -->
+<!--   axis.text.x = element_text(size = 21, -->
+<!--                              face = "bold", -->
+<!--                              color = "black"), -->
+<!--   axis.title.y = element_text(size = 23, -->
+<!--                               face = "bold", -->
+<!--                               color = "black"), -->
+<!--   legend.title = element_text(size = 21, -->
+<!--                               face = "bold", -->
+<!--                               color = "black"), -->
+<!--   legend.text = element_text(size = 23, -->
+<!--                              face = "bold", -->
+<!--                              color = "black"), -->
+<!--   axis.text.y = element_text(size = 21, -->
+<!--                              face = "bold", -->
+<!--                              color = "black") -->
+<!-- ) -->
+
+<!-- Rio_data_clean = read.csv("../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv") -->
+<!-- head(Rio_data_clean) -->
+<!-- Rio_clean_data = Rio_data_clean -->
+<!-- t0 = as.numeric(as.Date("1986/05/01") - as.Date("1986/01/01")) -->
+<!-- Rio_data_first_three_years_only = filter(Rio_data_clean, times < 365*4) -->
+
+
+<!-- #add_a_week = Rio_city_DENV1_clean$Date %m+% weeks(1) -->
+<!-- #last_day_of_month = add_a_month - 1 -->
+
+
+
+
+
+
+<!-- # Data plot -->
+<!-- load(file = "../Down_Data/denguerj1986-1996.RData") -->
+
+<!-- Rio_city_DENV1_clean = data.frame(Y = as.matrix(dengue.ts), -->
+<!--                                   Date = as.Date(as.yearmon(time(dengue.ts)))) -->
+<!-- Rio_city_DENV1_clean = filter(Rio_city_DENV1_clean, Date >= "1986-05-01") -->
+<!-- Rio_city_DENV1_clean = filter(Rio_city_DENV1_clean, Date <= "1995-12-31") -->
+
+<!-- Rio_city_DENV1_clean$Year = year(Rio_city_DENV1_clean$Date) -->
+
+<!-- serotype_year_map = data.frame( -->
+<!--   Serotype = factor(c(rep("DENV1", 5), rep("DENV1 or \n DENV2",6)), -->
+<!--                     levels = c("DENV1", -->
+<!--                                "DENV2", -->
+<!--                                "DENV1 or \n DENV2")), -->
+<!--   Year = seq(from = 1986, to = 1996, by = 1)) -->
+<!-- Rio_city_dengue_86_to_96 = filter(Rio_city_DENV1_clean, Date < "1997-01-01") -->
+<!-- dengue_data_with_serotype = join(Rio_city_dengue_86_to_96, -->
+<!--                                  serotype_year_map) -->
+<!-- dengue_data_with_serotype$Scale = rep("Observed Monthly Cases", -->
+<!--                                       nrow(dengue_data_with_serotype)) -->
+<!-- dengue_data_with_serotype$Scale_index = rep(1, nrow(dengue_data_with_serotype)) -->
+<!-- dengue_data_with_serotype$Serotype = as.factor(dengue_data_with_serotype$Serotype) -->
+<!-- dengue_data_with_serotype$Serotype = -->
+<!--   ordered(dengue_data_with_serotype$Serotype, -->
+<!--           levels = c( "DENV1","DENV1 or \n DENV2" -->
+<!--           )) -->
+
+<!-- dengue_data_with_serotype$Serotype <- factor(dengue_data_with_serotype$Serotype, levels = c("DENV1 or \n DENV2", -->
+<!--                                                "DENV1", -->
+<!--                                                "DENV2" -->
+<!-- )) -->
+
+
+<!-- #dengue_data_with_serotype$Rect_max = dengue_data_with_serotype$Y -->
+<!-- dengue_data_with_serotype$Rect_max = 12500 -->
+
+<!-- dengue_data_with_serotype$Rect_min = 0 -->
+<!-- dengue_data_with_serotype$Spark_Rect_max = 8000 -->
+<!-- dengue_data_with_serotype$Spark_Rect_min = 4000 -->
+
+<!-- log_dengue_data_with_serotype = data.frame( -->
+<!--   Date = dengue_data_with_serotype$Date, -->
+<!--   Year = dengue_data_with_serotype$Year, -->
+<!--   Serotype = dengue_data_with_serotype$Serotype, -->
+<!--   Y = log(dengue_data_with_serotype$Y), -->
+<!--   Scale = rep("log(Observed Monthly Cases)", nrow(dengue_data_with_serotype)), -->
+<!--   Scale_index = rep(2, nrow(dengue_data_with_serotype)) -->
+<!-- ) -->
+<!-- #log_dengue_data_with_serotype$Rect_max =  log_dengue_data_with_serotype$Y -->
+<!-- log_dengue_data_with_serotype$Rect_max =  10 -->
+<!-- log_dengue_data_with_serotype$Rect_min = 0.0 -->
+<!-- log_dengue_data_with_serotype$Spark_Rect_max = 7.5 -->
+<!-- log_dengue_data_with_serotype$Spark_Rect_min = 2.5 -->
+
+<!-- dengue_data_both_scales = rbind(dengue_data_with_serotype, -->
+<!--                                 log_dengue_data_with_serotype) -->
+<!-- #dengue_data_both_scales$Scale = relevel(c("Observed Monthly Cases", -->
+<!-- #                                          "log(Observed Monthly Cases)")) -->
+<!-- s_0_calc_point = as.Date("1987-9-01") -->
+<!-- dengue_data_both_scales$Rect_max_x = as.Date("1988-07-01") -->
+<!-- dengue_data_both_scales$Rect_min_x = as.Date("1986-05-01") -->
+<!-- dengue_data_both_scales$Rect_max_re_emerge_x = as.Date("1990-01-01") -->
+<!-- dengue_data_both_scales$Rect_min_re_emerge_x = as.Date("1991-01-01") -->
+<!-- dengue_data_both_scales$spark_start_date = as.Date("1990-01-01") -->
+<!-- dengue_data_both_scales$spark_end_date = as.Date("1990-01-31") -->
+
+<!-- Fig_2_A = ggplot(data = dengue_data_both_scales, -->
+<!--                aes(x = Date, y = Y))+ -->
+<!--   geom_rect(aes(xmin = as.Date(Rect_max_x), -->
+<!--                 xmax = as.Date(Rect_min_x),ymin = Rect_min, -->
+<!--                 ymax = Rect_max), fill = 'skyblue', alpha = 0.9) + -->
+<!--   geom_rect(aes(xmin = as.Date(Rect_max_re_emerge_x), -->
+<!--                 xmax = as.Date(Rect_min_re_emerge_x),ymin = Rect_min, -->
+<!--                 ymax = Rect_max), fill = 'springgreen', alpha = 0.9)+ -->
+<!--   geom_rect(aes(xmin = as.Date(spark_start_date), -->
+<!--                 xmax = as.Date(spark_end_date),ymin = Rect_min, -->
+<!--                 ymax = Spark_Rect_max), fill = 'lightpink', alpha = 0.9)+ -->
+<!--   geom_line(aes(color = Serotype)) + -->
+<!--   geom_point(aes(color = Serotype), size = 3) + rahul_poster_theme + -->
+<!--   theme(axis.line = element_line(colour = "black"), -->
+<!--         panel.grid.major = element_blank(), -->
+<!--         panel.grid.minor = element_blank(), -->
+<!--         panel.border = element_blank(), -->
+<!--         panel.background = element_blank())+ -->
+<!--   theme(legend.position = c(.75,.87)) + xlab("Date") + -->
+<!--   ylab("log(Observed           Observed \n Monthly Cases)    Monthly Cases") + -->
+<!--   scale_color_manual(name = "Serotype", values = c("blue","red","darkgreen"))+ -->
+<!--   facet_wrap(~Scale_index, ncol = 1, scales = "free_y") + -->
+<!--   theme(axis.title.y = element_text(size = 20, -->
+<!--                                     face = "bold", -->
+<!--                                     color = "black"), -->
+<!--         legend.text = element_text(size = 18, -->
+<!--                                    face = "bold", -->
+<!--                                    color = "black"), -->
+<!--         legend.title = element_text(size = 21, -->
+<!--                                     face = "bold", -->
+<!--                                     color = "black"), -->
+<!--         legend.background = element_blank(), -->
+<!--         strip.background = element_blank(), -->
+<!--         strip.text.x = element_blank()) + rahul_man_figure_theme + -->
+<!--   geom_vline(xintercept = s_0_calc_point, color = 'red', -->
+<!--              size = 2, linetype = 2) -->
+<!-- Fig_2_A -->
+
+
+<!-- tiff( -->
+<!--   paste0( -->
+<!--     "../Figures/Manuscript_Figures/TIFF_Files/Fig2_A.tiff"), -->
+<!--   height = 5, width = 10, res = 300, units = "in") -->
+<!-- print(Fig_2_A) -->
+<!-- dev.off() -->
+
+<!-- Fig_2_B_mod = Fig_2_B + -->
+<!--   theme(legend.position = c(.50, .75)) -->
+
+
+<!-- tiff( -->
+<!--   paste0( -->
+<!--     "../Figures/Manuscript_Figures/TIFF_Files/Fig2_raw.tiff"), -->
+<!--   height = 5, width = 10, res = 300, units = "in") -->
+<!-- print(grid.arrange(Fig_2_A, Fig_2_B_mod, ncol = 2)) -->
+<!-- dev.off() -->
+
+
+
+<!-- ``` -->
+
+
+<!-- <!-- ## TIFF Figure 1 --> -->
+<!-- <!-- ```{r} --> -->
+<!-- <!-- # TIFF Figure 1 ----------------------------------------------------------- --> -->
+<!-- <!-- source("TIFF_Man_Fig_1.R") --> -->
+
+<!-- <!-- ``` --> -->
+
+<!-- <!-- ```{r, cache=FALSE} --> -->
+
+<!-- <!-- knitr::read_chunk('TIFF_Man_Fig_1.R') --> -->
+<!-- <!-- ``` --> -->
 
 
 # Re-emergence analysis via forward simulation
