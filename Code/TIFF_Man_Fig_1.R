@@ -32,17 +32,18 @@ tiff(
 print(p)
 dev.off()
 
-only_delta_02 = filter(skip_df, delta == 0.7)
-head(only_delta_02)
-only_delta_02_S_over_N = join(only_delta_02, FromRepo_to_SN_df)
-only_delta_02_S_over_N$FractSN = as.factor(as.character(
-  only_delta_02_S_over_N$FractSN))
-q = ggplot(data = only_delta_02_S_over_N, aes(x = r0, y = Num_Skips,
-                                              color = FractSN)) + geom_point(size = 3) +
+only_delta_07 = filter(skip_df, delta == 0.7)
+head(only_delta_07)
+only_delta_07_S_over_N = join(only_delta_07, FromRepo_to_SN_df)
+only_delta_07_S_over_N$FractSN = as.factor(as.character(
+  only_delta_07_S_over_N$FractSN))
+q = ggplot(data = only_delta_07_S_over_N, aes(x = r0, y = Num_Skips,
+                                              shape = FractSN)) + geom_point(size = 3) +
   rahul_theme +
-  labs(color = expression(s[0]))+
+  labs(shape = expression(s[0]))+
   theme_white_background + scale_color_viridis_d(direction = -1)+
   labs(x = expression(R[0])) +
+  scale_shape_manual(values = c(18, 17, 15)) +
   labs(y = expression(paste("Number of skips (", n[c], ")")))
   rahul_man_figure_theme 
 q
