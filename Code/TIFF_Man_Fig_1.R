@@ -14,11 +14,11 @@ class(FromRepo_to_SN_df$rho)
 only_S_over_N_70 = join(only_rho_03, FromRepo_to_SN_df)
 
 p = ggplot(data = only_S_over_N_70, aes(x = r0, y = Num_Skips,
-                                        color = delta)) +
+                                        shape = delta)) +
   geom_point(size = 3) +
-  labs(color = expression(delta))+
+  labs(shape = expression(delta))+
   rahul_theme +
-  theme_white_background + scale_color_viridis_d(direction = -1)+
+  theme_white_background + scale_shape_manual(values = c(18, 17, 15, 10,9,8,7,4,3))+
   labs(x = expression(R[0])) +
   labs(y = expression(paste("Number of skips (", n[c], ")")))
   rahul_man_figure_theme 
