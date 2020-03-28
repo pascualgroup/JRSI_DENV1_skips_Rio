@@ -51,8 +51,41 @@ source("rahul_theme.R")
 Fig_1_Panel_A = ggplot(data = plot_df, aes(x = n, y = sc)) +
   geom_point(size = 3) + rahul_theme+
   theme_white_background + rahul_man_figure_theme +
-  ylab(expression(S[c](n))) +
-  geom_hline(yintercept = 0.70, color = 'red')
+  ylab(expression((S[c](n)))) +
+  ylab(expression(paste("Value is ", sigma,",", R^{2},'=',r2.value)))
+  geom_hline(yintercept = 0.70, color = 'red', linetype = 'dashed')
+  ggdraw(p) + 
+    draw_label(line_1, x = 0.55, y = 0.075) + # use relative coordinates for positioning
+    draw_label(line_2, x = 0.55, y = 0.025)
+  
+  Fig_1_Panel_A = ggplot(data = plot_df, aes(x = n, y = sc)) +
+    geom_point(size = 3) + rahul_theme+
+    theme_white_background + rahul_man_figure_theme +
+    ylab(expression(paste("Sucept. thres.  after 1st epidemic \n for n skips to occur ", S[c](n)))) +
+    geom_hline(yintercept = 0.70, color = 'red', linetype = 'dashed') +
+    theme(axis.title.y = element_text(size = 11,
+                                      face = "bold",
+                                      color = "black"))
+  
+  
+  Fig_1_Panel_A = ggplot(data = plot_df, aes(x = n, y = sc)) +
+    geom_point(size = 3) + rahul_theme+
+    theme_white_background + rahul_man_figure_theme +
+    ylab(expression(paste("Sucept. thres.  after 1st epidemic \n for n skips to occur ", S[c](n)))) +
+    geom_hline(yintercept = 0.70, color = 'red', linetype = 'dashed') +
+    theme(axis.title.y = element_text(size = 11,
+                                      face = "bold",
+                                      color = "black"))
+  
+  Fig_1_Panel_A = ggplot(data = plot_df, aes(x = n, y = sc)) +
+    geom_point(size = 3) + rahul_theme+
+    theme_white_background + rahul_man_figure_theme +
+    ylab(expression(atop("Sucept. thres. ", paste(" for n skips to occur ", S[c](n))))) +
+    geom_hline(yintercept = 0.70, color = 'red', linetype = 'dashed') +
+    theme(axis.title.y = element_text(size = 11,
+                                      face = "bold",
+                                      color = "black"))
+  p + xlab(expression(atop("A long string of text for the purpose", paste("of illustrating my point" [reported]))))
 #Fig_1_Panel_A
 # 
 # tiff(
