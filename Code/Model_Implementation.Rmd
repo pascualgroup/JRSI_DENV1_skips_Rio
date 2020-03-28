@@ -2640,6 +2640,8 @@ source("rahul_theme.R")
 library(stringr)
 library(gridExtra)
 library(zoo)
+
+
 load("../Generated_Data/Skip_Data/nCritics.Rdata")
 head(nCritics)
 row.names(nCritics)
@@ -2792,26 +2794,7 @@ A_7_bio_good_2_LL$nearest_skip_rho_index = NA
 # TIFF Figure 2_A -----------------------------------------------------------
 
 
-rahul_poster_theme = theme(
-  axis.title.x = element_text(size = 23,
-                              face = "bold",
-                              color = "black"),
-  axis.text.x = element_text(size = 21,
-                             face = "bold",
-                             color = "black"),
-  axis.title.y = element_text(size = 23,
-                              face = "bold",
-                              color = "black"),
-  legend.title = element_text(size = 21,
-                              face = "bold",
-                              color = "black"),
-  legend.text = element_text(size = 23,
-                             face = "bold",
-                             color = "black"),
-  axis.text.y = element_text(size = 21,
-                             face = "bold",
-                             color = "black")
-)
+
 
 Rio_data_clean = read.csv("../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
 head(Rio_data_clean)
@@ -2900,17 +2883,20 @@ Fig_2_A = ggplot(data = dengue_data_with_serotype,
                 xmax = as.Date(Rect_min_x),ymin = Rect_min,
                 ymax = Rect_max), fill = 'grey70', alpha = 0.9) +
   geom_line() +
-  geom_point(size = 3) + rahul_poster_theme +
+  geom_point(size = 3)  +
   theme(axis.line = element_line(colour = "black"),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.border = element_blank(),
         panel.background = element_blank())+
   theme(legend.position = c(.75,.87)) + xlab("Date") +
-  ylab("Observed \n Monthly Cases") +
-  theme(axis.title.y = element_text(size = 20,
+  ylab("Observed Monthly Cases") +
+  theme(axis.title.y = element_text(size = 18,
                                     face = "bold",
                                     color = "black"),
+        axis.text.x = element_text(size = 14,
+                                   face = "bold",
+                                   color = "black"),
         legend.text = element_text(size = 18,
                                    face = "bold",
                                    color = "black"),
@@ -2919,7 +2905,10 @@ Fig_2_A = ggplot(data = dengue_data_with_serotype,
                                     color = "black"),
         legend.background = element_blank(),
         strip.background = element_blank(),
-        strip.text.x = element_blank()) + rahul_man_figure_theme 
+        strip.text.x = element_blank()) + rahul_man_figure_theme +
+  theme(axis.text.x = element_text(size = 14,
+                                   face = "bold",
+                                   color = "black"))
 Fig_2_A
 
 
