@@ -2696,7 +2696,7 @@ Fig_4_combined =
   theme_white_background +
    rahul_man_figure_theme +
   xlab(expression(paste("Years since Jan 1 1986"))) +
-  ylab(expression(paste(R[0], "        Monthly Cases               log(Monthly Cases)")))  +
+  ylab(expression(paste(R[0], "                           Monthly Cases                           log(Monthly Cases)")))  +
   facet_wrap(~panel, ncol = 1, scales = "free", strip.position = "left")
 Fig_4_combined
 Fig_4_combined = Fig_4_combined +
@@ -2737,7 +2737,7 @@ Fig_4_combined
 tiff(
   paste0(
     "../Figures/Manuscript_Figures/TIFF_Files/Fig4_raw.tiff"),
-  height = 10, width = 10, res = 500, units = "in")# print(grid.arrange(Sup_Fig_3_A_comb, Sup_Fig_3_B_comb, legend,Sup_Fig_3_C_comb, Sup_Fig_3_D_comb,
+  height = 10, width = 5, res = 500, units = "in")# print(grid.arrange(Sup_Fig_3_A_comb, Sup_Fig_3_B_comb, legend,Sup_Fig_3_C_comb, Sup_Fig_3_D_comb,
 #                    ncol = 3, widths = c(1,1,0.9)))
 Fig_4_combined
 dev.off()
