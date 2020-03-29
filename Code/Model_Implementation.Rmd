@@ -2697,7 +2697,7 @@ Fig_4_combined =
    rahul_man_figure_theme +
   xlab("Years since Jan 1 1986") +
   ylab(NULL)  +
-  facet_wrap(~panel, ncol = 1, scales = "free_y", strip.position = "left")
+  facet_wrap(~panel, ncol = 1, scales = "free", strip.position = "left")
 Fig_4_combined
 Fig_4_combined = Fig_4_combined +
   scale_color_manual(name = "",
@@ -2725,7 +2725,7 @@ Fig_4_combined = Fig_4_combined +
   ) + 
   theme(axis.title.y=element_blank())
 Fig_4_combined = Fig_4_combined + rahul_panel_theme + theme(axis.title.y=element_blank()) +
-  theme(strip.text = element_text(size = 10)) + theme(legend.position = c(.8, .55)) +
+  theme(strip.text = element_text(size = 10)) + theme(legend.position = c(.84, .55)) +
   guides(fill=FALSE, alpha = FALSE)
 Fig_4_combined
 
