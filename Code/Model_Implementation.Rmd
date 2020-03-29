@@ -1062,10 +1062,10 @@ y_thres_df = ymin %>%
 
 y_lim_min = min(y_thres_df$y_thres)
 combined_Sup_Fig_3_df_clean = filter(combined_Sup_Fig_3_df, LL > y_lim_min)
-p = ggplot()  + geom_point(data = combined_Sup_Fig_3_df, aes(x = var_value, y = LL)) + facet_wrap(~Profile_Var, scales = "free") + ylim(y_lim_min, NA) +
-  rahul_man_figure_theme + rahul_big_panel_theme + rahul_panel_theme +theme_white_background + geom_hline() +
-    geom_hline(data = ML_df, aes(yintercept = ML -2), color =  'red', size = 1.0)
-p
+# p = ggplot()  + geom_point(data = combined_Sup_Fig_3_df, aes(x = var_value, y = LL)) + facet_wrap(~Profile_Var, scales = "free") + ylim(y_lim_min, NA) +
+#   rahul_man_figure_theme + rahul_big_panel_theme + rahul_panel_theme +theme_white_background + geom_hline() +
+#     geom_hline(data = ML_df, aes(yintercept = ML -2), color =  'red', size = 1.0)
+# p
 
 plot_label_df = data.frame(Profile_Var = combined_profile_Sup_Fig_3_MLE_value_for_prof_var_df$Profile_Var,
                            plot_var_label = c("beta[0]","rho", "delta" ))
@@ -1295,7 +1295,7 @@ Fig_3_Panel_D = ggplot() +
              shape =  "cross") +
   theme_white_background + scale_color_viridis_d(direction = -1)+
   ylab("Number of skips")  + labs(x = expression(R[0])) +
-  labs(color = expression(rho))+
+  labs(color = expression(rho))
   
 Fig_3_Panel_D
 
@@ -1392,16 +1392,16 @@ Fig_3_D_plot_data_subset = Fig_3_D_plot_data %>%
 Fig_3_D_plot_data_subset$Profile_Var = 'R[0]'
 Fig_3_D_plot_data_subset$plot_var_label = 'R[0]'
 Fig_3_D_plot_data_subset$Metric = "Skips"
-Fig_3_D_plot_data_subset$low_bound = NA
+Fig_3_D_plot_data_subset$low_bound = 0
 Fig_3_combined_data = join(Fig_3_ABC_plot_data, Fig_3_D_plot_data_subset, type = 'full')
 Fig_3_combined_data$plot_var_label = factor(Fig_3_combined_data$plot_var_label, levels = c("beta[0]", "rho",     "delta",   "R[0]"))
 
 Fig_3_comb_plot = ggplot(data = Fig_3_combined_data)  + geom_point(aes(x = var_value, y = LL, color = Metric, shape = Metric)) +
-  rahul_man_figure_theme + rahul_big_panel_theme + rahul_panel_theme +theme_white_background  +
-    geom_hline(aes(yintercept = ML -2), color =  'red', size = 1.0) +
+  rahul_man_figure_theme + rahul_big_panel_theme  +theme_white_background  +
+    geom_hline(aes(yintercept = ML -2), size = 1.0, linetype = "dashed", color = 'grey70') +
   geom_hline(aes(yintercept = low_bound), color = 'white') +
   geom_vline(aes(xintercept = MLE_value_for_prof_var),
-                   color =  'blue', size = 1.0, show.legend= F) +
+                  size = 1.0, linetype = "twodash",show.legend= F, color = 'grey70') +
     facet_wrap(~plot_var_label, scales = "free",  strip.position = "bottom", labeller=label_parsed,
                nrow = 1) +
   scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) +
@@ -1413,7 +1413,11 @@ Fig_3_comb_plot = ggplot(data = Fig_3_combined_data)  + geom_point(aes(x = var_v
   theme(axis.title.x=element_blank()) + theme(legend.position = "None") +
   scale_color_manual(values = c("black", "red")) +
   scale_shape_manual(values = c(16, 1)) +
-  scale_y_continuous(breaks = scales::pretty_breaks(n = 4)) 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 4))  +
+  ylab("Log Likelihood") +
+  theme(axis.text.y = element_text(size = 16),
+        axis.text.x = element_text(size = 16)) +
+  theme(panel.spacing = unit(1.5, "lines"))
 
 Fig_3_comb_plot
 
@@ -2015,7 +2019,8 @@ Fig_4_combined =
     x = time / 365,
     ymin = ribbon_min,
     ymax = ribbon_max,
-    fill = Ribbon_label
+    fill = Ribbon_label,
+    alpha = 0.75
   )) +
   geom_line(aes(
     x = time / 365,
@@ -2036,23 +2041,23 @@ Fig_4_combined =
 Fig_4_combined
 Fig_4_combined = Fig_4_combined +
   scale_color_manual(name = "",
-                     values = c("orange",
+                     values = c("black",
                                 "blue",
                                 "red"
                                 ),
                      labels = c(
-                                "R_0 MLE value \n (Shaded Region: \n 2LL from MLE) ",
+                                "Reproductive Number",
                                 "Observed",
-                                "MLE Trajectory \n (Shaded Region: \n 95% Quantiles)")) +
+                                "Simulated")) +
   scale_fill_manual(name = "",
-                     values = c("skyblue",
+                     values = c("grey70",
                                 "NA",
-                                "grey70"
+                                "red"
                                 ),
                      labels = c(
-                                "R_0 MLE value \n (Shaded Region: \n 2LL from MLE) ",
+                                "Reproductive Number",
                                 "Observed",
-                                "MLE Trajectory \n (Shaded Region: \n 95% Quantiles)"))
+                                "Simulated"))
 Fig_4_combined = Fig_4_combined +
   theme(
     aspect.ratio = 1,
@@ -2080,34 +2085,34 @@ dev.off()
 ```
 
 
-```{r}
-Fig_4_Panel_A = ggplot(data = all_R_0_ribbon_df_melt) +
-  geom_ribbon(aes(x = time, ymin = R_0_min, ymax =  R_0_max, fill = Ribbon_label)) +
-  geom_line(aes(x = time, y = value, color = variable)) +
-  geom_point(aes(x = time, y = value, color = variable),
-             size = 3) +
-  rahul_theme +
-  theme(legend.text = element_text(size = 12,
-                                   face = "bold",
-                                   color = "black")) +
-  theme_white_background +
-  scale_color_manual(name = "", values = c("red"),
-                     labels = c(
-                       "MLE Trajectory \n (Shaded Region: \n 95% Quantiles)",
-                                         "Observed"))  +
-  scale_fill_manual(name = "", values = fill_vec,
-                    labels = c(
-                      "MLE Trajectory \n (Shaded Region: \n 95% Quantiles)",
-                      "Observed")) +
-  xlab("Month")+
-  scale_x_continuous(
-    breaks = as.numeric(plot_label_times),
-    labels = plot_label_month_names) +
-  ylab(expression(paste(R[0]))) +
-  rahul_man_figure_theme +
-  theme(legend.margin = margin(t = 0, unit='cm'))
-Fig_4_Panel_A
-```
+# ```{r}
+# Fig_4_Panel_A = ggplot(data = all_R_0_ribbon_df_melt) +
+#   geom_ribbon(aes(x = time, ymin = R_0_min, ymax =  R_0_max, fill = Ribbon_label)) +
+#   geom_line(aes(x = time, y = value, color = variable)) +
+#   geom_point(aes(x = time, y = value, color = variable),
+#              size = 3) +
+#   rahul_theme +
+#   theme(legend.text = element_text(size = 12,
+#                                    face = "bold",
+#                                    color = "black")) +
+#   theme_white_background +
+#   scale_color_manual(name = "", values = c("red"),
+#                      labels = c(
+#                        "MLE Trajectory \n (Shaded Region: \n 95% Quantiles)",
+#                                          "Observed"))  +
+#   scale_fill_manual(name = "", values = fill_vec,
+#                     labels = c(
+#                       "MLE Trajectory \n (Shaded Region: \n 95% Quantiles)",
+#                       "Observed")) +
+#   xlab("Month")+
+#   scale_x_continuous(
+#     breaks = as.numeric(plot_label_times),
+#     labels = plot_label_month_names) +
+#   ylab(expression(paste(R[0]))) +
+#   rahul_man_figure_theme +
+#   theme(legend.margin = margin(t = 0, unit='cm'))
+# Fig_4_Panel_A
+# ```
 
 ## Fig_3_Panel_D
 
