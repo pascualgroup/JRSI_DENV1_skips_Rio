@@ -2067,7 +2067,7 @@ Fig_3_comb_plot = ggplot()  + geom_point(data = Fig_3_combined_data, aes(x = var
     strip.background = element_blank(),
     strip.placement = "outside"
   ) + 
-  theme(axis.title.x=element_blank()) + theme(legend.position = "None") +
+  theme(legend.position = "None") +
   scale_color_manual(values = c("black", "red", "black", "white"),
                      limits = c("LL", "Skips", "Show_Line", "No_Line")) +
   scale_shape_manual(values = c(16, 1)) +
@@ -2075,8 +2075,10 @@ Fig_3_comb_plot = ggplot()  + geom_point(data = Fig_3_combined_data, aes(x = var
   ylab("") +
   theme(axis.text.y = element_text(size = 16),
         axis.text.x = element_text(size = 16)) +
-  theme(panel.spacing = unit(1.5, "lines"))
+  theme(panel.spacing = unit(1.5, "lines")) +
+  xlab("                                               (Transmission Rate)                (Seasonality Amplitude)         (Reporting Rate)")
 
+#theme(axis.title.x=element_blank()) + 
 Fig_3_comb_plot
 
 tiff(
