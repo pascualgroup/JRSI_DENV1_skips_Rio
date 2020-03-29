@@ -2695,8 +2695,8 @@ Fig_4_combined =
   rahul_theme +
   theme_white_background +
    rahul_man_figure_theme +
-  xlab("Years since Jan 1 1986") +
-  ylab(NULL)  +
+  xlab(expression(paste("Years since Jan 1 1986"))) +
+  ylab(expression(paste(R[0], "        Monthly Cases               log(Monthly Cases)")))  +
   facet_wrap(~panel, ncol = 1, scales = "free", strip.position = "left")
 Fig_4_combined
 Fig_4_combined = Fig_4_combined +
@@ -2722,11 +2722,10 @@ Fig_4_combined = Fig_4_combined +
     aspect.ratio = 1,
     strip.background = element_blank(),
     strip.placement = "outside"
-  ) + 
-  theme(axis.title.y=element_blank())
-Fig_4_combined = Fig_4_combined + rahul_panel_theme + theme(axis.title.y=element_blank()) +
-  theme(strip.text = element_text(size = 10)) + theme(legend.position = c(.84, .55)) +
-  guides(fill=FALSE, alpha = FALSE)
+  ) 
+Fig_4_combined = Fig_4_combined + rahul_big_panel_theme +
+  theme(strip.text = element_blank()) + theme(legend.position = c(.90, .55)) +
+  guides(fill=FALSE, alpha = FALSE) +theme(axis.text.y = element_text(size = 14))
 Fig_4_combined
 
 
