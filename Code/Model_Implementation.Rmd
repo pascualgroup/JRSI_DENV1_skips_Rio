@@ -1996,10 +1996,10 @@ Panel_A_df = Panel_A_df %>%
   mutate(panel = "R[0]")
 
 Panel_B_df = Panel_B_df %>%
-  mutate(panel = "log (Obs \n Monthly Cases)")
+  mutate(panel = "log (Monthly Cases)")
 
 Panel_C_df = Panel_C_df %>%
-  mutate(panel = "Obs \n Monthly Cases")
+  mutate(panel = "Monthly Cases")
 
 Figure_4_combined_df = rbind(Panel_A_df, Panel_B_df)
 Figure_4_combined_df = rbind(Figure_4_combined_df, Panel_C_df)
@@ -2045,8 +2045,8 @@ Fig_4_combined = Fig_4_combined +
                                 "blue",
                                 "red"
                                 ),
-                     labels = c(
-                                "Reproductive Number",
+                     labels = expression(
+                                R[0],
                                 "Observed",
                                 "Simulated")) +
   scale_fill_manual(name = "",
@@ -2054,8 +2054,7 @@ Fig_4_combined = Fig_4_combined +
                                 "NA",
                                 "red"
                                 ),
-                     labels = c(
-                                "Reproductive Number",
+                     labels = expression(R[0],
                                 "Observed",
                                 "Simulated"))
 Fig_4_combined = Fig_4_combined +
@@ -2066,7 +2065,8 @@ Fig_4_combined = Fig_4_combined +
   ) + 
   theme(axis.title.y=element_blank())
 Fig_4_combined = Fig_4_combined + rahul_panel_theme + theme(axis.title.y=element_blank()) +
-  theme(strip.text = element_text(size = 10)) + theme(legend.position = c(.5, .55))
+  theme(strip.text = element_text(size = 10)) + theme(legend.position = c(.8, .55)) +
+  guides(fill=FALSE, alpha = FALSE)
 Fig_4_combined
 
 
