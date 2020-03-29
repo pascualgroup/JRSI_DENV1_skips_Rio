@@ -2059,7 +2059,8 @@ Fig_3_comb_plot = ggplot()  + geom_point(data = Fig_3_combined_data, aes(x = var
     facet_wrap(~plot_var_label, scales = "free",  strip.position = "bottom", labeller=label_parsed,
                nrow = 1) +
     geom_hline(data = Fig_3_combined_data, aes(yintercept = low_bound), color = 'white', linetype = 'blank') +
-   geom_line(data = rho_3_line_df, aes(x = var_value, y = LL), color = 'black') +
+   geom_line(data = rho_3_line_df, aes(x = var_value, y = LL), color = 'black', size = 1.0) +
+  geom_line(data = Fig_3_ABC_plot_data, aes(x = var_value, y = LL), color = 'black', size = 1.0) +
   scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) +
   theme(
     aspect.ratio = 1,
