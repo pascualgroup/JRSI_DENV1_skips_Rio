@@ -2076,7 +2076,7 @@ Fig_3_comb_plot = ggplot()  + geom_point(data = Fig_3_combined_data, aes(x = var
   theme(axis.text.y = element_text(size = 16),
         axis.text.x = element_text(size = 16)) +
   theme(panel.spacing = unit(1.5, "lines")) +
-  xlab("                                          (Transmission Rate)           (Seasonality Amplitude)     (Reporting Rate)")
+  xlab("                                          (Transmission Rate)         (Seasonality Amplitude)      (Reporting Rate)")
 
 #theme(axis.title.x=element_blank()) + 
 Fig_3_comb_plot
