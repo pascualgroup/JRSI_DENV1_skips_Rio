@@ -2740,7 +2740,7 @@ Fig_4_combined
 tiff(
   paste0(
     "../Figures/Manuscript_Figures/TIFF_Files/Fig4_raw.tiff"),
-  height = 10, width = 5, res = 500, units = "in")# print(grid.arrange(Sup_Fig_3_A_comb, Sup_Fig_3_B_comb, legend,Sup_Fig_3_C_comb, Sup_Fig_3_D_comb,
+  height = 10, width = 5, res = 700, units = "in")# print(grid.arrange(Sup_Fig_3_A_comb, Sup_Fig_3_B_comb, legend,Sup_Fig_3_C_comb, Sup_Fig_3_D_comb,
 #                    ncol = 3, widths = c(1,1,0.9)))
 Fig_4_combined
 dev.off()
