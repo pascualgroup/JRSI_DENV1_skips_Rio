@@ -1022,7 +1022,7 @@ Fig_2_B = ggplot(data = only_delta_07) + geom_point(data = only_delta_07,
                               shape = rho),size = 3 )+
   labs(shape = expression(rho)) +
   rahul_theme +
-  theme_white_background + scale_shape_manual(values = c(18,17))+
+  theme_white_background + scale_shape_manual(values = c(18,17), name = expression(atop("Reporting", paste("Rate ", (rho)))))+
   labs(x = expression(R[0])) +
   labs(y = expression(n[c])) +
   labs(y = expression(paste("Number of skips (", n[c], ")")))
