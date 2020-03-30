@@ -1215,7 +1215,7 @@ Fig_2_B_mod = Fig_2_B +
 tiff(
   paste0(
     "../Figures/Manuscript_Figures/TIFF_Files/Fig2_raw.tiff"),
-  height = 5, width = 10, res = 300, units = "in")
+  height = 5, width = 10, res = 500, units = "in")
 print(grid.arrange(Fig_2_A, Fig_2_B_mod, ncol = 2))
 dev.off()
 
