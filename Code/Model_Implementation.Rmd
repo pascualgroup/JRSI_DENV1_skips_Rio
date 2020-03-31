@@ -2077,33 +2077,6 @@ Fig_3_comb_plot
 dev.off()
 ```
 
-```{r}
-
-Fig_3_D = Fig_3_D + rahul_big_panel_theme
-Fig_3_Panel_D = Fig_3_Panel_D + rahul_big_panel_theme
-test = test + rahul_big_panel_theme
-tiff(
-  paste0(
-    "../Figures/Manuscript_Figures/TIFF_Files/Fig3_raw.tiff"),
-  height = 5, width = 10, res = 600, units = "in")# print(grid.arrange(Sup_Fig_3_A_comb, Sup_Fig_3_B_comb, legend,Sup_Fig_3_C_comb, Sup_Fig_3_D_comb,
-#                    ncol = 3, widths = c(1,1,0.9)))
-grid.arrange(grobs = list(Fig_3_ABC, test), ncol = 2, widths = c(3,1),
-             heights = c(2.5,.25))
-dev.off()
-library(cowplot)
-plot_grid(Fig_3_ABC, test,align = "h", ncol = 2, rel_widths = c(3/4, 1/4))
-Fig_3_ABC
-Fig_3_ABC_pan = Fig_3_ABC+ theme(strip.text = element_text(size = rel(3.0), vjust = -4.0), 
-          panel.margin.y = unit(-2, "lines"))
-tiff(
-  paste0(
-    "../Figures/Manuscript_Figures/TIFF_Files/Fig3_raw.tiff"),
-  height = 5, width = 10, res = 600, units = "in")# print(grid.arrange(Sup_Fig_3_A_comb, Sup_Fig_3_B_comb, legend,Sup_Fig_3_C_comb, Sup_Fig_3_D_comb,
-#                    ncol = 3, widths = c(1,1,0.9)))
-Fig_3_ABC
-dev.off()
-
-```
 
 
 ## Fig 4 Panel A
