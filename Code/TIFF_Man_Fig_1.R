@@ -20,7 +20,7 @@ p = ggplot(data = only_S_over_N_70, aes(x = r0, y = Num_Skips,
   rahul_theme +
   theme_white_background + scale_shape_manual(values = c(18, 17, 15, 10,9,8,7,4,3))+
   labs(x = expression(R[0])) +
-  labs(y = expression(paste("Number of skips (", n[c], ")")))
+  labs(y = expression(paste("Number of skips (", n[c], ")"))) +
   rahul_man_figure_theme 
 p
 
@@ -44,7 +44,7 @@ q = ggplot(data = only_delta_07_S_over_N, aes(x = r0, y = Num_Skips,
   theme_white_background + scale_color_viridis_d(direction = -1)+
   labs(x = expression(R[0])) +
   scale_shape_manual(values = c(18, 17, 15)) +
-  labs(y = expression(paste("Number of skips (", n[c], ")")))
+  labs(y = expression(paste("Number of skips (", n[c], ")"))) +
   rahul_man_figure_theme 
 q
 
@@ -73,7 +73,7 @@ source("TIFF_Man_Fig_1_Panel_A.R")
 tiff(
   paste0(
     "../Figures/Manuscript_Figures/TIFF_Files/Fig1_raw.tiff"),
-  height = 5, width = 10, res = 300, units = "in")
+  height = 5, width = 10, res = 650, units = "in")
 grid.arrange(Fig_1_Panel_A,p_comb, q_comb,
              ncol = 3)
 dev.off()
