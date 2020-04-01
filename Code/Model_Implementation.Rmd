@@ -2055,8 +2055,12 @@ small_breaks_beta_0 = seq(from= min(beta_0_poly_data$var_value), to = max(beta_0
 beta_0_poly_intercept =summary(beta_0_poly_fit_model)$coefficients[1,1]
 beta_0_poly_order_1 = summary(beta_0_poly_fit_model)$coefficients[2,1]
 beta_0_poly_order_2 = summary(beta_0_poly_fit_model)$coefficients[3,1]
+#beta_0_poly_order_3 = summary(beta_0_poly_fit_model)$coefficients[4,1]
+
+
 beta_0_poly_curve = beta_0_poly_intercept + beta_0_poly_order_1*small_breaks_beta_0 +
-  beta_0_poly_order_2*I(small_breaks_beta_0^2)
+  beta_0_poly_order_2*I(small_breaks_beta_0^2) 
+  #beta_0_poly_order_3*I(small_breaks_beta_0^3)
 
 beta_0_poly_curve_df = data.frame(small_breaks = small_breaks_beta_0,
                                  poly_curve = beta_0_poly_curve,
@@ -2067,14 +2071,18 @@ beta_0_poly_curve_df = data.frame(small_breaks = small_breaks_beta_0,
 rho_poly_data = Fig_3_ABC_plot_data %>%
   filter(Profile_Var == "rho") %>%
   dplyr::select(Profile_Var, var_value, LL)
-rho_poly_fit_model <- lm(rho_poly_data$LL ~ poly(rho_poly_data$var_value,2, raw = TRUE))
+rho_poly_fit_model <- lm(rho_poly_data$LL ~ poly(rho_poly_data$var_value,4, raw = TRUE))
 
 rho_poly_data$Poly_Fit = rho_poly_fit_model$fitted.values
 small_breaks_rho = seq(from= min(rho_poly_data$var_value), to = max(rho_poly_data$var_value), length = 10^3)
 rho_poly_intercept =summary(rho_poly_fit_model)$coefficients[1,1]
 rho_poly_order_1 = summary(rho_poly_fit_model)$coefficients[2,1]
 rho_poly_order_2 = summary(rho_poly_fit_model)$coefficients[3,1]
-rho_poly_curve = rho_poly_intercept + rho_poly_order_1*small_breaks_rho + rho_poly_order_2*I(small_breaks_rho^2)
+rho_poly_order_3 = summary(rho_poly_fit_model)$coefficients[4,1]
+rho_poly_order_4 = summary(rho_poly_fit_model)$coefficients[5,1]
+
+rho_poly_curve = rho_poly_intercept + rho_poly_order_1*small_breaks_rho + rho_poly_order_2*I(small_breaks_rho^2) +
+  rho_poly_order_3*I(small_breaks_rho^3) + rho_poly_order_4*I(small_breaks_rho^4)
 rho_poly_curve_df = data.frame(small_breaks = small_breaks_rho,
                                  poly_curve = rho_poly_curve,
                                  plot_var_label = "rho")
@@ -2091,8 +2099,11 @@ small_breaks_delta = seq(from= min(delta_poly_data$var_value), to = max(delta_po
 delta_poly_intercept =summary(delta_poly_fit_model)$coefficients[1,1]
 delta_poly_order_1 = summary(delta_poly_fit_model)$coefficients[2,1]
 delta_poly_order_2 = summary(delta_poly_fit_model)$coefficients[3,1]
+#delta_poly_order_3 = summary(delta_poly_fit_model)$coefficients[4,1]
+
 delta_poly_curve = delta_poly_intercept + delta_poly_order_1*small_breaks_delta +
-  delta_poly_order_2*I(small_breaks_delta^2)
+  delta_poly_order_2*I(small_breaks_delta^2) 
+  #delta_poly_order_3*I(small_breaks_delta^3)
 delta_poly_curve_df = data.frame(small_breaks = small_breaks_delta,
                                  poly_curve = delta_poly_curve,
                                  plot_var_label = "delta")
