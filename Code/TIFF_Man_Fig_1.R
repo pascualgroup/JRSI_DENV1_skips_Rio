@@ -18,7 +18,7 @@ p = ggplot(data = only_S_over_N_70, aes(x = r0, y = Num_Skips,
   geom_point(size = 3) +
   labs(shape = expression(delta))+
   rahul_theme +
-  theme_white_background + scale_shape_manual(values = c(18, 17, 15, 10,9,8,7,4,3))+
+  theme_white_background + scale_shape_manual(values = c(18, 17, 15, 10,9,8,7,4,3), name = "")+
   labs(x = expression(R[0])) +
   labs(y = expression(paste("Number of skips (", n[c], ")"))) +
   rahul_man_figure_theme 
@@ -43,7 +43,7 @@ q = ggplot(data = only_delta_07_S_over_N, aes(x = r0, y = Num_Skips,
   labs(shape = expression(s[0]))+
   theme_white_background + scale_color_viridis_d(direction = -1)+
   labs(x = expression(R[0])) +
-  scale_shape_manual(values = c(18, 17, 15)) +
+  scale_shape_manual(values = c(18, 17, 15), name = "") +
   labs(y = expression(paste("Number of skips (", n[c], ")"))) +
   rahul_man_figure_theme 
 q
@@ -64,9 +64,9 @@ q_comb = q_comb
 q_comb
 
 p_comb = p_comb + 
-  theme(legend.position = c(.50, .75))
+  theme(legend.position = c(.60, .70))
 q_comb = q_comb +
-  theme(legend.position = c(.50, .75))
+  theme(legend.position = c(.65, .75))
 source("TIFF_Man_Fig_1_Panel_A.R")
 #Fig_1_Panel_A
 

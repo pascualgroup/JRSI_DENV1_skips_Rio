@@ -1181,8 +1181,8 @@ Fig_2_A = ggplot(data = dengue_data_with_serotype,
   theme(legend.position = c(.75,.87)) + xlab("Date") +
   ylab("Observed Monthly Cases") +
   theme(axis.title.y = element_text(size = 18,
-                                    face = "bold",
-                                    color = "black"),
+                                    color = "black",
+                                    face = "plain"),
         axis.text.x = element_text(size = 14,
                                    face = "bold",
                                    color = "black"),
@@ -1192,9 +1192,13 @@ Fig_2_A = ggplot(data = dengue_data_with_serotype,
         legend.title = element_text(size = 21,
                                     face = "bold",
                                     color = "black"),
+        axis.title.x = element_text(size = 18,
+                                    face = "plain"),
         legend.background = element_blank(),
         strip.background = element_blank(),
         strip.text.x = element_blank()) + rahul_man_figure_theme +
+  theme(axis.title.x = element_text(face = "plain")) +
+    theme(axis.title.y = element_text(face = "plain")) +
   theme(axis.text.x = element_text(size = 14,
                                    face = "bold",
                                    color = "black"))
@@ -2037,6 +2041,68 @@ rho_3_line_df = rho_3_line_df %>%
   mutate(Profile_Var = 'R[0]', plot_var_label = ' R[0]',
          )
 rho_3_line_df = na.omit(rho_3_line_df)
+## Calculate polynomial fit
+
+#### Beta_0 Profile
+beta_0_poly_data = Fig_3_ABC_plot_data %>%
+  filter(Profile_Var == "Beta_0") %>%
+  dplyr::select(Profile_Var, var_value, LL)
+beta_0_poly_fit_model <- lm(beta_0_poly_data$LL ~ poly(beta_0_poly_data$var_value,2, raw = TRUE))
+
+beta_0_poly_data$Poly_Fit = beta_0_poly_fit_model$fitted.values
+
+small_breaks_beta_0 = seq(from= min(beta_0_poly_data$var_value), to = max(beta_0_poly_data$var_value), length = 10^3)
+beta_0_poly_intercept =summary(beta_0_poly_fit_model)$coefficients[1,1]
+beta_0_poly_order_1 = summary(beta_0_poly_fit_model)$coefficients[2,1]
+beta_0_poly_order_2 = summary(beta_0_poly_fit_model)$coefficients[3,1]
+beta_0_poly_curve = beta_0_poly_intercept + beta_0_poly_order_1*small_breaks_beta_0 +
+  beta_0_poly_order_2*I(small_breaks_beta_0^2)
+
+beta_0_poly_curve_df = data.frame(small_breaks = small_breaks_beta_0,
+                                 poly_curve = beta_0_poly_curve,
+                                 plot_var_label = "beta[0]")
+
+
+#### rho Profile
+rho_poly_data = Fig_3_ABC_plot_data %>%
+  filter(Profile_Var == "rho") %>%
+  dplyr::select(Profile_Var, var_value, LL)
+rho_poly_fit_model <- lm(rho_poly_data$LL ~ poly(rho_poly_data$var_value,2, raw = TRUE))
+
+rho_poly_data$Poly_Fit = rho_poly_fit_model$fitted.values
+small_breaks_rho = seq(from= min(rho_poly_data$var_value), to = max(rho_poly_data$var_value), length = 10^3)
+rho_poly_intercept =summary(rho_poly_fit_model)$coefficients[1,1]
+rho_poly_order_1 = summary(rho_poly_fit_model)$coefficients[2,1]
+rho_poly_order_2 = summary(rho_poly_fit_model)$coefficients[3,1]
+rho_poly_curve = rho_poly_intercept + rho_poly_order_1*small_breaks_rho + rho_poly_order_2*I(small_breaks_rho^2)
+rho_poly_curve_df = data.frame(small_breaks = small_breaks_rho,
+                                 poly_curve = rho_poly_curve,
+                                 plot_var_label = "rho")
+
+#### delta Profile
+delta_poly_data = Fig_3_ABC_plot_data %>%
+  filter(Profile_Var == "delta") %>%
+  dplyr::select(Profile_Var, var_value, LL)
+delta_poly_fit_model <- lm(delta_poly_data$LL ~ poly(delta_poly_data$var_value,2, raw = TRUE))
+
+delta_poly_data$Poly_Fit = delta_poly_fit_model$fitted.values
+
+small_breaks_delta = seq(from= min(delta_poly_data$var_value), to = max(delta_poly_data$var_value), length = 10^3)
+delta_poly_intercept =summary(delta_poly_fit_model)$coefficients[1,1]
+delta_poly_order_1 = summary(delta_poly_fit_model)$coefficients[2,1]
+delta_poly_order_2 = summary(delta_poly_fit_model)$coefficients[3,1]
+delta_poly_curve = delta_poly_intercept + delta_poly_order_1*small_breaks_delta +
+  delta_poly_order_2*I(small_breaks_delta^2)
+delta_poly_curve_df = data.frame(small_breaks = small_breaks_delta,
+                                 poly_curve = delta_poly_curve,
+                                 plot_var_label = "delta")
+
+combined_poly_data = rbind(beta_0_poly_curve_df, rho_poly_curve_df)
+combined_poly_data = rbind(combined_poly_data, delta_poly_curve_df)
+
+#Fig_3_ABC_plot_data = join(Fig_3_ABC_plot_data, combined_poly_data, type = "full")
+
+
 Fig_3_comb_plot = ggplot()  + geom_point(data = Fig_3_combined_data, aes(x = var_value, y = LL, color = Metric, shape = Metric)) +
   scale_linetype_manual(values = c("blank", "solid")) +
   rahul_man_figure_theme + rahul_big_panel_theme  +theme_white_background  +
@@ -2047,7 +2113,7 @@ Fig_3_comb_plot = ggplot()  + geom_point(data = Fig_3_combined_data, aes(x = var
                nrow = 1) +
     geom_hline(data = Fig_3_combined_data, aes(yintercept = low_bound), color = 'white', linetype = 'blank') +
    geom_line(data = rho_3_line_df, aes(x = var_value, y = LL), color = 'black', size = 1.0) +
-  geom_line(data = Fig_3_ABC_plot_data, aes(x = var_value, y = LL), color = 'black', size = 1.0) +
+  geom_line(data = combined_poly_data, aes(x = small_breaks, y = poly_curve), color = 'red', show.legend = F) +
   scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) +
   theme(
     aspect.ratio = 1,
@@ -2621,6 +2687,25 @@ Panel_B_df = Panel_B_df %>%
 Panel_C_df = Panel_C_df %>%
   mutate(panel = "Monthly Cases")
 
+Panel_A_df = Panel_A_df %>%
+  mutate(Colored_Var = NA,
+         Line_Color_Var = "ML_median",
+         R_0_var = value)
+
+Panel_B_df = Panel_B_df %>%
+  mutate(Colored_Var = value,
+         Line_Color_Var = variable,
+         R_0_var = NA)
+
+Panel_C_df = Panel_C_df %>%
+  mutate(Colored_Var = value,
+         Line_Color_Var = variable,
+         R_0_var = NA)
+
+
+
+
+
 Figure_4_combined_df = rbind(Panel_A_df, Panel_B_df)
 Figure_4_combined_df = rbind(Figure_4_combined_df, Panel_C_df)
 
@@ -2640,17 +2725,25 @@ Fig_4_combined =
     ymin = ribbon_min,
     ymax = ribbon_max,
     fill = Ribbon_label,
-    alpha = 0.75
+    alpha = 0.75 )) +
+  geom_line(aes(
+    x = time / 365,
+    y = Colored_Var,
+    color = Line_Color_Var
   )) +
   geom_line(aes(
     x = time / 365,
-    y = value,
-    color = Ribbon_label
-  )) +
+    y = R_0_var
+  ), color = "black") +
   geom_point(aes(
     x = time / 365,
-    y = value,
-    color = Ribbon_label),
+    y = Colored_Var,
+    color = Line_Color_Var),
+    size = 3) +
+  geom_point(aes(
+    x = time / 365,
+    y = R_0_var),
+    color = "black",
     size = 3) +
   rahul_theme +
   theme_white_background +
@@ -2661,20 +2754,16 @@ Fig_4_combined =
 Fig_4_combined
 Fig_4_combined = Fig_4_combined +
   scale_color_manual(name = "",
-                     values = c("black",
-                                "blue",
-                                "red"
-                                ),
-                     labels = expression(
-                                R[0],
-                                "Observed",
-                                "Simulated")) +
+                     values = c("red",
+                                "blue"),
+                     labels = c("Simulated",
+                                "Observed")) +
   scale_fill_manual(name = "",
                      values = c("grey70",
-                                "NA",
+                                 "NA",
                                 "red"
                                 ),
-                     labels = expression(R[0],
+                     labels = c(" R_0 ",
                                 "Observed",
                                 "Simulated"))
 Fig_4_combined = Fig_4_combined +
@@ -2684,11 +2773,15 @@ Fig_4_combined = Fig_4_combined +
     strip.placement = "outside"
   ) 
 Fig_4_combined = Fig_4_combined + rahul_big_panel_theme +
-  theme(strip.text = element_blank()) + theme(legend.position = c(.90, .55)) +
-  guides(fill=FALSE, alpha = FALSE) +theme(axis.text.y = element_text(size = 18)) +
+  theme(strip.text = element_blank()) + theme(legend.position = c(.75, .55)) +
+  guides(fill=FALSE, alpha = FALSE) +
+  theme(legend.key=element_blank()) +
+  theme(axis.text.y = element_text(size = 18)) +
   theme(axis.text.x = element_text(size = 18),
         axis.title.x = element_text(size = 20),
-        axis.title.y = element_text(size = 20)) 
+        axis.title.y = element_text(size = 20)) +
+  theme(legend.text = element_text(size = 15.5,
+                                   face = "plain"))
 Fig_4_combined
 
 

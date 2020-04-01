@@ -58,7 +58,10 @@ source("rahul_theme.R")
     geom_hline(yintercept = 0.70, color = 'red', linetype = 'dashed') +
     theme(axis.title.y = element_text(size = 11,
                                       face = "bold",
-                                      color = "black"))
+                                      color = "black")) +
+    theme(axis.title.x = element_text(size = 21,
+                                      face = "plain",
+                                      color = "black")) 
 #Fig_1_Panel_A
 # 
 # tiff(
