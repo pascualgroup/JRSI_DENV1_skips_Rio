@@ -1,0 +1,5 @@
+"Model_name","Csnippet_file_path","Data_file_path","Pfilter_likelihood","Pfilter_likelihood_se","AIC","Num_est_parameters","num_years"
+"A_3","Csnippet_SEIR_spline_model.R","../Generated_Data/Rio_DENV1_Data_3_75_years_clean.csv",-245.411066855373,0.00159224083460287,508.822133710746,9,4
+"A_3","Csnippet_SEIR_spline_model.R","../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv",-170.039753702812,0.000876864905588159,358.079507405624,9,2.5
+"A_5","Csnippet_SEIR_spline_model.R","../Generated_Data/Rio_DENV1_Data_3_75_years_clean.csv",-407.043921893203,4.60404190939483,830.087843786406,8,4
+"A_5","Csnippet_SEIR_spline_model.R","../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv",-165.574096547421,0.0120460022392284,347.148193094842,8,2.5

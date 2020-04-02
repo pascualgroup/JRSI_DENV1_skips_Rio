@@ -1,0 +1,4 @@
+"model_name","Csnippet_file_path","Pfilter_likelihood","Pfilter_likelihood_se","AIC","Num_est_parameters","num_years"
+"A_5","Csnippet_SEIR_spline_model.R",-165.574096547421,0.0120460022392284,347.148193094842,8,2.5
+"A_6","Csnippet_SIR_spline_model.R",-165.502174631664,0.0158095685845517,345.004349263328,7,2.5
+"A_7","Csnippet_SIR_cosine_model.R",-165.825997911971,0.0105907692669675,345.651995823942,7,2.5
