@@ -1,0 +1,166 @@
+
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{times}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+
+%------------------------------------------------------------
+% newcommand
+%------------------------------------------------------------
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Rclass}[1]{\textit{#1}}
+\newcommand{\Rpackage}[1]{\textit{#1}}
+\newcommand{\Rexpression}[1]{\texttt{#1}}
+\newcommand{\Rmethod}[1]{{\texttt{#1}}}
+\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
+
+\usepackage{Sweave}
+\begin{document}
+\input{Supporting_Information_Tables-concordance}
+
+%------------------------------------------------------------
+\title{%
+  Predicting re-emergence times of dengue epidemics at low reproductive numbers: DENV1 in Rio de Janeiro, 1986-1990. \\
+  \large Supporting Information: Supplemental Tables}
+%------------------------------------------------------------
+\author{Rahul Subramanian, Victoria Romeo-Aznar, \\ Edward Ionides, Claudia T. Code\c{c}o, and Mercedes Pascual}
+%\date{}
+
+
+
+
+
+\maketitle
+
+\tableofcontents
+
+\newpage 
+
+%-------------------------------------------
+\section{Supplemental Tables}
+%--------------------------------------------
+
+
+%------------------------------------
+\subsection{Table ST1}
+%-------------------------------------
+
+
+
+% latex table generated in R 3.5.1 by xtable 1.8-4 package
+% Thu Apr  2 14:06:08 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rl}
+  \hline
+ & MLE Value \\ 
+  \hline
+sigma\_P & 0.00019 \\ 
+  gamma & 0.05882353 \\ 
+  phi & 1.159567 \\ 
+  sigma\_M & 0.5750731 \\ 
+  rho & 0.02754872 \\ 
+  Beta\_0 & 0.06863794 \\ 
+  delta & 0.6458656 \\ 
+  mu\_H & 3.68e-05 \\ 
+  N\_0 & 5281842 \\ 
+  I\_0 & 220312.8 \\ 
+  R\_0 & 0 \\ 
+  C\_0 & 0 \\ 
+  r & 0 \\ 
+  omega & 0.01721421 \\ 
+  epsilon & 0 \\ 
+  LL & -165.8182 \\ 
+  seed & 338719557 \\ 
+  Profile\_Type & sigma\_P \\ 
+  t0 & 120 \\ 
+   \hline
+\end{tabular}
+\caption{. MLE Parameter Values for SIR Cosine Model. 
+} 
+\label{Supplemental Table:MLE_values}
+\end{table}
+\newpage
+
+%------------------------------------
+\subsection{Table ST2}
+%-------------------------------------
+
+
+
+
+
+% latex table generated in R 3.5.1 by xtable 1.8-4 package
+% Thu Apr  2 14:06:09 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+  \hline
+ & SIR\_Cosine & SIR\_Spline & SEIR\_Spline \\ 
+  \hline
+min\_Sigma\_P\_profile\_2\_LL\_bound & 0.00 & 0.00 & 0.00 \\ 
+  max\_Sigma\_P\_profile\_2\_LL\_bound & 1.00 & 1.00 & 0.69 \\ 
+  rho\_MLE & 0.03 & 0.03 & 0.03 \\ 
+  gamma\_MLE & 0.06 & 0.06 & 0.14 \\ 
+  sigma\_P\_MLE & 0.00 & 0.07 & 0.00 \\ 
+  N\_0\_MLE & 5281842.00 & 5301405.00 & 5301405.00 \\ 
+  MLE\_R\_naught\_act & 1.17 & 1.13 & 1.10 \\ 
+  min\_R\_naught\_act\_2LL & 1.13 & 1.10 & 1.09 \\ 
+  max\_R\_naught\_act\_2LL & 1.24 & 1.16 & 1.14 \\ 
+  min\_sigma\_P\_2\_LL & 0.00 & 0.07 & 0.00 \\ 
+  max\_sigma\_P\_2\_LL & 1.00 & 0.86 & 0.69 \\ 
+  min\_rho\_2\_LL & 0.02 & 0.02 & 0.02 \\ 
+  max\_rho\_2\_LL & 0.04 & 0.04 & 0.04 \\ 
+  min\_Sigma\_P\_profile\_2\_LL\_bound.1 & 0.00 & 0.00 & 0.00 \\ 
+  max\_Sigma\_P\_profile\_2\_LL\_bound.1 & 1.00 & 1.00 & 0.69 \\ 
+   \hline
+\end{tabular}
+\caption{Comparison of Key Parameter Values (MLE Estimates and  2LL Profile Boundaries) for  $R_0$, $N_0$, $\rho$, $\gamma$, and process noise parameter $\sigma_P$ between several models without immigration (SIR Cosine Model , SIR Spline Model, and SEIR Spline Model). Note that $\gamma$ is a fixed parameter. 
+} 
+\label{Supplemental Table:Model_Profile_Boundaries}
+\end{table}
+
+\newpage
+
+%------------------------------------
+\subsection{Table ST3}
+%-------------------------------------
+
+
+
+% latex table generated in R 3.5.1 by xtable 1.8-4 package
+% Thu Apr  2 14:06:09 2020
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlll}
+  \hline
+ & SEIR\_Spline & SIR\_Spline & SIR\_Cosine \\ 
+  \hline
+Csnippet\_file\_path & Csnippet\_SEIR\_spline\_model.R & Csnippet\_SIR\_spline\_model.R & Csnippet\_SIR\_cosine\_model.R \\ 
+  Pfilter\_likelihood & -165.5741 & -165.5022 & -165.8260 \\ 
+  Pfilter\_likelihood\_se & 0.01204600 & 0.01580957 & 0.01059077 \\ 
+  AIC & 347.1482 & 345.0043 & 345.6520 \\ 
+  Num\_est\_parameters & 8 & 7 & 7 \\ 
+  num\_years & 2.5 & 2.5 & 2.5 \\ 
+   \hline
+\end{tabular}
+\caption{Likelihood Comparison and AIC scores between several models without immigration (SIR Cosine Model, SIR Spline Model, and SEIR Spline Model) with likelihoods calculated over 2 and a half years of dengue case data. 
+} 
+\label{Supplemental Table:AIC1}
+\end{table}
+
+\newpage 
+
+\end{document}
