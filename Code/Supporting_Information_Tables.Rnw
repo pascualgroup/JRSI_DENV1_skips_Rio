@@ -1,0 +1,151 @@
+
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{times}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+
+%------------------------------------------------------------
+% newcommand
+%------------------------------------------------------------
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Rclass}[1]{\textit{#1}}
+\newcommand{\Rpackage}[1]{\textit{#1}}
+\newcommand{\Rexpression}[1]{\texttt{#1}}
+\newcommand{\Rmethod}[1]{{\texttt{#1}}}
+\newcommand{\Rfunarg}[1]{{\texttt{#1}}}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+%------------------------------------------------------------
+\title{%
+  Predicting re-emergence times of dengue epidemics at low reproductive numbers: DENV1 in Rio de Janeiro, 1986-1990. \\
+  \large Supporting Information: Supplemental Tables}
+%------------------------------------------------------------
+\author{Rahul Subramanian, Victoria Romeo-Aznar, \\ Edward Ionides, Claudia T. Code\c{c}o, and Mercedes Pascual}
+%\date{}
+
+\SweaveOpts{highlight=TRUE, tidy=TRUE, keep.space=TRUE, keep.blank.space=FALSE, keep.comment=TRUE}
+\SweaveOpts{prefix.string=Fig}
+
+
+\maketitle
+
+\tableofcontents
+
+\newpage 
+
+%-------------------------------------------
+\section{Supplemental Tables}
+%--------------------------------------------
+
+
+%------------------------------------
+\subsection{Table ST1}
+%-------------------------------------
+
+
+<<sup_table_1_load, echo = FALSE>>=
+require(xtable)
+Sup_Table_1_data = read.csv("../Generated_Data/Profiles/A_7_Model/bp_combined_A_7_profiles_MLE_BP_values.csv",
+                            header = TRUE)
+Sup_Table_1_data_trans = as.data.frame(t(Sup_Table_1_data))
+colnames(Sup_Table_1_data_trans) = c("MLE Value")
+xtab<-xtable(Sup_Table_1_data_trans)
+@
+
+<<sup_table_1_print, results=tex, echo = FALSE>>=
+xtab2<-xtable(Sup_Table_1_data_trans, caption=". MLE Parameter Values for SIR Cosine Model. 
+",  label="Supplemental Table:MLE_values")
+print(xtab2,include.rownames = TRUE)
+@
+
+\newpage
+
+%------------------------------------
+\subsection{Table ST2}
+%-------------------------------------
+
+
+<<sup_table_2_load, echo = FALSE>>=
+require(xtable)
+library(plyr)
+
+##Data frame describing mapping
+## between model names (how they 
+## are referenced in the repo) and 
+## their complete labels
+model_label_df =
+  data.frame(model_name =
+               c("A_5", "A_6", "A_7"),
+             model_label = c("SEIR_Spline",
+                             "SIR_Spline",
+                             "SIR_Cosine"))
+
+##Read in data for ST2
+Sup_Table_2_data = read.csv("../Generated_Data/Data_for_Supplemental_Tables/Sup_Table_2/Sup_Table_2_Data.csv",
+                            header = TRUE)
+Sup_Table_2_data = join(Sup_Table_2_data,
+                        model_label_df)
+Sup_Table_2_colnames = Sup_Table_2_data$model_label
+Sup_Table_2_data = dplyr::select(
+  Sup_Table_2_data, -c(model_name, model_label))
+Sup_Table_2_data_trans = as.data.frame(t(Sup_Table_2_data))
+colnames(Sup_Table_2_data_trans) = Sup_Table_2_colnames
+
+xtab<-xtable(Sup_Table_2_data_trans)
+@
+
+
+
+<<sup_table_2_print, results=tex, echo = FALSE>>=
+xtab2<-xtable(Sup_Table_2_data_trans, caption="Comparison of Key Parameter Values (MLE Estimates and  2LL Profile Boundaries) for  $R_0$, $N_0$, $\\rho$, $\\gamma$, and process noise parameter $\\sigma_P$ between several models without immigration (SIR Cosine Model , SIR Spline Model, and SEIR Spline Model). Note that $\\gamma$ is a fixed parameter. 
+",  label="Supplemental Table:Model_Profile_Boundaries")
+print(xtab2,include.rownames = TRUE)
+@
+
+
+\newpage
+
+%------------------------------------
+\subsection{Table ST3}
+%-------------------------------------
+
+
+<<sup_table_3_load, echo = FALSE>>=
+require(xtable)
+Sup_Table_3_data = read.csv("../Generated_Data/Data_for_Supplemental_Tables/Sup_Table_3/Sup_Table_3_Data.csv",
+                            header = TRUE)
+Sup_Table_3_data = join(Sup_Table_3_data,
+                        model_label_df)
+Sup_Table_data_3_colnames = c(as.character(Sup_Table_3_data$model_label))
+Sup_Table_3_data = dplyr::select(Sup_Table_3_data,
+                                 -c(model_name,
+                                    model_label))
+Sup_Table_3_data_trans = as.data.frame(t(Sup_Table_3_data))
+colnames(Sup_Table_3_data_trans) = Sup_Table_data_3_colnames
+xtab<-xtable(Sup_Table_3_data_trans)
+@
+
+<<sup_table_3_print, results=tex, echo = FALSE>>=
+xtab2<-xtable(Sup_Table_3_data_trans, caption="Likelihood Comparison and AIC scores between several models without immigration (SIR Cosine Model, SIR Spline Model, and SEIR Spline Model) with likelihoods calculated over 2 and a half years of dengue case data. 
+",  label="Supplemental Table:AIC1")
+print(xtab2,include.rownames = TRUE)
+@
+
+
+\newpage 
+
+\end{document}
