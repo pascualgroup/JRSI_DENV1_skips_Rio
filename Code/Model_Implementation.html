@@ -1800,7 +1800,7 @@ Population_Rio_1986 = Population_Rio_1991/(exp(human_pop_growth_rate*time_before
   \Delta \tilde N = \Delta \tilde N_{\cdot N} + \Delta \tilde N_{\cdot S}  - \Delta \tilde N_{S \cdot}  - \Delta \tilde N_{I \cdot}  -
   \Delta \tilde N_{R \cdot}
 \end{equation}\]</span></p>
-<p>We note several notational differences between the written equations and the R implementation. First, the variable descirbed as <span class="math inline">\(h\)</span> in the writeup is instead denoted by <span class="math inline">\(r\)</span>. The variable <span class="math inline">\(r\)</span> in the writeup is not explicityly reffered to in the code in this document. Secondly, the variable <span class="math inline">\(\Delta \tilde N_{\cdot N}\)</span> is written as <span class="math inline">\(dBS_N\)</span> in the code while the variable <span class="math inline">\(\Delta \tilde N_{\cdot S}\)</span> in the writeup is written as <span class="math inline">\(dBS\)</span>.</p>
+<p>We note several notational differences between the written equations and the R implementation. First, the variable descirbed as <span class="math inline">\(h\)</span> in the writeup is instead denoted by <span class="math inline">\(r\)</span>. The variable <span class="math inline">\(r\)</span> in the writeup is not explicityly reffered to in the code in this document. Secondly, the variable <span class="math inline">\(\Delta \tilde N_{\cdot N}\)</span> is written as <span class="math inline">\(dBS_N\)</span> in the code while the variable <span class="math inline">\(\Delta \tilde N_{\cdot S}\)</span> in the writeup is written as <span class="math inline">\(dBS\)</span>. Finally, in the written implementation, the reporting rate is multiplied by the true cases <span class="math inline">\(C\)</span> in the measurement model. In the R Code, <span class="math inline">\(\rho\)</span> is multiplied by <span class="math inline">\(C\)</span> as <span class="math inline">\(C\)</span> is calculated in the process model Csnippet, instead of being multiplied in the measurement model. This does not change the results of the calculation.</p>
 <pre class="r"><code>#Process model Csnippet
 rproc &lt;- Csnippet(&quot;
                   
@@ -1914,7 +1914,7 @@ rproc &lt;- Csnippet(&quot;
 <div id="measurement-model" class="section level2">
 <h2>Measurement Model</h2>
 <p><span class="math display">\[\begin{equation}
-Y \sim\ NBinom(size = 1/(\sigma_{\text{M}})^2,\mu = C)
+Y \sim\ NBinom(size = 1/(\sigma_{\text{M}})^2,\mu = \rho C)
 \end{equation}\]</span></p>
 <pre class="r"><code>rmeas &lt;- Csnippet(&quot;
                   double size = 1.0/sigma_M/sigma_M;

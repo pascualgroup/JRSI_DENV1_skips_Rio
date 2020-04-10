@@ -359,7 +359,7 @@ Discretization of compartment flows from time $t$ to  time $t + \Delta t$
   \Delta \tilde N_{R \cdot}
 \end{equation}
 
-We note several notational differences between the written equations and the R implementation. First, the variable descirbed as $h$ in the writeup is instead denoted by $r$. The variable $r$ in the writeup is not explicityly reffered to in the code in this document. Secondly, the variable $\Delta \tilde N_{\cdot N}$ is written as $dBS_N$ in the code while the variable $\Delta \tilde N_{\cdot S}$ in the writeup is written as $dBS$.
+We note several notational differences between the written equations and the R implementation. First, the variable descirbed as $h$ in the writeup is instead denoted by $r$. The variable $r$ in the writeup is not explicityly reffered to in the code in this document. Secondly, the variable $\Delta \tilde N_{\cdot N}$ is written as $dBS_N$ in the code while the variable $\Delta \tilde N_{\cdot S}$ in the writeup is written as $dBS$. Finally, in the written implementation, the reporting rate is multiplied by the true cases $C$ in the measurement model. In the R Code, $\rho$ is multiplied by $C$ as $C$ is calculated in the process model Csnippet, instead of being multiplied in the measurement model. This does not change the results of the calculation.  
 
 ```{r rproc}
 
@@ -367,7 +367,7 @@ We note several notational differences between the written equations and the R i
 ## Measurement Model
 
 \begin{equation}
-Y \sim\ NBinom(size = 1/(\sigma_{\text{M}})^2,\mu = C)
+Y \sim\ NBinom(size = 1/(\sigma_{\text{M}})^2,\mu = \rho C)
 \end{equation}
 ```{r rmeas}
 
