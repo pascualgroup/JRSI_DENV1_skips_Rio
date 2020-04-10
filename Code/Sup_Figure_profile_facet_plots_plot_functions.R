@@ -175,7 +175,10 @@ plot_profiles = function(Sup_Fig_df, Sup_Fig_prof_peak_treshold_df,
                                color = "black"),
     axis.text.y = element_text(size = 8,
                                face = "bold",
-                               color = "black")
+                               color = "black"),
+    strip.text = element_text(size = 8.5,
+                              face = "plain",
+                              color = "black")
   )
   if(comb_plot == TRUE){
     p = p + rahul_panel_theme + facet_wrap(~Model_Name, ncol = ncol_facet, scales = "free")

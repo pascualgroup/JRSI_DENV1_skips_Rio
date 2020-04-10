@@ -1,7 +1,7 @@
 rm(list = ls())
 source("load_libraries_essential.R")
 library(zoo)
-library(pomp2)
+library(pomp)
 source("rahul_theme.R")
 
 rahul_poster_theme = theme(

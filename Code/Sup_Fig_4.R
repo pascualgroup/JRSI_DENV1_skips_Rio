@@ -1,7 +1,7 @@
 rm(list = ls())
 source("load_libraries_essential.R")
 library(zoo)
-library(pomp2)
+library(pomp)
 source("rahul_theme.R")
 source("Sup_Figure_profile_facet_plots_plot_functions.R")
 rahul_poster_theme = theme(
@@ -26,10 +26,10 @@ rahul_poster_theme = theme(
 )
 model_name_list = c("A_7", "A_6",
                     "A_5" )
-model_label_list = factor(c("SIR Cosine No Immigration", "SIR Spline No Immmigration",
-                            "SEIR Spline No Immigration"))
-model_label_list = factor(model_label_list, levels = c("SIR Cosine No Immigration", "SIR Spline No Immmigration",
-                                                       "SEIR Spline No Immigration"))
+model_label_list = factor(c("SIR Cosine", "SIR Spline",
+                            "SEIR Spline"))
+model_label_list = factor(model_label_list, levels = c("SIR Cosine", "SIR Spline",
+                                                       "SEIR Spline"))
 
 Csnippet_file_path_list = c("Csnippet_SIR_cosine_model.R",
                             "Csnippet_SIR_spline_model.R",
@@ -46,92 +46,92 @@ model_ref_df = data.frame(model_name = model_name_list, model_label = model_labe
                           Num_est_parameters = Num_est_parameters_list,
                           data_file_path = data_file_path_list,
                           num_years = num_years_list,stringsAsFactors = FALSE)
-Sup_Fig_3A_df_colnames = c("sigma_P","LL", "Model",     
+Sup_Fig_4A_df_colnames = c("sigma_P","LL", "Model",     
                            "Model_Name", "Profile_Var")
-Sup_Fig_3A_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
-Sup_Fig_3A_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
-Sup_Fig_3A_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_4A_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
+Sup_Fig_4A_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_4A_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
 
 
-Sup_Fig_3B_df_colnames = c("sigma_M","LL" ,"Model",     
+Sup_Fig_4B_df_colnames = c("sigma_M","LL" ,"Model",     
                            "Model_Name", "Profile_Var")
-Sup_Fig_3B_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
-Sup_Fig_3B_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
-Sup_Fig_3B_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_4B_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
+Sup_Fig_4B_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_4B_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
 
-Sup_Fig_3C_df_colnames = c("rho","LL" ,"Model",     
+Sup_Fig_4C_df_colnames = c("rho","LL" ,"Model",     
                            "Model_Name", "Profile_Var")
-Sup_Fig_3C_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
-Sup_Fig_3C_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
-Sup_Fig_3C_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_4C_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
+Sup_Fig_4C_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_4C_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
 
-Sup_Fig_3D_df_colnames = c("I_0","LL" ,"Model",     
+Sup_Fig_4D_df_colnames = c("I_0","LL" ,"Model",     
                            "Model_Name", "Profile_Var")
-Sup_Fig_3D_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
-Sup_Fig_3D_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
-Sup_Fig_3D_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_4D_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
+Sup_Fig_4D_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_4D_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
 
 ML_df_colnames = c("ML", "Model", "Model_Name")
 
 
-Sup_Fig_3A_df = data.frame(matrix(nrow = 0,
-                                  ncol = length(Sup_Fig_3A_df_colnames)))
-Sup_Fig_3A_prof_peak_treshold_df =
-  data.frame(matrix(nrow = 0,ncol = length(Sup_Fig_3A_prof_peak_treshold_df_colnames)))
-Sup_Fig_3A_MLE_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3A_MLE_value_for_prof_var_df_colnames)))
-Sup_Fig_3A_prof_peak_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3A_prof_peak_value_for_prof_var_df_colnames)))
+Sup_Fig_4A_df = data.frame(matrix(nrow = 0,
+                                  ncol = length(Sup_Fig_4A_df_colnames)))
+Sup_Fig_4A_prof_peak_treshold_df =
+  data.frame(matrix(nrow = 0,ncol = length(Sup_Fig_4A_prof_peak_treshold_df_colnames)))
+Sup_Fig_4A_MLE_value_for_prof_var_df =
+  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_4A_MLE_value_for_prof_var_df_colnames)))
+Sup_Fig_4A_prof_peak_value_for_prof_var_df =
+  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_4A_prof_peak_value_for_prof_var_df_colnames)))
 
-Sup_Fig_3B_df = data.frame(matrix(nrow = 0,
-                                  ncol = length(Sup_Fig_3B_df_colnames)))
-Sup_Fig_3B_prof_peak_treshold_df = data.frame(matrix(nrow = 0,
-                                                     ncol = length(Sup_Fig_3B_prof_peak_treshold_df_colnames)))
-Sup_Fig_3B_MLE_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3B_MLE_value_for_prof_var_df_colnames)))
-Sup_Fig_3B_prof_peak_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3B_prof_peak_value_for_prof_var_df_colnames)))
+Sup_Fig_4B_df = data.frame(matrix(nrow = 0,
+                                  ncol = length(Sup_Fig_4B_df_colnames)))
+Sup_Fig_4B_prof_peak_treshold_df = data.frame(matrix(nrow = 0,
+                                                     ncol = length(Sup_Fig_4B_prof_peak_treshold_df_colnames)))
+Sup_Fig_4B_MLE_value_for_prof_var_df =
+  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_4B_MLE_value_for_prof_var_df_colnames)))
+Sup_Fig_4B_prof_peak_value_for_prof_var_df =
+  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_4B_prof_peak_value_for_prof_var_df_colnames)))
 
-Sup_Fig_3C_df = data.frame(matrix(nrow = 0,
-                                  ncol = length(Sup_Fig_3C_df_colnames)))
-Sup_Fig_3C_prof_peak_treshold_df = data.frame(matrix(nrow = 0,
-                                                     ncol = length(Sup_Fig_3C_prof_peak_treshold_df_colnames)))
-Sup_Fig_3C_MLE_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3C_MLE_value_for_prof_var_df_colnames)))
-Sup_Fig_3C_prof_peak_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3C_prof_peak_value_for_prof_var_df_colnames)))
+Sup_Fig_4C_df = data.frame(matrix(nrow = 0,
+                                  ncol = length(Sup_Fig_4C_df_colnames)))
+Sup_Fig_4C_prof_peak_treshold_df = data.frame(matrix(nrow = 0,
+                                                     ncol = length(Sup_Fig_4C_prof_peak_treshold_df_colnames)))
+Sup_Fig_4C_MLE_value_for_prof_var_df =
+  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_4C_MLE_value_for_prof_var_df_colnames)))
+Sup_Fig_4C_prof_peak_value_for_prof_var_df =
+  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_4C_prof_peak_value_for_prof_var_df_colnames)))
 
-Sup_Fig_3D_df = data.frame(matrix(nrow = 0,
-                                  ncol = length(Sup_Fig_3D_df_colnames)))
-Sup_Fig_3D_prof_peak_treshold_df = data.frame(matrix(nrow = 0,
-                                                     ncol = length(Sup_Fig_3D_prof_peak_treshold_df_colnames)))
-Sup_Fig_3D_MLE_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3D_MLE_value_for_prof_var_df_colnames)))
-Sup_Fig_3D_prof_peak_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3D_prof_peak_value_for_prof_var_df_colnames)))
+Sup_Fig_4D_df = data.frame(matrix(nrow = 0,
+                                  ncol = length(Sup_Fig_4D_df_colnames)))
+Sup_Fig_4D_prof_peak_treshold_df = data.frame(matrix(nrow = 0,
+                                                     ncol = length(Sup_Fig_4D_prof_peak_treshold_df_colnames)))
+Sup_Fig_4D_MLE_value_for_prof_var_df =
+  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_4D_MLE_value_for_prof_var_df_colnames)))
+Sup_Fig_4D_prof_peak_value_for_prof_var_df =
+  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_4D_prof_peak_value_for_prof_var_df_colnames)))
 
 ML_df = data.frame(matrix(nrow = 0,
                                   ncol = length(ML_df_colnames)))
 
-colnames(Sup_Fig_3A_df) = Sup_Fig_3A_df_colnames
-colnames(Sup_Fig_3A_prof_peak_treshold_df) = Sup_Fig_3A_prof_peak_treshold_df_colnames
-colnames(Sup_Fig_3A_MLE_value_for_prof_var_df) = Sup_Fig_3A_MLE_value_for_prof_var_df_colnames
-colnames(Sup_Fig_3A_prof_peak_value_for_prof_var_df) = Sup_Fig_3A_prof_peak_value_for_prof_var_df_colnames
+colnames(Sup_Fig_4A_df) = Sup_Fig_4A_df_colnames
+colnames(Sup_Fig_4A_prof_peak_treshold_df) = Sup_Fig_4A_prof_peak_treshold_df_colnames
+colnames(Sup_Fig_4A_MLE_value_for_prof_var_df) = Sup_Fig_4A_MLE_value_for_prof_var_df_colnames
+colnames(Sup_Fig_4A_prof_peak_value_for_prof_var_df) = Sup_Fig_4A_prof_peak_value_for_prof_var_df_colnames
 
-colnames(Sup_Fig_3B_df) = Sup_Fig_3B_df_colnames
-colnames(Sup_Fig_3B_prof_peak_treshold_df) = Sup_Fig_3B_prof_peak_treshold_df_colnames
-colnames(Sup_Fig_3B_MLE_value_for_prof_var_df) = Sup_Fig_3B_MLE_value_for_prof_var_df_colnames
-colnames(Sup_Fig_3B_prof_peak_value_for_prof_var_df) = Sup_Fig_3B_prof_peak_value_for_prof_var_df_colnames
+colnames(Sup_Fig_4B_df) = Sup_Fig_4B_df_colnames
+colnames(Sup_Fig_4B_prof_peak_treshold_df) = Sup_Fig_4B_prof_peak_treshold_df_colnames
+colnames(Sup_Fig_4B_MLE_value_for_prof_var_df) = Sup_Fig_4B_MLE_value_for_prof_var_df_colnames
+colnames(Sup_Fig_4B_prof_peak_value_for_prof_var_df) = Sup_Fig_4B_prof_peak_value_for_prof_var_df_colnames
 
-colnames(Sup_Fig_3C_df) = Sup_Fig_3C_df_colnames
-colnames(Sup_Fig_3C_prof_peak_treshold_df) = Sup_Fig_3C_prof_peak_treshold_df_colnames
-colnames(Sup_Fig_3C_MLE_value_for_prof_var_df) = Sup_Fig_3C_MLE_value_for_prof_var_df_colnames
-colnames(Sup_Fig_3C_prof_peak_value_for_prof_var_df) = Sup_Fig_3C_prof_peak_value_for_prof_var_df_colnames
+colnames(Sup_Fig_4C_df) = Sup_Fig_4C_df_colnames
+colnames(Sup_Fig_4C_prof_peak_treshold_df) = Sup_Fig_4C_prof_peak_treshold_df_colnames
+colnames(Sup_Fig_4C_MLE_value_for_prof_var_df) = Sup_Fig_4C_MLE_value_for_prof_var_df_colnames
+colnames(Sup_Fig_4C_prof_peak_value_for_prof_var_df) = Sup_Fig_4C_prof_peak_value_for_prof_var_df_colnames
 
-colnames(Sup_Fig_3D_df) = Sup_Fig_3D_df_colnames
-colnames(Sup_Fig_3D_prof_peak_treshold_df) = Sup_Fig_3D_prof_peak_treshold_df_colnames
-colnames(Sup_Fig_3D_MLE_value_for_prof_var_df) = Sup_Fig_3D_MLE_value_for_prof_var_df_colnames
-colnames(Sup_Fig_3D_prof_peak_value_for_prof_var_df) = Sup_Fig_3D_prof_peak_value_for_prof_var_df_colnames
+colnames(Sup_Fig_4D_df) = Sup_Fig_4D_df_colnames
+colnames(Sup_Fig_4D_prof_peak_treshold_df) = Sup_Fig_4D_prof_peak_treshold_df_colnames
+colnames(Sup_Fig_4D_MLE_value_for_prof_var_df) = Sup_Fig_4D_MLE_value_for_prof_var_df_colnames
+colnames(Sup_Fig_4D_prof_peak_value_for_prof_var_df) = Sup_Fig_4D_prof_peak_value_for_prof_var_df_colnames
 
 colnames(ML_df) = ML_df_colnames
 for(model_index in seq(1:length(model_name_list))){
@@ -172,79 +172,79 @@ for(model_index in seq(1:length(model_name_list))){
   profile_var = "sigma_P"
   single_model_output_list = get_profile_df(profile_var = profile_var, model_name = model_name,
                                             model_label = model_label, MLE = MLE)
-  Sup_Fig_3A_df = rbind(Sup_Fig_3A_df, single_model_output_list[[1]])
-  Sup_Fig_3A_prof_peak_treshold_df = rbind(Sup_Fig_3A_prof_peak_treshold_df, single_model_output_list[[2]])
-  Sup_Fig_3A_MLE_value_for_prof_var_df = rbind(Sup_Fig_3A_MLE_value_for_prof_var_df,
+  Sup_Fig_4A_df = rbind(Sup_Fig_4A_df, single_model_output_list[[1]])
+  Sup_Fig_4A_prof_peak_treshold_df = rbind(Sup_Fig_4A_prof_peak_treshold_df, single_model_output_list[[2]])
+  Sup_Fig_4A_MLE_value_for_prof_var_df = rbind(Sup_Fig_4A_MLE_value_for_prof_var_df,
                                                single_model_output_list[[3]])
-  Sup_Fig_3A_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_3A_prof_peak_value_for_prof_var_df,
+  Sup_Fig_4A_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_4A_prof_peak_value_for_prof_var_df,
                                                single_model_output_list[[4]])
   
   #Get data for Sup Figure 3B
   profile_var = "sigma_M"
   single_model_output_list = get_profile_df(profile_var = profile_var, model_name = model_name,
                                             model_label = model_label, MLE = MLE)
-  Sup_Fig_3B_df = rbind(Sup_Fig_3B_df, single_model_output_list[[1]])
-  Sup_Fig_3B_prof_peak_treshold_df = rbind(Sup_Fig_3B_prof_peak_treshold_df, single_model_output_list[[2]])
-  Sup_Fig_3B_MLE_value_for_prof_var_df = rbind(Sup_Fig_3B_MLE_value_for_prof_var_df,
+  Sup_Fig_4B_df = rbind(Sup_Fig_4B_df, single_model_output_list[[1]])
+  Sup_Fig_4B_prof_peak_treshold_df = rbind(Sup_Fig_4B_prof_peak_treshold_df, single_model_output_list[[2]])
+  Sup_Fig_4B_MLE_value_for_prof_var_df = rbind(Sup_Fig_4B_MLE_value_for_prof_var_df,
                                                single_model_output_list[[3]])
-  Sup_Fig_3B_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_3B_prof_peak_value_for_prof_var_df,
+  Sup_Fig_4B_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_4B_prof_peak_value_for_prof_var_df,
                                                      single_model_output_list[[4]])
   
   #Get data for Sup Figure 3C
   profile_var = "rho"
   single_model_output_list = get_profile_df(profile_var = profile_var, model_name = model_name,
                                             model_label = model_label, MLE = MLE)
-  Sup_Fig_3C_df = rbind(Sup_Fig_3C_df, single_model_output_list[[1]])
-  Sup_Fig_3C_prof_peak_treshold_df = rbind(Sup_Fig_3C_prof_peak_treshold_df, single_model_output_list[[2]])
-  Sup_Fig_3C_MLE_value_for_prof_var_df = rbind(Sup_Fig_3C_MLE_value_for_prof_var_df,
+  Sup_Fig_4C_df = rbind(Sup_Fig_4C_df, single_model_output_list[[1]])
+  Sup_Fig_4C_prof_peak_treshold_df = rbind(Sup_Fig_4C_prof_peak_treshold_df, single_model_output_list[[2]])
+  Sup_Fig_4C_MLE_value_for_prof_var_df = rbind(Sup_Fig_4C_MLE_value_for_prof_var_df,
                                                single_model_output_list[[3]])
-  Sup_Fig_3C_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_3C_prof_peak_value_for_prof_var_df,
+  Sup_Fig_4C_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_4C_prof_peak_value_for_prof_var_df,
                                                      single_model_output_list[[4]])
   
   #Get data for Sup Figure 3D
   profile_var = "I_0"
   single_model_output_list = get_profile_df(profile_var = profile_var, model_name = model_name,
                                             model_label = model_label, MLE = MLE)
-  Sup_Fig_3D_df = rbind(Sup_Fig_3D_df, single_model_output_list[[1]])
-  Sup_Fig_3D_prof_peak_treshold_df = rbind(Sup_Fig_3D_prof_peak_treshold_df, single_model_output_list[[2]])
-  Sup_Fig_3D_MLE_value_for_prof_var_df = rbind(Sup_Fig_3D_MLE_value_for_prof_var_df,
+  Sup_Fig_4D_df = rbind(Sup_Fig_4D_df, single_model_output_list[[1]])
+  Sup_Fig_4D_prof_peak_treshold_df = rbind(Sup_Fig_4D_prof_peak_treshold_df, single_model_output_list[[2]])
+  Sup_Fig_4D_MLE_value_for_prof_var_df = rbind(Sup_Fig_4D_MLE_value_for_prof_var_df,
                                                single_model_output_list[[3]])
-  Sup_Fig_3D_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_3D_prof_peak_value_for_prof_var_df,
+  Sup_Fig_4D_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_4D_prof_peak_value_for_prof_var_df,
                                                      single_model_output_list[[4]])
   
 }
 
 ##Plotting function
 # profile_var = "sigma_P"
-# Sup_Fig_df = Sup_Fig_3A_df
-# Sup_Fig_prof_peak_treshold_df = Sup_Fig_3A_prof_peak_treshold_df
+# Sup_Fig_df = Sup_Fig_4A_df
+# Sup_Fig_prof_peak_treshold_df = Sup_Fig_4A_prof_peak_treshold_df
 # Fig_lab = "3A"
-Sup_Fig_3_A = plot_profiles(profile_var = "sigma_P", Sup_Fig_df = Sup_Fig_3A_df,
-                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_3A_prof_peak_treshold_df,
-                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_3A_MLE_value_for_prof_var_df,
+Sup_Fig_4_A = plot_profiles(profile_var = "sigma_P", Sup_Fig_df = Sup_Fig_4A_df,
+                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_4A_prof_peak_treshold_df,
+                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_4A_MLE_value_for_prof_var_df,
                             Sup_Fig_prof_peak_value_for_prof_var_df =
-                              Sup_Fig_3A_prof_peak_value_for_prof_var_df,
+                              Sup_Fig_4A_prof_peak_value_for_prof_var_df,
                             Fig_lab = "3A", ML_df = ML_df)
 
-Sup_Fig_3_B = plot_profiles(profile_var = "sigma_M", Sup_Fig_df = Sup_Fig_3B_df,
-                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_3B_prof_peak_treshold_df,
-                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_3B_MLE_value_for_prof_var_df,
+Sup_Fig_4_B = plot_profiles(profile_var = "sigma_M", Sup_Fig_df = Sup_Fig_4B_df,
+                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_4B_prof_peak_treshold_df,
+                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_4B_MLE_value_for_prof_var_df,
                             Sup_Fig_prof_peak_value_for_prof_var_df =
-                              Sup_Fig_3B_prof_peak_value_for_prof_var_df,
+                              Sup_Fig_4B_prof_peak_value_for_prof_var_df,
                             Fig_lab = "3B", ML_df = ML_df)
 
-Sup_Fig_3_C = plot_profiles(profile_var = "rho", Sup_Fig_df = Sup_Fig_3C_df,
-                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_3C_prof_peak_treshold_df,
-                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_3C_MLE_value_for_prof_var_df,
+Sup_Fig_4_C = plot_profiles(profile_var = "rho", Sup_Fig_df = Sup_Fig_4C_df,
+                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_4C_prof_peak_treshold_df,
+                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_4C_MLE_value_for_prof_var_df,
                             Sup_Fig_prof_peak_value_for_prof_var_df =
-                              Sup_Fig_3C_prof_peak_value_for_prof_var_df,
+                              Sup_Fig_4C_prof_peak_value_for_prof_var_df,
                             Fig_lab = "3C", ML_df = ML_df)
 
-Sup_Fig_3_D = plot_profiles(profile_var = "I_0", Sup_Fig_df = Sup_Fig_3D_df,
-                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_3D_prof_peak_treshold_df,
-                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_3D_MLE_value_for_prof_var_df,
+Sup_Fig_4_D = plot_profiles(profile_var = "I_0", Sup_Fig_df = Sup_Fig_4D_df,
+                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_4D_prof_peak_treshold_df,
+                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_4D_MLE_value_for_prof_var_df,
                             Sup_Fig_prof_peak_value_for_prof_var_df =
-                              Sup_Fig_3D_prof_peak_value_for_prof_var_df,
+                              Sup_Fig_4D_prof_peak_value_for_prof_var_df,
                             Fig_lab = "3D", ML_df = ML_df)
 
 # Combined Plot -----------------------------------------------------------
@@ -271,23 +271,26 @@ rahul_panel_theme = theme(
                              color = "black"),
   axis.text.y = element_text(size = 8,
                              face = "bold",
-                             color = "black")
+                             color = "black"),
+  strip.text = element_text(size = 8.5,
+                            face = "plain",
+                            color = "black")
 )
 
-Sup_Fig_3_A_comb = Sup_Fig_3_A + rahul_panel_theme + theme(legend.position = "None")
-Sup_Fig_3_B_comb = Sup_Fig_3_B + rahul_panel_theme + theme(legend.position = "None")
-Sup_Fig_3_C_comb = Sup_Fig_3_C + rahul_panel_theme + theme(legend.position = "None")
-Sup_Fig_3_D_comb = Sup_Fig_3_D + rahul_panel_theme + theme(legend.position = "None")
-Sup_Fig_3_A_small_legend = Sup_Fig_3_A + rahul_panel_theme
-legend <- cowplot::get_legend(Sup_Fig_3_A_small_legend)
+Sup_Fig_4_A_comb = Sup_Fig_4_A + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_4_B_comb = Sup_Fig_4_B + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_4_C_comb = Sup_Fig_4_C + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_4_D_comb = Sup_Fig_4_D + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_4_A_small_legend = Sup_Fig_4_A + rahul_panel_theme
+legend <- cowplot::get_legend(Sup_Fig_4_A_small_legend)
 
-save(Sup_Fig_3_A_small_legend, file = "../Generated_Data/Data_for_Supplemental_Figures/Sup_Fig_3_A_small_legend.Rdata")
+save(Sup_Fig_4_A_small_legend, file = "../Generated_Data/Data_for_Supplemental_Figures/Sup_Fig_4_A_small_legend.Rdata")
 
 
 
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_3/Supplemental_Figure_3_Combined.pdf")
-# print(grid.arrange(Sup_Fig_3_A_comb, Sup_Fig_3_B_comb, legend,Sup_Fig_3_C_comb, Sup_Fig_3_D_comb,
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_4/Supplemental_Figure_4_Combined.pdf")
+# print(grid.arrange(Sup_Fig_4_A_comb, Sup_Fig_4_B_comb, legend,Sup_Fig_4_C_comb, Sup_Fig_4_D_comb,
 #                    ncol = 3, widths = c(1,1,0.9)))
- print(grid.arrange(Sup_Fig_3_A_comb, Sup_Fig_3_B_comb, legend,Sup_Fig_3_C_comb, Sup_Fig_3_D_comb,
+ print(grid.arrange(Sup_Fig_4_A_comb, Sup_Fig_4_B_comb, legend,Sup_Fig_4_C_comb, Sup_Fig_4_D_comb,
                     ncol = 3, widths = c(1,1,1.1)))
 dev.off()
