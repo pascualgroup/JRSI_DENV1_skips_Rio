@@ -1,0 +1,365 @@
+rm(list = ls())
+source("load_libraries_essential.R")
+library(zoo)
+library(pomp2)
+source("rahul_theme.R")
+
+rahul_poster_theme = theme(
+  axis.title.x = element_text(size = 23,
+                              face = "bold",
+                              color = "black"),
+  axis.text.x = element_text(size = 21,
+                             face = "bold",
+                             color = "black"),
+  axis.title.y = element_text(size = 23,
+                              face = "bold",
+                              color = "black"),
+  legend.title = element_text(size = 21,
+                              face = "bold",
+                              color = "black"),
+  legend.text = element_text(size = 23,
+                             face = "bold",
+                             color = "black"),
+  axis.text.y = element_text(size = 21,
+                             face = "bold",
+                             color = "black")
+)
+model_name_list = c("A_7", "A_6",
+                    "A_5", "A_3" )
+model_label_list = factor(c("SIR Cosine No Immigration", "SIR Spline No Immmigration",
+                         "SEIR Spline No Immigration", "SEIR Spline Immigration" ))
+model_label_list = factor(model_label_list, levels = c("SIR Cosine No Immigration", "SIR Spline No Immmigration",
+                            "SEIR Spline No Immigration", "SEIR Spline Immigration" ))
+
+Csnippet_file_path_list = c("Csnippet_SIR_cosine_model.R",
+                            "Csnippet_SIR_spline_model.R",
+                            "Csnippet_SEIR_spline_model.R",
+                            "Csnippet_SEIR_spline_model.R")
+Num_est_parameters_list = c(7,7,8,9)
+data_file_path_list = c("../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv",
+                        "../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv",
+                        "../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv",
+                        "../Generated_Data/Rio_DENV1_Data_3_75_years_clean.csv")
+
+num_years_list = c(2.50, 2.50, 2.50, 4)
+
+model_ref_df = data.frame(model_name = model_name_list, model_label = model_label_list,
+                          Csnippet_file_path = Csnippet_file_path_list,
+                          Num_est_parameters = Num_est_parameters_list,
+                          data_file_path = data_file_path_list,
+                          num_years = num_years_list,stringsAsFactors = FALSE)
+
+Sup_Figure_1_A_B_df_colnames = c("time", "sim_data_low_Q", "sim_data_high_Q", "variable", "value", "Model", "Model_Name")
+Sup_Figure_1_C_df_colnames = c("time", "sim_data_low_Q", "sim_data_high_Q", "variable", "value", "Model", "Model_Name")
+
+Sup_Figure_1_D_df_colnames = c("time", "R_0", "Year", "Days_in_Year", "Month", "Month_Name", "Model", "Model_Name")
+
+Sup_Figure_1_D_label_df_colnames = c("plot_label_times", "plot_label_month_names", "Model", "Model_Name")
+
+Sup_Figure_1_E_df_colnames = c("time", "sim_low_Q", "sim_high_Q", "variable", "value", "Model", "Model_Name")
+
+
+Sup_Figure_1_A_B_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_1_A_B_df_colnames)))
+
+Sup_Figure_1_C_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_1_C_df_colnames)))
+
+Sup_Figure_1_D_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_1_D_df_colnames)))
+Sup_Figure_1_E_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_1_E_df_colnames)))
+
+Sup_Figure_1_D_label_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_1_D_label_df_colnames)))
+
+colnames(Sup_Figure_1_A_B_df) = Sup_Figure_1_A_B_df_colnames
+colnames(Sup_Figure_1_C_df) = Sup_Figure_1_C_df_colnames
+colnames(Sup_Figure_1_D_df) = Sup_Figure_1_D_df_colnames
+colnames(Sup_Figure_1_D_label_df) = Sup_Figure_1_D_label_df_colnames
+colnames(Sup_Figure_1_E_df) = Sup_Figure_1_E_df_colnames
+
+for(model_index in seq(1:length(model_name_list))){
+  print(model_index)
+  model_name = as.character(model_name_list[model_index])
+  single_model_ref_data = filter(model_ref_df, model_name == !!model_name)
+  model_label = single_model_ref_data$model_label
+  Csnippet_file_path = single_model_ref_data$Csnippet_file_path
+  Num_est_parameters = single_model_ref_data$Num_est_parameters
+  data_file_path = single_model_ref_data$data_file_path
+  num_years = single_model_ref_data$num_years
+  
+  Rio_data_clean = read.csv(file = data_file_path)
+  #head(Rio_data_clean)
+  
+  source(Csnippet_file_path, local = TRUE)
+  
+  #Set t0
+  t0 = as.numeric(as.Date("1986/05/01") - as.Date("1986/01/01"))
+  
+  #Load param combination directory
+  combined_profile_data = read.csv(file = paste0("../Generated_Data/Profiles/", model_name,
+                                                 "_Model/combined_", model_name,"_profile_data_directory.csv"))
+  
+  
+  #head(combined_profile_data)
+  ML = max(combined_profile_data$LL, na.rm = TRUE)
+  MLE = filter(combined_profile_data, LL >= ML)
+  
+  ML_params = dplyr::select(MLE, -one_of("seed", "LL", "Profile_Type"))
+  
+  MLE
+  
+  Rio_data_first_two_and_half_years_only = filter(Rio_data_clean, times <= 365 *
+                                                    num_years)
+  
+  
+  
+  
+  ML_params$r = 0
+  sim_data = simulate(nsim = 100,
+                      seed = 12345,
+                      times = Rio_data_first_two_and_half_years_only$times,
+                      t0 = t0,
+                      rprocess = euler(rproc,delta.t = 1),
+                      params = ML_params,
+                      paramnames = paramnames,
+                      statenames = statenames,
+                      obsnames = obsnames,
+                      accumvars = acumvarnames,
+                      covar = covar,
+                      rinit = init,
+                      rmeas = rmeas,
+                      partrans = par_trans,
+                      format = "data.frame")
+  #head(sim_data)
+  sim_data_median_Y = aggregate(Y ~ time, sim_data, median)
+  sim_data_quant = aggregate(Y ~ time, sim_data, quantile, probs = c(0.025, 0.975))
+  sim_data_quant$Y = as.data.frame(sim_data_quant$Y)
+  colnames(sim_data_quant$Y) = c("Q2.5", "Q97.5")
+  
+  comp_data = data.frame(time = sim_data_median_Y$time,
+                         sim_data_median = sim_data_median_Y$Y,
+                         sim_data_low_Q = sim_data_quant$Y$Q2.5,
+                         sim_data_high_Q = sim_data_quant$Y$Q97.5,
+                         true_data = Rio_data_clean$Y)
+  
+  comp_data_melt = melt(comp_data, id.vars = c("time", "sim_data_low_Q",
+                                               "sim_data_high_Q"))
+  
+  comp_data_melt$Model = model_name
+  comp_data_melt$Model_Name = model_label
+  
+  single_model_case_data = comp_data_melt
+  
+  Sup_Figure_1_A_B_df = rbind(Sup_Figure_1_A_B_df, single_model_case_data)
+  
+  sim_data$S_over_N = sim_data$S/sim_data$N
+  
+  sim_data_S_over_N_median = aggregate(S_over_N ~ time, sim_data, median)
+  sim_data_S_over_N_quant = aggregate(S_over_N ~ time, sim_data, quantile, probs = c(0.025, 0.975))
+  sim_data_S_over_N_quant$S_over_N = as.data.frame(sim_data_S_over_N_quant$S_over_N)
+  colnames(sim_data_S_over_N_quant$S_over_N) = c("Q2.5", "Q97.5")
+  
+  comp_data = data.frame(time = sim_data_S_over_N_median$time,
+                         sim_data_median = sim_data_S_over_N_median$S_over_N,
+                         sim_data_low_Q = sim_data_S_over_N_quant$S_over_N$Q2.5,
+                         sim_data_high_Q = sim_data_S_over_N_quant$S_over_N$Q97.5)
+  comp_melted_data = melt(comp_data, id.vars = c("time", "sim_data_low_Q",
+                                                 "sim_data_high_Q"))  
+  
+  comp_melted_data$Model = model_name
+  comp_melted_data$Model_Name = model_label
+  
+  single_model_S_over_N_data = comp_melted_data
+  Sup_Figure_1_C_df = rbind(Sup_Figure_1_C_df, single_model_S_over_N_data)
+  
+  time_of_year = sim_data_median_Y$time %% 365
+  
+  time_seq = covar@times
+  covar_table = as.data.frame(t(covar@table))
+  head(covar_table)
+  
+  covar_table_with_time = mutate(covar_table, time = covar_times)
+  covar_at_obs_times = filter(covar_table_with_time, time %in% sim_data_median_Y$time)
+  if(is.null(ML_params$b_1)){
+    Beta_t = ML_params$Beta_0*(1 + ML_params$delta*sin(ML_params$omega*sim_data_median_Y$time + ML_params$phi));
+  }else{
+    Beta_t = exp(ML_params$b_1*covar_at_obs_times$s_1 + ML_params$b_2*covar_at_obs_times$s_2 + ML_params$b_3*covar_at_obs_times$s_3 + ML_params$g)
+  }
+  
+  if(is.null(ML_params$mu_EI)){
+    R_0 = (Beta_t/(ML_params$gamma + ML_params$mu_H))
+  }else{
+    R_0 = (Beta_t/(ML_params$gamma + ML_params$mu_H))*(ML_params$mu_EI/(ML_params$mu_EI + ML_params$mu_H))
+  }
+  
+  
+  
+  R_0_df = data.frame(time = sim_data_median_Y$time,
+                      R_0 = R_0)
+  
+  R_0_df$Year = R_0_df$time/365
+  R_0_df$Days_in_Year = (R_0_df$time%%365)
+  R_0_df$Month = round((R_0_df$Days_in_Year/365)*12) + 1
+  single_year_R_0_data= filter(R_0_df, Year <=  2 & Year >= 1 )
+  single_year_R_0_data$Month_Name = c(month.abb, month.abb[1])
+  
+  single_year_R_0_data$Model = model_name
+  single_year_R_0_data$Model_Name = model_label
+  Sup_Figure_1_D_df = rbind(Sup_Figure_1_D_df, single_year_R_0_data)
+  
+  plot_label_months =seq(from = 1, to = 13, by = 2)
+  plot_label_month_names = single_year_R_0_data$Month_Name[plot_label_months]
+  plot_label_times = single_year_R_0_data$time[plot_label_months]
+  single_model_Sup_Figure_1_D_label_df = data.frame(plot_label_times, plot_label_month_names)
+  single_model_Sup_Figure_1_D_label_df$Model = model_name
+  single_model_Sup_Figure_1_D_label_df$Model_Name = model_label
+  
+  Sup_Figure_1_D_label_df = rbind(Sup_Figure_1_D_label_df, single_model_Sup_Figure_1_D_label_df)
+  
+  #Supplemental Figure 1E
+  time_of_year = sim_data_median_Y$time %% 365
+  R_0_with_S_df = join(R_0_df, comp_data)
+  
+  R_0_with_S_df$R_eff_median = R_0_with_S_df$R_0*R_0_with_S_df$sim_data_median
+  R_0_with_S_df$R_eff_high_Q = R_0_with_S_df$R_0*R_0_with_S_df$sim_data_high_Q
+  R_0_with_S_df$R_eff_low_Q = R_0_with_S_df$R_0*R_0_with_S_df$sim_data_low_Q
+  R_eff_data = dplyr::select(R_0_with_S_df, time, sim_median = R_eff_median, sim_high_Q = R_eff_high_Q, sim_low_Q = R_eff_low_Q)
+  R_eff_melt_data = melt(R_eff_data, id.vars = c("time", "sim_low_Q",
+                                                 "sim_high_Q"))
+  R_eff_melt_data$Model = model_name
+  R_eff_melt_data$Model_Name = model_label
+  Sup_Figure_1_E_df = rbind(Sup_Figure_1_E_df, R_eff_melt_data)
+  
+}
+
+
+# Make plots --------------------------------------------------------------
+
+
+Sup_Fig_1_A = ggplot(data = Sup_Figure_1_A_B_df) +
+  geom_ribbon(aes(x = time/365, ymin = sim_data_low_Q,
+                  ymax = sim_data_high_Q), fill = "grey70") +
+  geom_line(aes(x = time/365, y = value, color = variable)) +
+  geom_point(aes(x = time/365, y = value, color = variable)) +
+  rahul_theme +
+  theme_white_background +
+  median_legend_lab +
+  xlab("Years since Jan 1 1986")+
+  ylab("Observed Monthly Cases") +
+  facet_wrap(~Model_Name, ncol = 1)
+Sup_Fig_1_A
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_1/Supplemental_Figure_1A.pdf")
+print(Sup_Fig_1_A)
+dev.off()
+
+
+Sup_Fig_1_B = ggplot(data = Sup_Figure_1_A_B_df) +
+  geom_ribbon(aes(x = time/365, ymin = log(sim_data_low_Q),
+                  ymax = log(sim_data_high_Q)), fill = "grey70") +
+  geom_line(aes(x = time/365, y = log(value), color = variable)) +
+  geom_point(aes(x = time/365, y = log(value), color = variable)) +
+  rahul_theme +
+  theme_white_background +
+  median_legend_lab +
+  xlab("Years since Jan 1 1986")+
+  ylab("log(Observed Monthly Cases)")+
+  facet_wrap(~Model_Name, ncol = 1)
+Sup_Fig_1_B
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_1/Supplemental_Figure_1B.pdf")
+print(Sup_Fig_1_B)
+dev.off()
+
+Sup_Fig_1_C = ggplot(data = Sup_Figure_1_C_df)+
+  geom_ribbon(aes(x = time/365, ymin = sim_data_low_Q,
+                  ymax = sim_data_high_Q), fill = 'grey70') +
+  geom_line(aes(x = time/365, y = value, color = variable))  +
+  geom_point(aes(x = time/365, y = value,color = variable)) +
+  rahul_theme + xlab("Years since Jan 1 1986") + ylab(expression(paste(frac(S,N)))) +
+  theme_white_background +
+  median_legend_lab+
+  facet_wrap(~Model_Name, ncol = 1)
+
+Sup_Fig_1_C
+
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_1/Supplemental_Figure_1C.pdf")
+print(Sup_Fig_1_C)
+dev.off()
+
+Sup_Fig_1_D = ggplot(data = Sup_Figure_1_D_df) +
+  geom_line(aes(x = time, y = R_0)) +
+  geom_point(aes(x = time, y = R_0)) +
+  rahul_poster_theme +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())+
+  xlab("Month") + ylab(expression(R[0])) +
+  scale_x_continuous(breaks = Sup_Figure_1_D_label_df$plot_label_times,
+                     labels = Sup_Figure_1_D_label_df$plot_label_month_names)+
+  facet_wrap(~Model_Name, ncol = 1)
+Sup_Fig_1_D
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_1/Supplemental_Figure_1D.pdf")
+print(Sup_Fig_1_D)
+dev.off()
+
+Sup_Fig_1_E = ggplot(data = Sup_Figure_1_E_df)+
+  geom_ribbon(aes(x = time/365, ymin = sim_low_Q,
+                  ymax = sim_high_Q), fill = 'grey70') +
+  geom_line(aes(x = time/365, y = value, color = variable))  +
+  geom_point(aes(x = time/365, y = value,color = variable)) +
+  rahul_theme + xlab("Years since Jan 1 1986") + ylab(expression(paste(R[eff]))) +
+  theme_white_background +
+  median_legend_lab +
+  facet_wrap(~Model_Name, ncol = 1)
+Sup_Fig_1_E
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_1/Supplemental_Figure_1E.pdf")
+print(Sup_Fig_1_E)
+dev.off()
+
+
+# Combined Plot -----------------------------------------------------------
+
+library(gridExtra)
+library(grid)
+library(lattice)
+
+rahul_panel_theme = theme(
+  axis.title.x = element_text(size = 10,
+                              face = "bold",
+                              color = "black"),
+  axis.text.x = element_text(size = 10,
+                             face = "bold",
+                             color = "black"),
+  axis.title.y = element_text(size = 10,
+                              face = "bold",
+                              color = "black"),
+  legend.title = element_text(size = 10,
+                              face = "bold",
+                              color = "black"),
+  legend.text = element_text(size = 10,
+                             face = "bold",
+                             color = "black"),
+  axis.text.y = element_text(size = 10,
+                             face = "bold",
+                             color = "black")
+)
+
+Sup_Fig_1_A_comb = Sup_Fig_1_A + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_1_B_comb = Sup_Fig_1_B + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_1_C_comb = Sup_Fig_1_C + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_1_D_comb = Sup_Fig_1_D + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_1_E_comb = Sup_Fig_1_E + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_1_A_small_legend = Sup_Fig_1_A + rahul_panel_theme
+legend <- cowplot::get_legend(Sup_Fig_1_A_small_legend)
+
+Sup_Fig_1_A_leg = grid.draw(legend)
+
+
+
+
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_1/Supplemental_Figure_1_Combined.pdf")
+print(grid.arrange(Sup_Fig_1_A_comb, Sup_Fig_1_B_comb, Sup_Fig_1_C_comb, Sup_Fig_1_D_comb, Sup_Fig_1_E_comb,
+                   legend, ncol = 3))
+dev.off()
+
+
+grid.newpage()
+grid.draw(legend)
