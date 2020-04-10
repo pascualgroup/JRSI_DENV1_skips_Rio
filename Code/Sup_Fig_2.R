@@ -49,30 +49,30 @@ model_ref_df = data.frame(model_name = model_name_list, model_label = model_labe
                           data_file_path = data_file_path_list,
                           num_years = num_years_list,stringsAsFactors = FALSE)
 
-Sup_Figure_1_A_B_df_colnames = c("time", "sim_data_low_Q", "sim_data_high_Q", "variable", "value", "Model", "Model_Name")
-Sup_Figure_1_C_df_colnames = c("time", "sim_data_low_Q", "sim_data_high_Q", "variable", "value", "Model", "Model_Name")
+Sup_Figure_2_A_B_df_colnames = c("time", "sim_data_low_Q", "sim_data_high_Q", "variable", "value", "Model", "Model_Name")
+Sup_Figure_2_C_df_colnames = c("time", "sim_data_low_Q", "sim_data_high_Q", "variable", "value", "Model", "Model_Name")
 
-Sup_Figure_1_D_df_colnames = c("time", "R_0", "Year", "Days_in_Year", "Month", "Month_Name", "Model", "Model_Name")
+Sup_Figure_2_D_df_colnames = c("time", "R_0", "Year", "Days_in_Year", "Month", "Month_Name", "Model", "Model_Name")
 
-Sup_Figure_1_D_label_df_colnames = c("plot_label_times", "plot_label_month_names", "Model", "Model_Name")
+Sup_Figure_2_D_label_df_colnames = c("plot_label_times", "plot_label_month_names", "Model", "Model_Name")
 
-Sup_Figure_1_E_df_colnames = c("time", "sim_low_Q", "sim_high_Q", "variable", "value", "Model", "Model_Name")
+Sup_Figure_2_E_df_colnames = c("time", "sim_low_Q", "sim_high_Q", "variable", "value", "Model", "Model_Name")
 
 
-Sup_Figure_1_A_B_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_1_A_B_df_colnames)))
+Sup_Figure_2_A_B_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_2_A_B_df_colnames)))
 
-Sup_Figure_1_C_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_1_C_df_colnames)))
+Sup_Figure_2_C_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_2_C_df_colnames)))
 
-Sup_Figure_1_D_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_1_D_df_colnames)))
-Sup_Figure_1_E_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_1_E_df_colnames)))
+Sup_Figure_2_D_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_2_D_df_colnames)))
+Sup_Figure_2_E_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_2_E_df_colnames)))
 
-Sup_Figure_1_D_label_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_1_D_label_df_colnames)))
+Sup_Figure_2_D_label_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_2_D_label_df_colnames)))
 
-colnames(Sup_Figure_1_A_B_df) = Sup_Figure_1_A_B_df_colnames
-colnames(Sup_Figure_1_C_df) = Sup_Figure_1_C_df_colnames
-colnames(Sup_Figure_1_D_df) = Sup_Figure_1_D_df_colnames
-colnames(Sup_Figure_1_D_label_df) = Sup_Figure_1_D_label_df_colnames
-colnames(Sup_Figure_1_E_df) = Sup_Figure_1_E_df_colnames
+colnames(Sup_Figure_2_A_B_df) = Sup_Figure_2_A_B_df_colnames
+colnames(Sup_Figure_2_C_df) = Sup_Figure_2_C_df_colnames
+colnames(Sup_Figure_2_D_df) = Sup_Figure_2_D_df_colnames
+colnames(Sup_Figure_2_D_label_df) = Sup_Figure_2_D_label_df_colnames
+colnames(Sup_Figure_2_E_df) = Sup_Figure_2_E_df_colnames
 
 for(model_index in seq(1:length(model_name_list))){
   print(model_index)
@@ -147,7 +147,7 @@ for(model_index in seq(1:length(model_name_list))){
   
   single_model_case_data = comp_data_melt
   
-  Sup_Figure_1_A_B_df = rbind(Sup_Figure_1_A_B_df, single_model_case_data)
+  Sup_Figure_2_A_B_df = rbind(Sup_Figure_2_A_B_df, single_model_case_data)
   
   sim_data$S_over_N = sim_data$S/sim_data$N
   
@@ -167,7 +167,7 @@ for(model_index in seq(1:length(model_name_list))){
   comp_melted_data$Model_Name = model_label
   
   single_model_S_over_N_data = comp_melted_data
-  Sup_Figure_1_C_df = rbind(Sup_Figure_1_C_df, single_model_S_over_N_data)
+  Sup_Figure_2_C_df = rbind(Sup_Figure_2_C_df, single_model_S_over_N_data)
   
   time_of_year = sim_data_median_Y$time %% 365
   
@@ -202,16 +202,16 @@ for(model_index in seq(1:length(model_name_list))){
   
   single_year_R_0_data$Model = model_name
   single_year_R_0_data$Model_Name = model_label
-  Sup_Figure_1_D_df = rbind(Sup_Figure_1_D_df, single_year_R_0_data)
+  Sup_Figure_2_D_df = rbind(Sup_Figure_2_D_df, single_year_R_0_data)
   
   plot_label_months =seq(from = 1, to = 13, by = 2)
   plot_label_month_names = single_year_R_0_data$Month_Name[plot_label_months]
   plot_label_times = single_year_R_0_data$time[plot_label_months]
-  single_model_Sup_Figure_1_D_label_df = data.frame(plot_label_times, plot_label_month_names)
-  single_model_Sup_Figure_1_D_label_df$Model = model_name
-  single_model_Sup_Figure_1_D_label_df$Model_Name = model_label
+  single_model_Sup_Figure_2_D_label_df = data.frame(plot_label_times, plot_label_month_names)
+  single_model_Sup_Figure_2_D_label_df$Model = model_name
+  single_model_Sup_Figure_2_D_label_df$Model_Name = model_label
   
-  Sup_Figure_1_D_label_df = rbind(Sup_Figure_1_D_label_df, single_model_Sup_Figure_1_D_label_df)
+  Sup_Figure_2_D_label_df = rbind(Sup_Figure_2_D_label_df, single_model_Sup_Figure_2_D_label_df)
   
   #Supplemental Figure 1E
   time_of_year = sim_data_median_Y$time %% 365
@@ -225,7 +225,7 @@ for(model_index in seq(1:length(model_name_list))){
                                                  "sim_high_Q"))
   R_eff_melt_data$Model = model_name
   R_eff_melt_data$Model_Name = model_label
-  Sup_Figure_1_E_df = rbind(Sup_Figure_1_E_df, R_eff_melt_data)
+  Sup_Figure_2_E_df = rbind(Sup_Figure_2_E_df, R_eff_melt_data)
   
 }
 
@@ -233,7 +233,7 @@ for(model_index in seq(1:length(model_name_list))){
 # Make plots --------------------------------------------------------------
 
 
-Sup_Fig_1_A = ggplot(data = Sup_Figure_1_A_B_df) +
+Sup_Fig_2_A = ggplot(data = Sup_Figure_2_A_B_df) +
   geom_ribbon(aes(x = time/365, ymin = sim_data_low_Q,
                   ymax = sim_data_high_Q), fill = "grey70") +
   geom_line(aes(x = time/365, y = value, color = variable)) +
@@ -244,13 +244,13 @@ Sup_Fig_1_A = ggplot(data = Sup_Figure_1_A_B_df) +
   xlab("Years since Jan 1 1986")+
   ylab("Observed Monthly Cases") +
   facet_wrap(~Model_Name, ncol = 1)
-Sup_Fig_1_A
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_1/Supplemental_Figure_1A.pdf")
-print(Sup_Fig_1_A)
+Sup_Fig_2_A
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2A.pdf")
+print(Sup_Fig_2_A)
 dev.off()
 
 
-Sup_Fig_1_B = ggplot(data = Sup_Figure_1_A_B_df) +
+Sup_Fig_2_B = ggplot(data = Sup_Figure_2_A_B_df) +
   geom_ribbon(aes(x = time/365, ymin = log(sim_data_low_Q),
                   ymax = log(sim_data_high_Q)), fill = "grey70") +
   geom_line(aes(x = time/365, y = log(value), color = variable)) +
@@ -261,12 +261,12 @@ Sup_Fig_1_B = ggplot(data = Sup_Figure_1_A_B_df) +
   xlab("Years since Jan 1 1986")+
   ylab("log(Observed Monthly Cases)")+
   facet_wrap(~Model_Name, ncol = 1)
-Sup_Fig_1_B
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_1/Supplemental_Figure_1B.pdf")
-print(Sup_Fig_1_B)
+Sup_Fig_2_B
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2B.pdf")
+print(Sup_Fig_2_B)
 dev.off()
 
-Sup_Fig_1_C = ggplot(data = Sup_Figure_1_C_df)+
+Sup_Fig_2_C = ggplot(data = Sup_Figure_2_C_df)+
   geom_ribbon(aes(x = time/365, ymin = sim_data_low_Q,
                   ymax = sim_data_high_Q), fill = 'grey70') +
   geom_line(aes(x = time/365, y = value, color = variable))  +
@@ -276,13 +276,13 @@ Sup_Fig_1_C = ggplot(data = Sup_Figure_1_C_df)+
   median_legend_lab+
   facet_wrap(~Model_Name, ncol = 1)
 
-Sup_Fig_1_C
+Sup_Fig_2_C
 
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_1/Supplemental_Figure_1C.pdf")
-print(Sup_Fig_1_C)
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2C.pdf")
+print(Sup_Fig_2_C)
 dev.off()
 
-Sup_Fig_1_D = ggplot(data = Sup_Figure_1_D_df) +
+Sup_Fig_2_D = ggplot(data = Sup_Figure_2_D_df) +
   geom_line(aes(x = time, y = R_0)) +
   geom_point(aes(x = time, y = R_0)) +
   rahul_poster_theme +
@@ -292,15 +292,15 @@ Sup_Fig_1_D = ggplot(data = Sup_Figure_1_D_df) +
         panel.border = element_blank(),
         panel.background = element_blank())+
   xlab("Month") + ylab(expression(R[0])) +
-  scale_x_continuous(breaks = Sup_Figure_1_D_label_df$plot_label_times,
-                     labels = Sup_Figure_1_D_label_df$plot_label_month_names)+
+  scale_x_continuous(breaks = Sup_Figure_2_D_label_df$plot_label_times,
+                     labels = Sup_Figure_2_D_label_df$plot_label_month_names)+
   facet_wrap(~Model_Name, ncol = 1)
-Sup_Fig_1_D
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_1/Supplemental_Figure_1D.pdf")
-print(Sup_Fig_1_D)
+Sup_Fig_2_D
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2D.pdf")
+print(Sup_Fig_2_D)
 dev.off()
 
-Sup_Fig_1_E = ggplot(data = Sup_Figure_1_E_df)+
+Sup_Fig_2_E = ggplot(data = Sup_Figure_2_E_df)+
   geom_ribbon(aes(x = time/365, ymin = sim_low_Q,
                   ymax = sim_high_Q), fill = 'grey70') +
   geom_line(aes(x = time/365, y = value, color = variable))  +
@@ -309,9 +309,9 @@ Sup_Fig_1_E = ggplot(data = Sup_Figure_1_E_df)+
   theme_white_background +
   median_legend_lab +
   facet_wrap(~Model_Name, ncol = 1)
-Sup_Fig_1_E
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_1/Supplemental_Figure_1E.pdf")
-print(Sup_Fig_1_E)
+Sup_Fig_2_E
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2E.pdf")
+print(Sup_Fig_2_E)
 dev.off()
 
 
@@ -325,7 +325,7 @@ rahul_panel_theme = theme(
   axis.title.x = element_text(size = 10,
                               face = "bold",
                               color = "black"),
-  axis.text.x = element_text(size = 10,
+  axis.text.x = element_text(size = 9,
                              face = "bold",
                              color = "black"),
   axis.title.y = element_text(size = 10,
@@ -339,27 +339,30 @@ rahul_panel_theme = theme(
                              color = "black"),
   axis.text.y = element_text(size = 10,
                              face = "bold",
-                             color = "black")
+                             color = "black"),
+  strip.text = element_text(size = 8.5,
+                            face = "plain",
+                            color = "black")
 )
 
-Sup_Fig_1_A_comb = Sup_Fig_1_A + rahul_panel_theme + theme(legend.position = "None")
-Sup_Fig_1_B_comb = Sup_Fig_1_B + rahul_panel_theme + theme(legend.position = "None")
-Sup_Fig_1_C_comb = Sup_Fig_1_C + rahul_panel_theme + theme(legend.position = "None")
-Sup_Fig_1_D_comb = Sup_Fig_1_D + rahul_panel_theme + theme(legend.position = "None")
-Sup_Fig_1_E_comb = Sup_Fig_1_E + rahul_panel_theme + theme(legend.position = "None")
-Sup_Fig_1_A_small_legend = Sup_Fig_1_A + rahul_panel_theme
-legend <- cowplot::get_legend(Sup_Fig_1_A_small_legend)
+Sup_Fig_2_A_comb = Sup_Fig_2_A + rahul_panel_theme + theme(legend.position = "None") 
+Sup_Fig_2_B_comb = Sup_Fig_2_B + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_2_C_comb = Sup_Fig_2_C + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_2_D_comb = Sup_Fig_2_D + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_2_E_comb = Sup_Fig_2_E + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_2_A_small_legend = Sup_Fig_2_A + rahul_panel_theme
+legend <- cowplot::get_legend(Sup_Fig_2_A_small_legend)
 
-Sup_Fig_1_A_leg = grid.draw(legend)
-
-
+Sup_Fig_2_A_leg = grid.draw(legend)
 
 
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_1/Supplemental_Figure_1_Combined.pdf")
-print(grid.arrange(Sup_Fig_1_A_comb, Sup_Fig_1_B_comb, Sup_Fig_1_C_comb, Sup_Fig_1_D_comb, Sup_Fig_1_E_comb,
+
+
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2_Combined.pdf")
+print(grid.arrange(Sup_Fig_2_A_comb, Sup_Fig_2_B_comb, Sup_Fig_2_C_comb, Sup_Fig_2_D_comb, Sup_Fig_2_E_comb,
                    legend, ncol = 3))
 dev.off()
 
 
-grid.newpage()
-grid.draw(legend)
+#grid.newpage()
+#grid.draw(legend)
