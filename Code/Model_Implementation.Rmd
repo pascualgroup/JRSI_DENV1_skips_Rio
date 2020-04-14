@@ -3002,7 +3002,7 @@ Fig_5_A_plot = ggplot()  + geom_point(data = Fig_5_A_combined_data, aes(x = var_
         axis.title.x = element_text(size = 15),
         strip.text = element_blank()
         ) +
-  xlab(expression(R[0]))
+    xlab(expression(paste(" Reproductive Number ", (R[0])))) 
 
 #theme(axis.title.x=element_blank()) + 
 Fig_5_A_plot
@@ -3022,7 +3022,8 @@ ML_df$r = unique(no_na_20$r)
 ML_with_re_emerge_prob = join(ML_df, no_na_20)
 Fig_5_B_plot = ggplot(data = no_na_20,
            aes(x =sigma_P, y = total_re_emergence_prob_1_year)) + geom_point(size = 3) +
-   xlab(expression(sigma[P])) + ylab("Re-Emergence Probability in 1990") +
+  xlab(expression(paste(" Process Noise ", (sigma[P])))) +
+  ylab(expression(paste("Re-Emergence Probability in ", 1990))) +
   geom_point(data = ML_with_re_emerge_prob,
              aes(x = sigma_P, y = total_re_emergence_prob_1_year),
              color = 'red', fill = "NA", size = 5, shape = 21, stroke = 3) +
@@ -3031,7 +3032,6 @@ Fig_5_B_plot = ggplot(data = no_na_20,
         axis.text.y = element_text(size = 16),
         axis.text.x = element_text(size = 16),
         axis.title.y = element_text(face = "plain"),
-        axis.title.x = element_text(size = 21),
         strip.text = element_blank()
         ) 
   
