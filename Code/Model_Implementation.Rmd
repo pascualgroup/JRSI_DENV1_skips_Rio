@@ -1006,6 +1006,7 @@ skip_df_rho_3$rho = 0.03
 skip_df_rho_3$rho_lab = "\rho~=~0.03" 
 skip_df = rbind(skip_df_rho_3,
                 skip_df_rho_10)
+save(skip_df_rho_3, file = "../Generated_Data/Data_for_Manuscript_Figures/skip_data_rho_3.RData")
 skip_df$r0 = as.numeric(as.character(skip_df$r0))
 skip_df$Num_Skips = as.numeric(as.character(skip_df$Num_Skips))
 
@@ -2911,7 +2912,7 @@ test = ggplot(data = Fig_5_A_plot_data,
   
 
 ### Add line
-
+load("../Generated_Data/Data_for_Manuscript_Figures/skip_data_rho_3.RData")
 skip_df_rho_3$rho_lab = "\rho~=~0.03"
 rho_3_line_df = skip_df_rho_3
 
@@ -2949,22 +2950,46 @@ rho_3_line_df = rho_3_line_df %>%
          )
 rho_3_line_df = na.omit(rho_3_line_df)
 
+
+
+```
+
+Plot Figure 5 Panel A
+```{r}
+
+rahul_big_panel_theme = theme(
+  axis.title.x = element_text(size = 14,
+                              face = "bold",
+                              color = "black"),
+  axis.text.x = element_text(size = 12,
+                             face = "bold",
+                             color = "black"),
+  axis.title.y = element_text(size = 14,
+                              face = "bold",
+                              color = "black"),
+  legend.title = element_text(size = 14,
+                              face = "bold",
+                              color = "black"),
+  legend.text = element_text(size = 12,
+                             face = "bold",
+                             color = "black"),
+  axis.text.y = element_text(size = 12,
+                             face = "bold",
+                             color = "black"),
+  plot.margin = unit(c(.5,.5,.5,.5), "cm"),
+  legend.background = element_rect(fill = "transparent"),
+  legend.box.margin = unit(c(.5,.5,.5,.5), "cm")
+)
+
 Fig_5_A_plot = ggplot()  + geom_point(data = Fig_5_A_combined_data, aes(x = var_value, y = LL, color = Metric, shape = Metric)) +
   scale_linetype_manual(values = c("blank", "solid")) +
   rahul_man_figure_theme + rahul_big_panel_theme  +theme_white_background  +
-    geom_hline(data = Fig_3_combined_data, aes(yintercept = ML -2), size = 1.0, linetype = "dashed", color = 'grey70') +
-  geom_vline(data = Fig_3_combined_data, aes(xintercept = MLE_value_for_prof_var),
-                  size = 1.0, linetype = "twodash",show.legend= F, color = 'grey70') +
-    facet_wrap(~plot_var_label, scales = "free",  strip.position = "bottom", labeller=label_parsed,
-               nrow = 1) +
-    geom_hline(data = Fig_3_combined_data, aes(yintercept = low_bound), color = 'white', linetype = 'blank') +
+    geom_hline(data = Fig_5_A_combined_data, aes(yintercept = low_bound), color = 'white', linetype = 'blank') +
    geom_line(data = rho_3_line_df, aes(x = var_value, y = LL), color = 'black', size = 1.0) +
-  geom_line(data = combined_poly_data, aes(x = small_breaks, y = poly_curve), color = 'red', show.legend = F) +
   scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) +
   theme(
     aspect.ratio = 1,
     strip.background = element_blank(),
-    strip.placement = "outside"
   ) + 
   theme(legend.position = "None") +
   scale_color_manual(values = c("black", "red", "black", "white"),
@@ -2973,15 +2998,15 @@ Fig_5_A_plot = ggplot()  + geom_point(data = Fig_5_A_combined_data, aes(x = var_
   scale_y_continuous(breaks = scales::pretty_breaks(n = 4))  +
   ylab(expression(paste(" Number of skips ", (n[c])))) +
   theme(axis.text.y = element_text(size = 16),
-        axis.text.x = element_text(size = 16)) +
-  theme(panel.spacing = unit(1.75, "lines")) +
-  xlab("                                          (Transmission Rate)         (Seasonality Amplitude)      (Reporting Rate)")
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_text(size = 15),
+        strip.text = element_blank()
+        ) +
+  xlab(expression(R[0]))
 
 #theme(axis.title.x=element_blank()) + 
 Fig_5_A_plot
-
 ```
-
 
 ### Figure 5 Panel B
 ```{r}
@@ -2989,30 +3014,40 @@ spark_data_90_only = filter(all_param_spark_data, spark_year == 1990)
 
 spark_90_size_20 = filter(spark_data_90_only, spark_size == 20)
 no_na_20 = na.omit(spark_90_size_20)
-p = ggplot(data = no_na_20,
-           aes(x =R_naught, y =  total_re_emergence_prob_1_year)) + geom_point() +
-  rahul_theme+ theme_white_background
+
 #p
 
 ML_df = MLE_params
 ML_df$r = unique(no_na_20$r)
 ML_with_re_emerge_prob = join(ML_df, no_na_20)
-p = ggplot(data = no_na_20,
+Fig_5_B_plot = ggplot(data = no_na_20,
            aes(x =sigma_P, y = total_re_emergence_prob_1_year)) + geom_point(size = 3) +
-  rahul_theme + theme_white_background + xlab(expression(sigma[P])) + ylab("Re-Emergence \n Probability in 1990") +
-  rahul_man_figure_theme +
+   xlab(expression(sigma[P])) + ylab("Re-Emergence Probability in 1990") +
   geom_point(data = ML_with_re_emerge_prob,
              aes(x = sigma_P, y = total_re_emergence_prob_1_year),
-             color = 'red', fill = "NA", size = 5, shape = 21, stroke = 3)
+             color = 'red', fill = "NA", size = 5, shape = 21, stroke = 3) +
+  rahul_man_figure_theme + rahul_big_panel_theme  +theme_white_background  +
+  theme(aspect.ratio = 1,
+        axis.text.y = element_text(size = 16),
+        axis.text.x = element_text(size = 16),
+        axis.title.y = element_text(face = "plain"),
+        axis.title.x = element_text(size = 21),
+        strip.text = element_blank()
+        ) 
   
 #p
 
 
+
+```
+
+### Make Combined Plot of Figure 5
+```{r}
 tiff(
   paste0(
-    "../Figures/Manuscript_Figures/TIFF_Files/Fig5.tiff"),
-  height = 5, width = 10, res = 300, units = "in")
-print(p)
+    "../Figures/Manuscript_Figures/TIFF_Files/Fig5_raw.tiff"),
+  height = 5, width = 10, res = 500, units = "in")
+print(grid.arrange(Fig_5_A_plot, Fig_5_B_plot, ncol = 2))
 dev.off()
 ```
 
