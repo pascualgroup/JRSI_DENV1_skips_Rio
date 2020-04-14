@@ -198,6 +198,7 @@ Sup_Fig_2_B
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2B.pdf")
 print(Sup_Fig_2_B)
 dev.off()
+print(grid.arrange(Sup_Fig_2_A, Sup_Fig_2_B))
 
 
 
@@ -240,9 +241,7 @@ Sup_Fig_2_A_comb = Sup_Fig_2_A + rahul_panel_theme + theme(legend.position = "No
     strip.background = element_blank(),
     strip.placement = "outside"
   )+
-  theme(strip.text = element_blank()) +
-  ylab("SEIR Spline                  SIR Spline             SIR Cosine \n \n log(Observed Monthly Cases)")
-
+  theme(strip.text = element_blank()) 
 Sup_Fig_2_A_comb
 
 Sup_Fig_2_B_comb = Sup_Fig_2_B + rahul_panel_theme + theme(legend.position = c(.75, .55)) +
@@ -298,7 +297,7 @@ for(model_index in seq(1:length(model_name_list))){
   
 
   
-  ## Data for Supplemental Figure 3D
+  ## Data for Supplemental Figure 2C
   R_0_max = aggregate(R_0~time, all_R0_data, FUN = max)
   R_0_max = dplyr::select(R_0_max, time = time, R_0_max = R_0)
   R_0_min = aggregate(R_0~time, all_R0_data, FUN = min)
@@ -384,10 +383,12 @@ Sup_Fig_2_C_comb = Sup_Fig_2_C + rahul_panel_theme + theme(legend.position = "No
   theme(strip.text = element_blank())
 
 
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2_Combined.pdf")
+tiff("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2_Raw.tiff",
+     height = 5, width = 10, res = 700, units = "in")
 print(grid.arrange(Sup_Fig_2_A_comb, Sup_Fig_2_B_comb, Sup_Fig_2_C_comb, 
                    ncol = 3))
 dev.off()
+
 
 
 #grid.newpage()
