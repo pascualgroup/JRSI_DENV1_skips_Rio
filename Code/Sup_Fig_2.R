@@ -152,7 +152,7 @@ Sup_Fig_2_A = ggplot(data = Sup_Figure_2_A_B_df) +
   median_legend_lab +
   xlab("Years since Jan 1 1986")+
   ylab("log(Observed Monthly Cases)")+
-  facet_wrap(~Model_Name, ncol = 1) +
+  facet_wrap(~Model_Name, ncol = 1, strip.position = "left") +
   theme(legend.key=element_blank()) +
   theme(axis.text.y = element_text(size = 18)) +
   theme(axis.text.x = element_text(size = 18),
@@ -181,7 +181,7 @@ Sup_Fig_2_B = ggplot(data = Sup_Figure_2_A_B_df) +
   median_legend_lab +
   xlab("Years since Jan 1 1986")+
   ylab("Observed Monthly Cases") +
-  facet_wrap(~Model_Name, ncol = 1)+
+  facet_wrap(~Model_Name, ncol = 1, strip.position = "left")+
   theme(legend.key=element_blank()) +
   theme(axis.text.y = element_text(size = 18)) +
   theme(axis.text.x = element_text(size = 18),
@@ -239,8 +239,12 @@ Sup_Fig_2_A_comb = Sup_Fig_2_A + rahul_panel_theme + theme(legend.position = "No
     aspect.ratio = 1,
     strip.background = element_blank(),
     strip.placement = "outside"
-  )  
-  
+  )+
+  theme(strip.text = element_blank()) +
+  ylab("SEIR Spline                  SIR Spline             SIR Cosine \n \n log(Observed Monthly Cases)")
+
+Sup_Fig_2_A_comb
+
 Sup_Fig_2_B_comb = Sup_Fig_2_B + rahul_panel_theme + theme(legend.position = c(.75, .55)) +
   theme(
     aspect.ratio = 1,
@@ -251,16 +255,16 @@ Sup_Fig_2_B_comb = Sup_Fig_2_B + rahul_panel_theme + theme(legend.position = c(.
 
 
 
-Sup_Figure_3_D_df_colnames = c("time", "R_0", "R_0_min", "R_0_max", "Year", "Days_in_Year", "Month",  "Model", "Model_Name")
-Sup_Figure_3_D_label_df_colnames = c("plot_label_times", "Model", "Model_Name")
+Sup_Figure_2_C_df_colnames = c("time", "R_0", "R_0_min", "R_0_max", "Year", "Days_in_Year", "Month",  "Model", "Model_Name")
+Sup_Figure_2_C_label_df_colnames = c("plot_label_times", "Model", "Model_Name")
 
 
-Sup_Figure_3_D_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_3_D_df_colnames)))
-Sup_Figure_3_D_label_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_3_D_label_df_colnames)))
+Sup_Figure_2_C_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_2_C_df_colnames)))
+Sup_Figure_2_C_label_df = data.frame(matrix(nrow = 0, ncol = length(Sup_Figure_2_C_label_df_colnames)))
 
 
-colnames(Sup_Figure_3_D_df) = Sup_Figure_3_D_df_colnames
-colnames(Sup_Figure_3_D_label_df) = Sup_Figure_3_D_label_df_colnames 
+colnames(Sup_Figure_2_C_df) = Sup_Figure_2_C_df_colnames
+colnames(Sup_Figure_2_C_label_df) = Sup_Figure_2_C_label_df_colnames 
 
 for(model_index in seq(1:length(model_name_list))){
   print(model_index)
@@ -308,9 +312,9 @@ for(model_index in seq(1:length(model_name_list))){
   R_0_ribbon_df = join(R_0_ribbon_df, ML_R0_df)
   
   R_0_ribbon_df_melt = melt(R_0_ribbon_df, id.vars = c("time", "R_0_min", "R_0_max" ))
-  ribbon_label_3_D = "R_0 range \n  (All  2 LL Combinations)"
+  ribbon_label_2_C = "R_0 range \n  (All  2 LL Combinations)"
   
-  R_0_ribbon_df_melt$Ribbon_label = ribbon_label_3_D
+  R_0_ribbon_df_melt$Ribbon_label = ribbon_label_2_C
   
   
   R_0_plot_data = R_0_ribbon_df_melt
@@ -322,7 +326,7 @@ for(model_index in seq(1:length(model_name_list))){
 
   all_years_R_0_data$Model = model_name
   all_years_R_0_data$Model_Name = model_label
-  Sup_Figure_3_D_df = rbind(Sup_Figure_3_D_df, all_years_R_0_data)
+  Sup_Figure_2_C_df = rbind(Sup_Figure_2_C_df, all_years_R_0_data)
   
   # plot_label_months =seq(from = 1, to = 13, by = 2)
   # plot_label_month_names = single_year_R_0_data$Month_Name[plot_label_months]
@@ -335,13 +339,13 @@ for(model_index in seq(1:length(model_name_list))){
  
 }
 
-fill_vec_3_D = c("grey70")
-names(fill_vec_3_D) = ribbon_label_3_D
+fill_vec_2_C = c("grey70")
+names(fill_vec_2_C) = ribbon_label_2_C
 
 
 
-Sup_Fig_3_D = ggplot(data = Sup_Figure_3_D_df) +
-  geom_ribbon(aes(x = time, ymin = R_0_min, ymax =  R_0_max, fill = ribbon_label_3_D)) +
+Sup_Fig_2_C = ggplot(data = Sup_Figure_2_C_df) +
+  geom_ribbon(aes(x = time, ymin = R_0_min, ymax =  R_0_max, fill = ribbon_label_2_C)) +
   geom_line(aes(x = time, y = value, color = variable)) +
   geom_point(aes(x = time, y = value, color = variable)) +
   rahul_theme +
@@ -349,7 +353,7 @@ Sup_Fig_3_D = ggplot(data = Sup_Figure_3_D_df) +
                                    face = "bold",
                                    color = "black")) +
   theme_white_background +
-  scale_fill_manual(name = "Ribbon  Legend", values = fill_vec_3_D) +
+  scale_fill_manual(name = "Ribbon  Legend", values = fill_vec_2_C) +
   scale_color_manual(name = "Color  Legend", values = c("black"),
                      labels = c("R_0 (MLE)"))  +
   theme(axis.line = element_line(colour = "black"),
@@ -358,7 +362,7 @@ Sup_Fig_3_D = ggplot(data = Sup_Figure_3_D_df) +
         panel.border = element_blank(),
         panel.background = element_blank())+
   xlab("Month") + ylab(expression(R[0])) +
-  facet_wrap(~Model_Name, ncol = 1)+
+  facet_wrap(~Model_Name, ncol = 1, strip.position = "left")+
   theme(legend.key=element_blank()) +
   theme(axis.text.y = element_text(size = 18)) +
   theme(axis.text.x = element_text(size = 18),
@@ -366,12 +370,12 @@ Sup_Fig_3_D = ggplot(data = Sup_Figure_3_D_df) +
         axis.title.y = element_text(size = 20)) +
   theme(legend.text = element_text(size = 15.5,
                                    face = "plain"))
-Sup_Fig_3_D
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_3/Supplemental_Figure_3D.pdf")
-print(Sup_Fig_3_D)
+Sup_Fig_2_C
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2C.pdf")
+print(Sup_Fig_2_C)
 dev.off()
 
-Sup_Fig_3_D_comb = Sup_Fig_3_D + rahul_panel_theme + theme(legend.position = "None") +
+Sup_Fig_2_C_comb = Sup_Fig_2_C + rahul_panel_theme + theme(legend.position = "None") +
   theme(
     aspect.ratio = 1,
     strip.background = element_blank(),
@@ -381,7 +385,7 @@ Sup_Fig_3_D_comb = Sup_Fig_3_D + rahul_panel_theme + theme(legend.position = "No
 
 
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2_Combined.pdf")
-print(grid.arrange(Sup_Fig_2_A_comb, Sup_Fig_2_B_comb, Sup_Fig_3_D_comb, 
+print(grid.arrange(Sup_Fig_2_A_comb, Sup_Fig_2_B_comb, Sup_Fig_2_C_comb, 
                    ncol = 3))
 dev.off()
 
