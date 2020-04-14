@@ -1825,7 +1825,7 @@ Fig_3_ABC_plot_data$low_bound = ML-11
 Fig_3_ABC_plot_data$Line_Color = "Show_Line"
 
 Fig_3_combined_data = Fig_3_ABC_plot_data
-Fig_3_combined_data$plot_var_label = factor(Fig_3_combined_data$plot_var_label, levels = c("beta[0]", "rho",     "delta"))
+Fig_3_combined_data$plot_var_label = factor(Fig_3_combined_data$plot_var_label, levels = c("beta[0]", "delta","rho"))
 
 ## Calculate polynomial fit
 
@@ -1931,7 +1931,7 @@ Fig_3_comb_plot = ggplot()  + geom_point(data = Fig_3_combined_data, aes(x = var
         axis.text.x = element_text(size = 16),
         axis.title.x = element_text(face = "plain")) +
   theme(panel.spacing = unit(1.75, "lines")) +
-  xlab("  (Transmission Rate)                               (Reporting Rate)                           (Seasonality Amplitude)")
+  xlab(" (Transmission Rate)                          (Seasonality Amplitude)                            (Reporting Rate)")
 
 #theme(axis.title.x=element_blank()) + 
 Fig_3_comb_plot
