@@ -218,7 +218,7 @@ rahul_panel_theme = theme(
   axis.text.x = element_text(size = 9,
                              face = "bold",
                              color = "black"),
-  axis.title.y = element_text(size = 10,
+  axis.title.y = element_text(size = 11,
                               face = "plain",
                               color = "black"),
   legend.title = element_blank(),

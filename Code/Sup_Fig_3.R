@@ -163,6 +163,36 @@ for(model_index in seq(1:length(model_name_list))){
 fill_vec_3_A_B = c("Simulation Median \n  (all 2 LL combinations)" = "pink", "95% Simulation Quantiles \n (MLE)" = "skyblue", "95% Simulation Quantiles \n (all 2 LL combinations)" = "grey70")
 
 Sup_Fig_3_A = ggplot(data = Sup_Figure_3_A_B_df) +
+  geom_ribbon(aes(x = time/365, ymin = log(all_combo_low_Q_min),
+                  ymax = log(all_combo_high_Q_max), fill = All_combo_Q_Rib_Col), inherit.aes = FALSE) +
+  geom_ribbon(aes(x = time/365, ymin = log(ML_low_Q),
+                  ymax = log(ML_high_Q), fill = ML_Q_Rib_Col),  inherit.aes = FALSE) +
+  geom_ribbon(aes(x = time/365, ymin = log(all_combo_median_min),
+                  ymax = log(all_combo_median_max), fill = All_combo_Med_Rib_Col), inherit.aes = FALSE) +
+  geom_line(aes(x = time/365, y = log(value), color = variable)) +
+  geom_point(aes(x = time/365, y = log(value), color = variable)) +
+  rahul_theme +
+  theme(legend.text = element_text(size = 10,
+                                   face = "bold",
+                                   color = "black")) +
+  theme(legend.title = element_text(size = 10,
+                                    face = "bold",
+                                    color = "black")) +
+  theme_white_background +
+  scale_fill_manual(name = "Ribbon  Legend", values = fill_vec_3_A_B) +
+  scale_color_manual(name = "Color  Legend", values = c("red","blue"),
+                     labels =
+                       c("Simulation Median \n (MLE)",
+                         "Observed"))  +
+  xlab("Years since Jan 1 1986")+
+  ylab("log(Observed Monthly Cases) ")+
+  facet_wrap(~Model_Name, ncol = 1)
+Sup_Fig_3_A
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_3/Supplemental_Figure_3A.pdf")
+print(Sup_Fig_3_A)
+dev.off()
+
+Sup_Fig_3_B = ggplot(data = Sup_Figure_3_A_B_df) +
   geom_ribbon(aes(x = time/365, ymin = all_combo_low_Q_min,
                   ymax = all_combo_high_Q_max, fill = All_combo_Q_Rib_Col), inherit.aes = FALSE) +
   geom_ribbon(aes(x = time/365, ymin = ML_low_Q,
@@ -185,41 +215,13 @@ Sup_Fig_3_A = ggplot(data = Sup_Figure_3_A_B_df) +
   xlab("Years since Jan 1 1986")+
   ylab("Observed Monthly Cases")+
   facet_wrap(~Model_Name, ncol = 1)
-Sup_Fig_3_A
-
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_3/Supplemental_Figure_3A.pdf")
-print(Sup_Fig_3_A)
-dev.off()
-
-Sup_Fig_3_B = ggplot(data = Sup_Figure_3_A_B_df) +
-  geom_ribbon(aes(x = time/365, ymin = log(all_combo_low_Q_min),
-                  ymax = log(all_combo_high_Q_max), fill = All_combo_Q_Rib_Col), inherit.aes = FALSE) +
-  geom_ribbon(aes(x = time/365, ymin = log(ML_low_Q),
-                  ymax = log(ML_high_Q), fill = ML_Q_Rib_Col),  inherit.aes = FALSE) +
-  geom_ribbon(aes(x = time/365, ymin = log(all_combo_median_min),
-                  ymax = log(all_combo_median_max), fill = All_combo_Med_Rib_Col), inherit.aes = FALSE) +
-  geom_line(aes(x = time/365, y = log(value), color = variable)) +
-  geom_point(aes(x = time/365, y = log(value), color = variable)) +
-  rahul_theme +
-  theme(legend.text = element_text(size = 10,
-                                   face = "bold",
-                                   color = "black")) +
-  theme(legend.title = element_text(size = 10,
-                                   face = "bold",
-                                   color = "black")) +
-  theme_white_background +
-  scale_fill_manual(name = "Ribbon  Legend", values = fill_vec_3_A_B) +
-  scale_color_manual(name = "Color  Legend", values = c("red","blue"),
-                     labels =
-                       c("Simulation Median \n (MLE)",
-                         "Observed"))  +
-  xlab("Years since Jan 1 1986")+
-  ylab("log(Observed Monthly Cases) ")+
-  facet_wrap(~Model_Name, ncol = 1)
 Sup_Fig_3_B
+
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_3/Supplemental_Figure_3B.pdf")
 print(Sup_Fig_3_B)
 dev.off()
+
+
 
 
 
@@ -232,14 +234,14 @@ library(grid)
 library(lattice)
 
 rahul_panel_theme = theme(
-  axis.title.x = element_text(size = 10,
-                              face = "bold",
+  axis.title.x = element_text(size = 11,
+                              face = "plain",
                               color = "black"),
   axis.text.x = element_text(size = 9,
                              face = "bold",
                              color = "black"),
-  axis.title.y = element_text(size = 10,
-                              face = "bold",
+  axis.title.y = element_text(size = 11,
+                              face = "plain",
                               color = "black"),
   legend.title = element_text(size = 10,
                               face = "bold",
@@ -252,7 +254,8 @@ rahul_panel_theme = theme(
                              color = "black"),
   strip.text = element_text(size = 8.5,
                             face = "plain",
-                            color = "black")
+                            color = "black"),
+    strip.background = element_blank()
 )
 
 Sup_Fig_3_A_comb = Sup_Fig_3_A + rahul_panel_theme + theme(legend.position = "None")
