@@ -212,20 +212,18 @@ library(grid)
 library(lattice)
 
 rahul_panel_theme = theme(
-  axis.title.x = element_text(size = 10,
-                              face = "bold",
+  axis.title.x = element_text(size = 11,
+                              face = "plain",
                               color = "black"),
   axis.text.x = element_text(size = 9,
                              face = "bold",
                              color = "black"),
   axis.title.y = element_text(size = 10,
-                              face = "bold",
+                              face = "plain",
                               color = "black"),
-  legend.title = element_text(size = 10,
-                              face = "bold",
-                              color = "black"),
-  legend.text = element_text(size = 10,
-                             face = "bold",
+  legend.title = element_blank(),
+  legend.text = element_text(size = 6.5,
+                             face = "plain",
                              color = "black"),
   axis.text.y = element_text(size = 10,
                              face = "bold",
@@ -244,7 +242,7 @@ Sup_Fig_2_A_comb = Sup_Fig_2_A + rahul_panel_theme + theme(legend.position = "No
   theme(strip.text = element_blank()) 
 Sup_Fig_2_A_comb
 
-Sup_Fig_2_B_comb = Sup_Fig_2_B + rahul_panel_theme + theme(legend.position = c(.75, .55)) +
+Sup_Fig_2_B_comb = Sup_Fig_2_B + rahul_panel_theme + theme(legend.position = c(.75, .97)) +
   theme(
     aspect.ratio = 1,
     strip.background = element_blank(),
@@ -365,8 +363,10 @@ Sup_Fig_2_C = ggplot(data = Sup_Figure_2_C_df) +
   theme(legend.key=element_blank()) +
   theme(axis.text.y = element_text(size = 18)) +
   theme(axis.text.x = element_text(size = 18),
-        axis.title.x = element_text(size = 20),
-        axis.title.y = element_text(size = 20)) +
+        axis.title.x = element_text(size = 20,
+                                    face = "plain"),
+        axis.title.y = element_text(size = 20,
+                                    face = "plain")) +
   theme(legend.text = element_text(size = 15.5,
                                    face = "plain"))
 Sup_Fig_2_C
