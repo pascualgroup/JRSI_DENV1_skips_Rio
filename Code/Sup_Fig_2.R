@@ -29,7 +29,7 @@ model_name_list = c("A_7", "A_6",
 model_label_list = factor(c("SIR Cosine", "SIR Spline",
                          "SEIR Spline"))
 model_label_list = factor(model_label_list, levels = c("SIR Cosine", "SIR Spline",
-                            "SEIR Spline", "SEIR Spline" ))
+                            "SEIR Spline"))
 
 Csnippet_file_path_list = c("Csnippet_SIR_cosine_model.R",
                             "Csnippet_SIR_spline_model.R",
@@ -143,35 +143,6 @@ for(model_index in seq(1:length(model_name_list))){
 
 
 Sup_Fig_2_A = ggplot(data = Sup_Figure_2_A_B_df) +
-  geom_ribbon(aes(x = time/365, ymin = sim_data_low_Q,
-                  ymax = sim_data_high_Q), fill = "red", alpha = 0.50) +
-  geom_line(aes(x = time/365, y = value, color = variable)) +
-  geom_point(aes(x = time/365, y = value, color = variable)) +
-  rahul_theme +
-  theme_white_background +
-  median_legend_lab +
-  xlab("Years since Jan 1 1986")+
-  ylab("Observed Monthly Cases") +
-  facet_wrap(~Model_Name, ncol = 1)+
-  theme(legend.key=element_blank()) +
-  theme(axis.text.y = element_text(size = 18)) +
-  theme(axis.text.x = element_text(size = 18),
-        axis.title.x = element_text(size = 20),
-        axis.title.y = element_text(size = 20)) +
-  theme(legend.text = element_text(size = 15.5,
-                                   face = "plain")) +
-  scale_color_manual(name = "",
-                     values = c("red",
-                                "blue"),
-                     labels = c("Simulated",
-                                "Observed")) 
-Sup_Fig_2_A
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2A.pdf")
-print(Sup_Fig_2_A)
-dev.off()
-
-
-Sup_Fig_2_B = ggplot(data = Sup_Figure_2_A_B_df) +
   geom_ribbon(aes(x = time/365, ymin = log(sim_data_low_Q),
                   ymax = log(sim_data_high_Q)), fill = "red", alpha = 0.50) +
   geom_line(aes(x = time/365, y = log(value), color = variable)) +
@@ -194,11 +165,41 @@ Sup_Fig_2_B = ggplot(data = Sup_Figure_2_A_B_df) +
                                 "blue"),
                      labels = c("Simulated",
                                 "Observed")) 
-  
+
+Sup_Fig_2_A
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2A.pdf")
+print(Sup_Fig_2_A)
+dev.off()
+
+Sup_Fig_2_B = ggplot(data = Sup_Figure_2_A_B_df) +
+  geom_ribbon(aes(x = time/365, ymin = sim_data_low_Q,
+                  ymax = sim_data_high_Q), fill = "red", alpha = 0.50) +
+  geom_line(aes(x = time/365, y = value, color = variable)) +
+  geom_point(aes(x = time/365, y = value, color = variable)) +
+  rahul_theme +
+  theme_white_background +
+  median_legend_lab +
+  xlab("Years since Jan 1 1986")+
+  ylab("Observed Monthly Cases") +
+  facet_wrap(~Model_Name, ncol = 1)+
+  theme(legend.key=element_blank()) +
+  theme(axis.text.y = element_text(size = 18)) +
+  theme(axis.text.x = element_text(size = 18),
+        axis.title.x = element_text(size = 20),
+        axis.title.y = element_text(size = 20)) +
+  theme(legend.text = element_text(size = 15.5,
+                                   face = "plain")) +
+  scale_color_manual(name = "",
+                     values = c("red",
+                                "blue"),
+                     labels = c("Simulated",
+                                "Observed")) 
 Sup_Fig_2_B
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2B.pdf")
 print(Sup_Fig_2_B)
 dev.off()
+
+
 
 
 
@@ -233,8 +234,21 @@ rahul_panel_theme = theme(
                             color = "black")
 )
 
-Sup_Fig_2_A_comb = Sup_Fig_2_A + rahul_panel_theme + theme(legend.position = c(.75, .55))
-Sup_Fig_2_B_comb = Sup_Fig_2_B + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_2_A_comb = Sup_Fig_2_A + rahul_panel_theme + theme(legend.position = "None") +
+  theme(
+    aspect.ratio = 1,
+    strip.background = element_blank(),
+    strip.placement = "outside"
+  )  
+  
+Sup_Fig_2_B_comb = Sup_Fig_2_B + rahul_panel_theme + theme(legend.position = c(.75, .55)) +
+  theme(
+    aspect.ratio = 1,
+    strip.background = element_blank(),
+    strip.placement = "outside"
+  ) +
+  theme(strip.text = element_blank())
+
 
 
 Sup_Figure_3_D_df_colnames = c("time", "R_0", "R_0_min", "R_0_max", "Year", "Days_in_Year", "Month",  "Model", "Model_Name")
@@ -357,7 +371,13 @@ pdf("../Figures/Supplemental_Figures/Supplemental_Figure_3/Supplemental_Figure_3
 print(Sup_Fig_3_D)
 dev.off()
 
-Sup_Fig_3_D_comb = Sup_Fig_3_D + rahul_panel_theme + theme(legend.position = "None")
+Sup_Fig_3_D_comb = Sup_Fig_3_D + rahul_panel_theme + theme(legend.position = "None") +
+  theme(
+    aspect.ratio = 1,
+    strip.background = element_blank(),
+    strip.placement = "outside"
+  ) +
+  theme(strip.text = element_blank())
 
 
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2_Combined.pdf")
