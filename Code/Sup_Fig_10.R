@@ -108,7 +108,7 @@ min(A_7_gamma_2_LL$skips, na.rm = TRUE)
 
 relevant_skip_plot_data_melt = melt(
   relevant_skip_plot_data, id.vars = c("skips"))
-S11_plot = ggplot(data = relevant_skip_plot_data_melt,
+S10_plot = ggplot(data = relevant_skip_plot_data_melt,
            aes(x = value, y = skips)) + geom_point() +
   facet_wrap(~variable, ncol = 4, scales= "free", labeller = label_parsed,
              strip.position = "bottom") + 
@@ -123,11 +123,35 @@ S11_plot = ggplot(data = relevant_skip_plot_data_melt,
         axis.text.x = element_text(size = 16),
         axis.title.x = element_blank()) +
   ylab(expression(paste("Number of skips (", n[c], ")")))
-S11_plot
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_11/Sup_Fig_11.pdf",
+S10_plot
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_10/Sup_Fig_10.pdf",
     height = 5, width = 10)
-print(S11_plot)
+print(S10_plot)
 dev.off()
+
+S11_plot_data = A_7_gamma_2_LL %>%
+  dplyr::select("R[0]" = nearest_skip_R_naught,
+                              "sigma[P]" = sigma_P,
+                              rho = nearest_skip_rho)
+S11_plot_data_melt = S11_plot_data %>%
+  melt(id.vars = c("rho"))
+  
+S11_plot = ggplot(data = S11_plot_data_melt,
+                  aes(x = rho, y = value)) + geom_point() +
+  facet_wrap(~variable, ncol = 1, scales= "free", labeller = label_parsed,
+             strip.position = "left") + 
+  rahul_man_figure_theme +theme_white_background +
+  theme(
+    aspect.ratio = 1,
+    strip.background = element_blank(),
+    strip.placement = "outside"
+  ) + 
+  theme(legend.position = "None") +
+  theme(axis.text.y = element_text(size = 16),
+        axis.text.x = element_text(size = 16)) +
+  xlab(expression(paste("Reporting Rate (", rho, ")"))) +
+  ylab("Process Noise           Reproductive Number")
+S11_plot
 
 p = ggplot(data = A_7_gamma_2_LL, aes(x= rho, y = LL)) + geom_point()
 p
