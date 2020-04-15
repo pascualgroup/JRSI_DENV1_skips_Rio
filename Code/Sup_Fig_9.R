@@ -178,7 +178,7 @@ head(Sup_Fig_9_combined_data)
 gamma_poly_data = Sup_Fig_9_ABC_plot_data %>%
   filter(Profile_Var == "gamma") %>%
   dplyr::select(Profile_Var, var_value, LL)
-gamma_poly_fit_model <- lm(gamma_poly_data$LL ~ poly(gamma_poly_data$var_value,2, raw = TRUE))
+gamma_poly_fit_model <- lm(gamma_poly_data$LL ~ poly(gamma_poly_data$var_value,3, raw = TRUE))
 
 gamma_poly_data$Poly_Fit = gamma_poly_fit_model$fitted.values
 
@@ -186,12 +186,12 @@ small_breaks_gamma = seq(from= min(gamma_poly_data$var_value), to = max(gamma_po
 gamma_poly_intercept =summary(gamma_poly_fit_model)$coefficients[1,1]
 gamma_poly_order_1 = summary(gamma_poly_fit_model)$coefficients[2,1]
 gamma_poly_order_2 = summary(gamma_poly_fit_model)$coefficients[3,1]
-#gamma_poly_order_3 = summary(gamma_poly_fit_model)$coefficients[4,1]
+gamma_poly_order_3 = summary(gamma_poly_fit_model)$coefficients[4,1]
 
 
 gamma_poly_curve = gamma_poly_intercept + gamma_poly_order_1*small_breaks_gamma +
-  gamma_poly_order_2*I(small_breaks_gamma^2) 
-#gamma_poly_order_3*I(small_breaks_gamma^3)
+  gamma_poly_order_2*I(small_breaks_gamma^2) +
+gamma_poly_order_3*I(small_breaks_gamma^3)
 
 gamma_poly_curve_df = data.frame(small_breaks = small_breaks_gamma,
                                   poly_curve = gamma_poly_curve,
@@ -249,7 +249,7 @@ Fig_S9_comb_plot = ggplot()  + geom_point(data = Sup_Fig_9_combined_data, aes(x 
         axis.title.x = element_text(face = "plain"),
         strip.text = element_text(face = "plain")) +
   theme(panel.spacing = unit(1.75, "lines")) +
-  xlab(expression(paste("Transmission Phase", (gamma))))
+  xlab(expression(paste("Recovery Rate ", (gamma))))
 
 #theme(axis.title.x=element_blank()) + 
 Fig_S9_comb_plot
