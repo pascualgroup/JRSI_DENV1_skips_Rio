@@ -155,12 +155,12 @@ cutoff_thres_2_LL_from_ML = ML - 2
 profile_var_profile = aggregate(formula(paste0("LL ~ ",eval(profile_var))), profile_data_clean, max)
 gamma_profile_all_params =join(profile_var_profile, profile_data_clean)
 
-Sup_Fig_10_B = ggplot(data = gamma_profile_all_params, aes(x = gamma, y = rho, color = LL > ML_df$ML -2 )) +
+Sup_Fig_10_B = ggplot(data = gamma_profile_all_params,
+                      aes(x = gamma, y = rho,
+                          shape = LL > Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold ),
+                      size = 3 ) +
     geom_point() + rahul_theme +
-    scale_color_manual(name="Color Legend",values=c("red", "blue"), breaks = c(TRUE, FALSE),
-                         labels = c("Within 2LL of old MLE",
-                                                                             "More than 2LL less than old MLE"
-                                                                             )) 
+  scale_shape_manual(values = c(18,17)) + theme(legend.position = "None")
   Sup_Fig_10_B
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_10/Sup_Figure_10B.pdf")
 print(Sup_Fig_10_B)
@@ -169,11 +169,11 @@ dev.off()
 gamma_profile_all_params$R_naught = gamma_profile_all_params$Beta_0/(gamma_profile_all_params$gamma + gamma_profile_all_params$mu_H)
 range(gamma_profile_all_params$R_naught)
 
-Sup_Fig_10_C = ggplot(data = gamma_profile_all_params, aes(x = gamma, y = R_naught, color = LL > ML_df$ML -2 )) +
-  geom_point() + rahul_theme +
-  scale_color_manual(name="Color Legend",values=c("red", "blue"), breaks = c(TRUE, FALSE),
-                     labels = c("Within 2LL of old MLE",
-                                "More than 2LL less than old MLE")) 
+Sup_Fig_10_C = ggplot(data = gamma_profile_all_params,
+                      aes(x = gamma, y = R_naught,
+                          shape = LL > Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold  )) +
+  geom_point() + rahul_theme +scale_shape_manual(values = c(18,17)) +
+  theme(legend.position = "None")
 Sup_Fig_10_C
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_10/Sup_Figure_10C.pdf")
 print(Sup_Fig_10_C)
