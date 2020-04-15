@@ -182,7 +182,7 @@ I_0_poly_data_SIR_Cosine = Sup_Fig_7_ABC_plot_data %>%
   filter(Model == "A_7") %>%
   dplyr::select(Profile_Var, Model, var_value, LL)
 I_0_SIR_Cosine_poly_fit_model <- lm(I_0_poly_data_SIR_Cosine$LL ~
-                                      poly(I_0_poly_data_SIR_Cosine$var_value,2, raw = TRUE))
+                                      poly(I_0_poly_data_SIR_Cosine$var_value,3, raw = TRUE))
 
 I_0_SIR_Cosine_poly_fit_model$Poly_Fit = I_0_SIR_Cosine_poly_fit_model$fitted.values
 small_breaks_I_0_SIR_Cosine = seq(from= min(I_0_poly_data_SIR_Cosine$var_value),
@@ -190,10 +190,13 @@ small_breaks_I_0_SIR_Cosine = seq(from= min(I_0_poly_data_SIR_Cosine$var_value),
 I_0_SIR_Cosine_poly_intercept =summary(I_0_SIR_Cosine_poly_fit_model)$coefficients[1,1]
 I_0_SIR_Cosine_poly_order_1 = summary(I_0_SIR_Cosine_poly_fit_model)$coefficients[2,1]
 I_0_SIR_Cosine_poly_order_2 = summary(I_0_SIR_Cosine_poly_fit_model)$coefficients[3,1]
+I_0_SIR_Cosine_poly_order_3 = summary(I_0_SIR_Cosine_poly_fit_model)$coefficients[4,1]
 
 I_0_SIR_Cosine_poly_curve = I_0_SIR_Cosine_poly_intercept +
   I_0_SIR_Cosine_poly_order_1*small_breaks_I_0_SIR_Cosine +
-  I_0_SIR_Cosine_poly_order_2*I(small_breaks_I_0_SIR_Cosine^2) 
+  I_0_SIR_Cosine_poly_order_2*I(small_breaks_I_0_SIR_Cosine^2) +
+  I_0_SIR_Cosine_poly_order_3*I(small_breaks_I_0_SIR_Cosine^3) 
+
 I_0_SIR_Cosine_poly_curve_df = data.frame(small_breaks = small_breaks_I_0_SIR_Cosine,
                                poly_curve = I_0_SIR_Cosine_poly_curve,
                                plot_var_label = "I_0",
@@ -205,7 +208,7 @@ I_0_poly_data_SIR_Spline = Sup_Fig_7_ABC_plot_data %>%
   filter(Model == "A_6") %>%
   dplyr::select(Profile_Var, Model, var_value, LL)
 I_0_SIR_Spline_poly_fit_model <- lm(I_0_poly_data_SIR_Spline$LL ~
-                                      poly(I_0_poly_data_SIR_Spline$var_value,2, raw = TRUE))
+                                      poly(I_0_poly_data_SIR_Spline$var_value,3, raw = TRUE))
 
 I_0_SIR_Spline_poly_fit_model$Poly_Fit = I_0_SIR_Spline_poly_fit_model$fitted.values
 small_breaks_I_0_SIR_Spline = seq(from= min(I_0_poly_data_SIR_Spline$var_value),
@@ -213,10 +216,13 @@ small_breaks_I_0_SIR_Spline = seq(from= min(I_0_poly_data_SIR_Spline$var_value),
 I_0_SIR_Spline_poly_intercept =summary(I_0_SIR_Spline_poly_fit_model)$coefficients[1,1]
 I_0_SIR_Spline_poly_order_1 = summary(I_0_SIR_Spline_poly_fit_model)$coefficients[2,1]
 I_0_SIR_Spline_poly_order_2 = summary(I_0_SIR_Spline_poly_fit_model)$coefficients[3,1]
+I_0_SIR_Spline_poly_order_3 = summary(I_0_SIR_Spline_poly_fit_model)$coefficients[4,1]
 
 I_0_SIR_Spline_poly_curve = I_0_SIR_Spline_poly_intercept +
   I_0_SIR_Spline_poly_order_1*small_breaks_I_0_SIR_Spline +
-  I_0_SIR_Spline_poly_order_2*I(small_breaks_I_0_SIR_Spline^2) 
+  I_0_SIR_Spline_poly_order_2*I(small_breaks_I_0_SIR_Spline^2) +
+  I_0_SIR_Spline_poly_order_3*I(small_breaks_I_0_SIR_Spline^3) 
+
 I_0_SIR_Spline_poly_curve_df = data.frame(small_breaks = small_breaks_I_0_SIR_Spline,
                                poly_curve = I_0_SIR_Spline_poly_curve,
                                plot_var_label = "I_0",
@@ -228,7 +234,7 @@ I_0_poly_data_SEIR_Spline = Sup_Fig_7_ABC_plot_data %>%
   filter(Model == "A_5") %>%
   dplyr::select(Profile_Var, Model, var_value, LL)
 I_0_SEIR_Spline_poly_fit_model <- lm(I_0_poly_data_SEIR_Spline$LL ~
-                                      poly(I_0_poly_data_SEIR_Spline$var_value,2, raw = TRUE))
+                                      poly(I_0_poly_data_SEIR_Spline$var_value,3, raw = TRUE))
 
 I_0_SEIR_Spline_poly_fit_model$Poly_Fit = I_0_SEIR_Spline_poly_fit_model$fitted.values
 small_breaks_I_0_SEIR_Spline = seq(from= min(I_0_poly_data_SEIR_Spline$var_value),
@@ -236,10 +242,12 @@ small_breaks_I_0_SEIR_Spline = seq(from= min(I_0_poly_data_SEIR_Spline$var_value
 I_0_SEIR_Spline_poly_intercept =summary(I_0_SEIR_Spline_poly_fit_model)$coefficients[1,1]
 I_0_SEIR_Spline_poly_order_1 = summary(I_0_SEIR_Spline_poly_fit_model)$coefficients[2,1]
 I_0_SEIR_Spline_poly_order_2 = summary(I_0_SEIR_Spline_poly_fit_model)$coefficients[3,1]
+I_0_SEIR_Spline_poly_order_3 = summary(I_0_SEIR_Spline_poly_fit_model)$coefficients[4,1]
 
 I_0_SEIR_Spline_poly_curve = I_0_SEIR_Spline_poly_intercept +
   I_0_SEIR_Spline_poly_order_1*small_breaks_I_0_SEIR_Spline +
-  I_0_SEIR_Spline_poly_order_2*I(small_breaks_I_0_SEIR_Spline^2) 
+  I_0_SEIR_Spline_poly_order_2*I(small_breaks_I_0_SEIR_Spline^2) +
+  I_0_SEIR_Spline_poly_order_3*I(small_breaks_I_0_SEIR_Spline^3)
 
 I_0_SEIR_Spline_poly_curve_df = data.frame(small_breaks = small_breaks_I_0_SEIR_Spline,
                                           poly_curve = I_0_SEIR_Spline_poly_curve,
