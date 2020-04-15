@@ -39,33 +39,33 @@ model_ref_df = data.frame(model_name = model_name_list, model_label = model_labe
                           Num_est_parameters = Num_est_parameters_list,
                           data_file_path = data_file_path_list,
                           num_years = num_years_list,stringsAsFactors = FALSE)
-Sup_Fig_9A_df_colnames = c("gamma","LL", "Model",     
+Sup_Fig_10A_df_colnames = c("gamma","LL", "Model",     
                            "Model_Name", "Profile_Var")
-Sup_Fig_9A_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
-Sup_Fig_9A_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
-Sup_Fig_9A_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_10A_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
+Sup_Fig_10A_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_10A_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
 
 
 ML_df_colnames = c("ML", "Model", "Model_Name")
 
 
-Sup_Fig_9A_df = data.frame(matrix(nrow = 0,
-                                  ncol = length(Sup_Fig_9A_df_colnames)))
-Sup_Fig_9A_prof_peak_treshold_df =
-  data.frame(matrix(nrow = 0,ncol = length(Sup_Fig_9A_prof_peak_treshold_df_colnames)))
-Sup_Fig_9A_MLE_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_9A_MLE_value_for_prof_var_df_colnames)))
-Sup_Fig_9A_prof_peak_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_9A_prof_peak_value_for_prof_var_df_colnames)))
+Sup_Fig_10A_df = data.frame(matrix(nrow = 0,
+                                  ncol = length(Sup_Fig_10A_df_colnames)))
+Sup_Fig_10A_prof_peak_treshold_df =
+  data.frame(matrix(nrow = 0,ncol = length(Sup_Fig_10A_prof_peak_treshold_df_colnames)))
+Sup_Fig_10A_MLE_value_for_prof_var_df =
+  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_10A_MLE_value_for_prof_var_df_colnames)))
+Sup_Fig_10A_prof_peak_value_for_prof_var_df =
+  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_10A_prof_peak_value_for_prof_var_df_colnames)))
 
 
 ML_df = data.frame(matrix(nrow = 0,
                                   ncol = length(ML_df_colnames)))
 
-colnames(Sup_Fig_9A_df) = Sup_Fig_9A_df_colnames
-colnames(Sup_Fig_9A_prof_peak_treshold_df) = Sup_Fig_9A_prof_peak_treshold_df_colnames
-colnames(Sup_Fig_9A_MLE_value_for_prof_var_df) = Sup_Fig_9A_MLE_value_for_prof_var_df_colnames
-colnames(Sup_Fig_9A_prof_peak_value_for_prof_var_df) = Sup_Fig_9A_prof_peak_value_for_prof_var_df_colnames
+colnames(Sup_Fig_10A_df) = Sup_Fig_10A_df_colnames
+colnames(Sup_Fig_10A_prof_peak_treshold_df) = Sup_Fig_10A_prof_peak_treshold_df_colnames
+colnames(Sup_Fig_10A_MLE_value_for_prof_var_df) = Sup_Fig_10A_MLE_value_for_prof_var_df_colnames
+colnames(Sup_Fig_10A_prof_peak_value_for_prof_var_df) = Sup_Fig_10A_prof_peak_value_for_prof_var_df_colnames
 
 
 colnames(ML_df) = ML_df_colnames
@@ -107,11 +107,11 @@ for(model_index in seq(1:length(model_name_list))){
   profile_var = "gamma"
   single_model_output_list = get_profile_df(profile_var = profile_var, model_name = model_name,
                                             model_label = model_label, MLE = MLE)
-  Sup_Fig_9A_df = rbind(Sup_Fig_9A_df, single_model_output_list[[1]])
-  Sup_Fig_9A_prof_peak_treshold_df = rbind(Sup_Fig_9A_prof_peak_treshold_df, single_model_output_list[[2]])
-  Sup_Fig_9A_MLE_value_for_prof_var_df = rbind(Sup_Fig_9A_MLE_value_for_prof_var_df,
+  Sup_Fig_10A_df = rbind(Sup_Fig_10A_df, single_model_output_list[[1]])
+  Sup_Fig_10A_prof_peak_treshold_df = rbind(Sup_Fig_10A_prof_peak_treshold_df, single_model_output_list[[2]])
+  Sup_Fig_10A_MLE_value_for_prof_var_df = rbind(Sup_Fig_10A_MLE_value_for_prof_var_df,
                                                single_model_output_list[[3]])
-  Sup_Fig_9A_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_9A_prof_peak_value_for_prof_var_df,
+  Sup_Fig_10A_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_10A_prof_peak_value_for_prof_var_df,
                                                single_model_output_list[[4]])
   
   
@@ -119,14 +119,14 @@ for(model_index in seq(1:length(model_name_list))){
 
 ##Plotting function
 # profile_var = "sigma_P"
-# Sup_Fig_df = Sup_Fig_9A_df
-# Sup_Fig_prof_peak_treshold_df = Sup_Fig_9A_prof_peak_treshold_df
+# Sup_Fig_df = Sup_Fig_10A_df
+# Sup_Fig_prof_peak_treshold_df = Sup_Fig_10A_prof_peak_treshold_df
 # Fig_lab = "10A"
-Sup_Fig_9_A = plot_profiles(profile_var = "gamma", Sup_Fig_df = Sup_Fig_9A_df,
-                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_9A_prof_peak_treshold_df,
-                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_9A_MLE_value_for_prof_var_df,
+Sup_Fig_10_A = plot_profiles(profile_var = "gamma", Sup_Fig_df = Sup_Fig_10A_df,
+                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_10A_prof_peak_treshold_df,
+                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_10A_MLE_value_for_prof_var_df,
                             Sup_Fig_prof_peak_value_for_prof_var_df =
-                              Sup_Fig_9A_prof_peak_value_for_prof_var_df,
+                              Sup_Fig_10A_prof_peak_value_for_prof_var_df,
                             Fig_lab = "10A", ML_df = ML_df)
 
 profile_var = "gamma"
@@ -155,28 +155,28 @@ cutoff_thres_2_LL_from_ML = ML - 2
 profile_var_profile = aggregate(formula(paste0("LL ~ ",eval(profile_var))), profile_data_clean, max)
 gamma_profile_all_params =join(profile_var_profile, profile_data_clean)
 
-Sup_Fig_9_B = ggplot(data = gamma_profile_all_params, aes(x = gamma, y = rho, color = LL > ML_df$ML -2 )) +
+Sup_Fig_10_B = ggplot(data = gamma_profile_all_params, aes(x = gamma, y = rho, color = LL > ML_df$ML -2 )) +
     geom_point() + rahul_theme +
     scale_color_manual(name="Color Legend",values=c("red", "blue"), breaks = c(TRUE, FALSE),
                          labels = c("Within 2LL of old MLE",
                                                                              "More than 2LL less than old MLE"
                                                                              )) 
-  Sup_Fig_9_B
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_9/Sup_Figure_9B.pdf")
-print(Sup_Fig_9_B)
+  Sup_Fig_10_B
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_10/Sup_Figure_10B.pdf")
+print(Sup_Fig_10_B)
 dev.off()
 
 gamma_profile_all_params$R_naught = gamma_profile_all_params$Beta_0/(gamma_profile_all_params$gamma + gamma_profile_all_params$mu_H)
 range(gamma_profile_all_params$R_naught)
 
-Sup_Fig_9_C = ggplot(data = gamma_profile_all_params, aes(x = gamma, y = R_naught, color = LL > ML_df$ML -2 )) +
+Sup_Fig_10_C = ggplot(data = gamma_profile_all_params, aes(x = gamma, y = R_naught, color = LL > ML_df$ML -2 )) +
   geom_point() + rahul_theme +
   scale_color_manual(name="Color Legend",values=c("red", "blue"), breaks = c(TRUE, FALSE),
                      labels = c("Within 2LL of old MLE",
                                 "More than 2LL less than old MLE")) 
-Sup_Fig_9_C
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_9/Sup_Figure_9C.pdf")
-print(Sup_Fig_9_C)
+Sup_Fig_10_C
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_10/Sup_Figure_10C.pdf")
+print(Sup_Fig_10_C)
 dev.off()
 combined_data = gamma_profile_all_params
 combined_data$LL_col = combined_data$LL > ML_df$ML -2
@@ -188,27 +188,27 @@ head(combined_data_melt)
 p = ggplot(data = combined_data_melt, aes(x = color))
 
 ML_df$Line_Col_Group = as.factor(
-  as.numeric(ML_df$ML-2 == Sup_Fig_9A_prof_peak_treshold_df$Profile_threshold)*4 +1)
-Sup_Fig_9A_prof_peak_treshold_df$Line_Col_Group = as.factor(
-  as.numeric(ML_df$ML-2 == Sup_Fig_9A_prof_peak_treshold_df$Profile_threshold)*3 +2)
+  as.numeric(ML_df$ML-2 == Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold)*4 +1)
+Sup_Fig_10A_prof_peak_treshold_df$Line_Col_Group = as.factor(
+  as.numeric(ML_df$ML-2 == Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold)*3 +2)
 
 ML_df$Line_Type_Group = as.factor(
-  as.numeric(ML_df$ML-2 == Sup_Fig_9A_prof_peak_treshold_df$Profile_threshold)*2 +1)
-Sup_Fig_9A_prof_peak_treshold_df$Line_Type_Group = as.factor(
-  as.numeric(ML_df$ML-2 == Sup_Fig_9A_prof_peak_treshold_df$Profile_threshold)*1 +2)
+  as.numeric(ML_df$ML-2 == Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold)*2 +1)
+Sup_Fig_10A_prof_peak_treshold_df$Line_Type_Group = as.factor(
+  as.numeric(ML_df$ML-2 == Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold)*1 +2)
 
-Sup_Fig_9A_MLE_value_for_prof_var_df$Line_Col_Group = as.factor(
-  (as.numeric(Sup_Fig_9A_MLE_value_for_prof_var_df$MLE_value_for_prof_var ==
-                Sup_Fig_9A_prof_peak_value_for_prof_var_df$prof_peak_value_for_prof_var)*3 +3))
-Sup_Fig_9A_prof_peak_value_for_prof_var_df$Line_Col_Group = as.factor(
-  (as.numeric(Sup_Fig_9A_MLE_value_for_prof_var_df$MLE_value_for_prof_var ==
-                Sup_Fig_9A_prof_peak_value_for_prof_var_df$prof_peak_value_for_prof_var)*2 +4))
-Sup_Fig_9A_MLE_value_for_prof_var_df$Line_Type_Group = as.factor(
-  0 + (as.numeric(Sup_Fig_9A_MLE_value_for_prof_var_df$MLE_value_for_prof_var ==
-                    Sup_Fig_9A_prof_peak_value_for_prof_var_df$prof_peak_value_for_prof_var)*2 +1))
-Sup_Fig_9A_prof_peak_value_for_prof_var_df$Line_Type_Group = as.factor(
-  0 + (as.numeric(Sup_Fig_9A_MLE_value_for_prof_var_df$MLE_value_for_prof_var ==
-                    Sup_Fig_9A_prof_peak_value_for_prof_var_df$prof_peak_value_for_prof_var) +2))
+Sup_Fig_10A_MLE_value_for_prof_var_df$Line_Col_Group = as.factor(
+  (as.numeric(Sup_Fig_10A_MLE_value_for_prof_var_df$MLE_value_for_prof_var ==
+                Sup_Fig_10A_prof_peak_value_for_prof_var_df$prof_peak_value_for_prof_var)*3 +3))
+Sup_Fig_10A_prof_peak_value_for_prof_var_df$Line_Col_Group = as.factor(
+  (as.numeric(Sup_Fig_10A_MLE_value_for_prof_var_df$MLE_value_for_prof_var ==
+                Sup_Fig_10A_prof_peak_value_for_prof_var_df$prof_peak_value_for_prof_var)*2 +4))
+Sup_Fig_10A_MLE_value_for_prof_var_df$Line_Type_Group = as.factor(
+  0 + (as.numeric(Sup_Fig_10A_MLE_value_for_prof_var_df$MLE_value_for_prof_var ==
+                    Sup_Fig_10A_prof_peak_value_for_prof_var_df$prof_peak_value_for_prof_var)*2 +1))
+Sup_Fig_10A_prof_peak_value_for_prof_var_df$Line_Type_Group = as.factor(
+  0 + (as.numeric(Sup_Fig_10A_MLE_value_for_prof_var_df$MLE_value_for_prof_var ==
+                    Sup_Fig_10A_prof_peak_value_for_prof_var_df$prof_peak_value_for_prof_var) +2))
 
 
 ML_df_rep = ML_df
@@ -218,33 +218,33 @@ ML_df_rep$LL = "LL"
 ML_df_rep = melt(ML_df_rep, id.vars = c("ML", "Model", "Model_Name", "Line_Col_Group",
                                         "Line_Type_Group"))
 
-Sup_Fig_9A_prof_peak_treshold_df
-Sup_Fig_9A_prof_peak_treshold_df_rep = Sup_Fig_9A_prof_peak_treshold_df
-Sup_Fig_9A_prof_peak_treshold_df_rep$rho = "rho"
-Sup_Fig_9A_prof_peak_treshold_df_rep$R_naught = "R_naught"
-Sup_Fig_9A_prof_peak_treshold_df_rep$LL = "LL"
-Sup_Fig_9A_prof_peak_treshold_df_rep = melt(Sup_Fig_9A_prof_peak_treshold_df_rep,
+Sup_Fig_10A_prof_peak_treshold_df
+Sup_Fig_10A_prof_peak_treshold_df_rep = Sup_Fig_10A_prof_peak_treshold_df
+Sup_Fig_10A_prof_peak_treshold_df_rep$rho = "rho"
+Sup_Fig_10A_prof_peak_treshold_df_rep$R_naught = "R_naught"
+Sup_Fig_10A_prof_peak_treshold_df_rep$LL = "LL"
+Sup_Fig_10A_prof_peak_treshold_df_rep = melt(Sup_Fig_10A_prof_peak_treshold_df_rep,
                                              id.vars = c("Profile_threshold", "Model", "Model_Name", "Line_Col_Group",
                                         "Line_Type_Group"))
 
 
 
-Sup_Fig_9A_MLE_value_for_prof_var_df
-Sup_Fig_9A_MLE_value_for_prof_var_df_rep = Sup_Fig_9A_MLE_value_for_prof_var_df
-Sup_Fig_9A_MLE_value_for_prof_var_df_rep$rho = "rho"
-Sup_Fig_9A_MLE_value_for_prof_var_df_rep$R_naught = "R_naught"
-Sup_Fig_9A_MLE_value_for_prof_var_df_rep$LL = "LL"
-Sup_Fig_9A_MLE_value_for_prof_var_df_rep = melt(Sup_Fig_9A_MLE_value_for_prof_var_df_rep,
+Sup_Fig_10A_MLE_value_for_prof_var_df
+Sup_Fig_10A_MLE_value_for_prof_var_df_rep = Sup_Fig_10A_MLE_value_for_prof_var_df
+Sup_Fig_10A_MLE_value_for_prof_var_df_rep$rho = "rho"
+Sup_Fig_10A_MLE_value_for_prof_var_df_rep$R_naught = "R_naught"
+Sup_Fig_10A_MLE_value_for_prof_var_df_rep$LL = "LL"
+Sup_Fig_10A_MLE_value_for_prof_var_df_rep = melt(Sup_Fig_10A_MLE_value_for_prof_var_df_rep,
                                              id.vars = c("MLE_value_for_prof_var", "Model", "Model_Name", "Line_Col_Group",
                                                          "Line_Type_Group"))
 
 
-Sup_Fig_9A_prof_peak_value_for_prof_var_df
-Sup_Fig_9A_prof_peak_value_for_prof_var_df_rep = Sup_Fig_9A_prof_peak_value_for_prof_var_df
-Sup_Fig_9A_prof_peak_value_for_prof_var_df_rep$rho = "rho"
-Sup_Fig_9A_prof_peak_value_for_prof_var_df_rep$R_naught = "R_naught"
-Sup_Fig_9A_prof_peak_value_for_prof_var_df_rep$LL = "LL"
-Sup_Fig_9A_prof_peak_value_for_prof_var_df_rep = melt(Sup_Fig_9A_prof_peak_value_for_prof_var_df_rep,
+Sup_Fig_10A_prof_peak_value_for_prof_var_df
+Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep = Sup_Fig_10A_prof_peak_value_for_prof_var_df
+Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep$rho = "rho"
+Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep$R_naught = "R_naught"
+Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep$LL = "LL"
+Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep = melt(Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep,
                                                  id.vars = c("prof_peak_value_for_prof_var", "Model", "Model_Name", "Line_Col_Group",
                                                              "Line_Type_Group"))
 
@@ -254,15 +254,15 @@ p = ggplot(data = combined_data_melt, aes(x = gamma, y  = value)) +
 p = p + geom_hline(data = subset(ML_df_rep, variable =="LL"), aes(yintercept = ML -2,
                                color =  Line_Col_Group,
                                linetype = Line_Type_Group), size = 1.0) +
-  geom_hline(data =subset(Sup_Fig_9A_prof_peak_treshold_df_rep,variable =="LL"), aes(yintercept = Profile_threshold,
+  geom_hline(data =subset(Sup_Fig_10A_prof_peak_treshold_df_rep,variable =="LL"), aes(yintercept = Profile_threshold,
                                                       color =  Line_Col_Group,
                                                       linetype = Line_Type_Group),
              size = 1.0) +
-  geom_vline(data = subset(Sup_Fig_9A_MLE_value_for_prof_var_df_rep,variable =="LL"),
+  geom_vline(data = subset(Sup_Fig_10A_MLE_value_for_prof_var_df_rep,variable =="LL"),
              aes(xintercept = MLE_value_for_prof_var,
                  color =  Line_Col_Group,
                  linetype = Line_Type_Group), size = 1.0, show.legend= F) +
-  geom_vline(data = subset(Sup_Fig_9A_prof_peak_value_for_prof_var_df_rep,variable =="LL"),
+  geom_vline(data = subset(Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep,variable =="LL"),
              aes(xintercept = prof_peak_value_for_prof_var,
                  color =  Line_Col_Group,
                  linetype = Line_Type_Group), size = 1.0, show.legend = F) 
@@ -283,7 +283,7 @@ p = p + scale_color_manual(name="Color Legend",values=c("red", "blue",  "darkgre
 # Combined Plot -----------------------------------------------------------
 
 
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_9/Supplemental_Figure_9_Combined.pdf")
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_10/Supplemental_Figure_10_Combined.pdf")
 
 print(p)
 dev.off()
