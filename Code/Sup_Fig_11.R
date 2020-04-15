@@ -2,7 +2,7 @@ rm(list =ls())
 source("load_libraries_essential.R")
 source("rahul_theme.R")
 library(stringr)
-load("../Down_Data/Skip_Data/nCritics.Rdata")
+load("../Generated_Data/Skip_Data/nCritics.Rdata")
 head(nCritics)
 row.names(nCritics)
 colnames(nCritics)
@@ -13,8 +13,7 @@ dim(nCritics) #18 (Reporitng rate) x 11 (delta) x 491 (R_0 value)
 # Row name: Reporting rate (18 from 1% to 50%)
 
 
-reporting_rates = strsplit(reporting_rate, "%")
-reporting_rates = as
+
 rep_rate_header = str_split(row.names(nCritics), pattern = "%", n = Inf,
               simplify = TRUE)
 delta_col_header = str_split(colnames(nCritics), pattern = "_", n = Inf,
@@ -62,7 +61,7 @@ A_7_gamma_2_LL$nearest_skip_rho = 0
 A_7_gamma_2_LL$nearest_skip_R_naught = 0
 A_7_gamma_2_LL$nearest_skip_delta = 0
 A_7_gamma_2_LL$skips = -1
-single_param_data$nearest_skip_R_naught_index = NA
+A_7_gamma_2_LL$nearest_skip_R_naught_index = NA
 A_7_gamma_2_LL$nearest_skip_delta_index = NA
 A_7_gamma_2_LL$nearest_skip_rho_index = NA
 for(param_index in seq(1, nrow(A_7_gamma_2_LL))){
@@ -101,7 +100,7 @@ p
 
 relevant_skip_plot_data = dplyr::select(A_7_gamma_2_LL,
                                         gamma = gamma,
-                                        R_naught = nearest_skip_R_naught,
+                                        "R[0]" = nearest_skip_R_naught,
                                         skips,
                                         rho = nearest_skip_rho,
                                         delta = nearest_skip_delta)
@@ -109,13 +108,25 @@ min(A_7_gamma_2_LL$skips, na.rm = TRUE)
 
 relevant_skip_plot_data_melt = melt(
   relevant_skip_plot_data, id.vars = c("skips"))
-p = ggplot(data = relevant_skip_plot_data_melt,
+S11_plot = ggplot(data = relevant_skip_plot_data_melt,
            aes(x = value, y = skips)) + geom_point() +
-  facet_wrap(~variable, ncol = 4, scales= "free_x") + rahul_theme +
-  xlab("Parameter") + ylab("Number of skips \n (Deterministic) ")
-p
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_11/Sup_Fig_11.pdf")
-print(p)
+  facet_wrap(~variable, ncol = 4, scales= "free", labeller = label_parsed,
+             strip.position = "bottom") + 
+  rahul_man_figure_theme +theme_white_background +
+  theme(
+    aspect.ratio = 1,
+    strip.background = element_blank(),
+    strip.placement = "outside"
+  ) + 
+  theme(legend.position = "None") +
+  theme(axis.text.y = element_text(size = 16),
+        axis.text.x = element_text(size = 16),
+        axis.title.x = element_blank()) +
+  ylab(expression(paste("Number of skips (", n[c], ")")))
+S11_plot
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_11/Sup_Fig_11.pdf",
+    height = 5, width = 10)
+print(S11_plot)
 dev.off()
 
 p = ggplot(data = A_7_gamma_2_LL, aes(x= rho, y = LL)) + geom_point()
@@ -123,7 +134,7 @@ p
 p = ggplot(data = A_7_gamma_2_LL, aes(x= rho, y = gamma)) + geom_point()
 p
 p = ggplot(data = A_7_gamma_2_LL, aes(x= rho, y = R_naught_theo,
-                                      color = gamma)) +
+                                      shape = LL > max(A_7_gamma_2_LL$LL))) +
   scale_color_viridis_c()+
   geom_point() + rahul_theme
 p
