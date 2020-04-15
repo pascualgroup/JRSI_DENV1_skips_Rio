@@ -1,7 +1,7 @@
 rm(list = ls())
 source("load_libraries_essential.R")
 library(zoo)
-library(pomp2)
+library(pomp)
 source("rahul_theme.R")
 source("Sup_Figure_profile_facet_plots_plot_functions.R")
 rahul_poster_theme = theme(
@@ -180,8 +180,6 @@ print(Sup_Fig_10_C)
 dev.off()
 combined_data = gamma_profile_all_params
 
-p = ggplot(data = combined_data, aes(x = gamma, y  = value)) +
-  geom_point(aes(fill = LL_col),size=3, shape=21, stroke=0) + facet_wrap(~variable,ncol = 1, scales = "free_y")
 
 
 
@@ -195,7 +193,7 @@ combined_data_melt = melt(combined_data, id.vars = c("gamma", "LL_shape", "phi",
                                                      "R_naught"))
 
 head(combined_data_melt)
-p = ggplot(data = combined_data_melt, aes(x = gamma, y = value, shape = LL_shape)) +
+S10_plot = ggplot(data = combined_data_melt, aes(x = gamma, y = value, shape = LL_shape)) +
   geom_point(size = 3) + facet_wrap(~variable, scales = "free",
                                     strip.position = "left", labeller=label_parsed,
                                     ncol = 1) +
@@ -210,107 +208,15 @@ p = ggplot(data = combined_data_melt, aes(x = gamma, y = value, shape = LL_shape
   theme(legend.position = "None") +
   xlab(expression(paste("Recovery Rate ", (gamma)))) +
   scale_shape_manual(values = c(1,16))
-p
+S10_plot
 
-ML_df$Line_Col_Group = as.factor(
-  as.numeric(ML_df$ML-2 == Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold)*4 +1)
-Sup_Fig_10A_prof_peak_treshold_df$Line_Col_Group = as.factor(
-  as.numeric(ML_df$ML-2 == Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold)*3 +2)
-
-ML_df$Line_Type_Group = as.factor(
-  as.numeric(ML_df$ML-2 == Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold)*2 +1)
-Sup_Fig_10A_prof_peak_treshold_df$Line_Type_Group = as.factor(
-  as.numeric(ML_df$ML-2 == Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold)*1 +2)
-
-Sup_Fig_10A_MLE_value_for_prof_var_df$Line_Col_Group = as.factor(
-  (as.numeric(Sup_Fig_10A_MLE_value_for_prof_var_df$MLE_value_for_prof_var ==
-                Sup_Fig_10A_prof_peak_value_for_prof_var_df$prof_peak_value_for_prof_var)*3 +3))
-Sup_Fig_10A_prof_peak_value_for_prof_var_df$Line_Col_Group = as.factor(
-  (as.numeric(Sup_Fig_10A_MLE_value_for_prof_var_df$MLE_value_for_prof_var ==
-                Sup_Fig_10A_prof_peak_value_for_prof_var_df$prof_peak_value_for_prof_var)*2 +4))
-Sup_Fig_10A_MLE_value_for_prof_var_df$Line_Type_Group = as.factor(
-  0 + (as.numeric(Sup_Fig_10A_MLE_value_for_prof_var_df$MLE_value_for_prof_var ==
-                    Sup_Fig_10A_prof_peak_value_for_prof_var_df$prof_peak_value_for_prof_var)*2 +1))
-Sup_Fig_10A_prof_peak_value_for_prof_var_df$Line_Type_Group = as.factor(
-  0 + (as.numeric(Sup_Fig_10A_MLE_value_for_prof_var_df$MLE_value_for_prof_var ==
-                    Sup_Fig_10A_prof_peak_value_for_prof_var_df$prof_peak_value_for_prof_var) +2))
-
-
-ML_df_rep = ML_df
-ML_df_rep$rho = "rho"
-ML_df_rep$R_naught = "R_naught"
-ML_df_rep$LL = "LL"
-ML_df_rep = melt(ML_df_rep, id.vars = c("ML", "Model", "Model_Name", "Line_Col_Group",
-                                        "Line_Type_Group"))
-
-Sup_Fig_10A_prof_peak_treshold_df
-Sup_Fig_10A_prof_peak_treshold_df_rep = Sup_Fig_10A_prof_peak_treshold_df
-Sup_Fig_10A_prof_peak_treshold_df_rep$rho = "rho"
-Sup_Fig_10A_prof_peak_treshold_df_rep$R_naught = "R_naught"
-Sup_Fig_10A_prof_peak_treshold_df_rep$LL = "LL"
-Sup_Fig_10A_prof_peak_treshold_df_rep = melt(Sup_Fig_10A_prof_peak_treshold_df_rep,
-                                             id.vars = c("Profile_threshold", "Model", "Model_Name", "Line_Col_Group",
-                                        "Line_Type_Group"))
-
-
-
-Sup_Fig_10A_MLE_value_for_prof_var_df
-Sup_Fig_10A_MLE_value_for_prof_var_df_rep = Sup_Fig_10A_MLE_value_for_prof_var_df
-Sup_Fig_10A_MLE_value_for_prof_var_df_rep$rho = "rho"
-Sup_Fig_10A_MLE_value_for_prof_var_df_rep$R_naught = "R_naught"
-Sup_Fig_10A_MLE_value_for_prof_var_df_rep$LL = "LL"
-Sup_Fig_10A_MLE_value_for_prof_var_df_rep = melt(Sup_Fig_10A_MLE_value_for_prof_var_df_rep,
-                                             id.vars = c("MLE_value_for_prof_var", "Model", "Model_Name", "Line_Col_Group",
-                                                         "Line_Type_Group"))
-
-
-Sup_Fig_10A_prof_peak_value_for_prof_var_df
-Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep = Sup_Fig_10A_prof_peak_value_for_prof_var_df
-Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep$rho = "rho"
-Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep$R_naught = "R_naught"
-Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep$LL = "LL"
-Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep = melt(Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep,
-                                                 id.vars = c("prof_peak_value_for_prof_var", "Model", "Model_Name", "Line_Col_Group",
-                                                             "Line_Type_Group"))
-
-p = ggplot(data = combined_data_melt, aes(x = gamma, y  = value)) +
-  geom_point(aes(fill = LL_col),size=3, shape=21, stroke=0) + facet_wrap(~variable,ncol = 1, scales = "free_y")
-
-p = p + geom_hline(data = subset(ML_df_rep, variable =="LL"), aes(yintercept = ML -2,
-                               color =  Line_Col_Group,
-                               linetype = Line_Type_Group), size = 1.0) +
-  geom_hline(data =subset(Sup_Fig_10A_prof_peak_treshold_df_rep,variable =="LL"), aes(yintercept = Profile_threshold,
-                                                      color =  Line_Col_Group,
-                                                      linetype = Line_Type_Group),
-             size = 1.0) +
-  geom_vline(data = subset(Sup_Fig_10A_MLE_value_for_prof_var_df_rep,variable =="LL"),
-             aes(xintercept = MLE_value_for_prof_var,
-                 color =  Line_Col_Group,
-                 linetype = Line_Type_Group), size = 1.0, show.legend= F) +
-  geom_vline(data = subset(Sup_Fig_10A_prof_peak_value_for_prof_var_df_rep,variable =="LL"),
-             aes(xintercept = prof_peak_value_for_prof_var,
-                 color =  Line_Col_Group,
-                 linetype = Line_Type_Group), size = 1.0, show.legend = F) 
-p = p + scale_color_manual(name="Color Legend",values=c("red", "blue",  "darkgreen", "orange", "purple", "pink"),
-                    breaks = c("1","2", "3", "4", "5", "6"), labels = c("2 LL from MLE",
-                                                                        "2 LL from Profile Peak",
-                                                                        "MLE Profile Value",
-                                                                        "Profile Peak Profile Value",
-                                                                        "2 LL from MLE and Profile Peak",
-                                                                        "MLE and Profile Peak Value")) +
-  scale_fill_manual(name="Fill Legend",values=c("red", "blue"), breaks = c(TRUE, FALSE),
-                     labels = c("Within 2LL of old MLE",
-                                "More than 2LL less than old MLE")) +
-  rahul_theme +
-  scale_linetype_manual(name="Line Type Legend",values=c(4, 2, 1), labels = c("MLE",
-                                                                              "Profile Peak",
-                                                                              "Both"))
 # Combined Plot -----------------------------------------------------------
 
 
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_10/Supplemental_Figure_10_Combined.pdf")
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_10/Supplemental_Figure_10_Combined.pdf",
+    height = 10, width = 5)
 
-print(p)
+print(S10_plot)
 dev.off()
 
 
