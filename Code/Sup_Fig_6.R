@@ -305,7 +305,7 @@ Fig_S6_comb_plot = ggplot()  + geom_point(data = Sup_Fig_6_combined_data, aes(x 
         axis.title.x = element_text(face = "plain"),
         strip.text = element_text(face = "plain")) +
   theme(panel.spacing = unit(1.75, "lines")) +
-  xlab(expression(sigma_M))
+  xlab(expression(sigma[M]))
 
 #theme(axis.title.x=element_blank()) + 
 Fig_S6_comb_plot
