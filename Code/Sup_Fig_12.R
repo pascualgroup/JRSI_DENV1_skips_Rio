@@ -6,7 +6,7 @@ data_file_path = "../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv"
 num_years = 2.50
 source("load_libraries_essential.R")
 source("rahul_theme.R")
-library(pomp2)
+library(pomp)
 
 #Load data
 print(data_file_path)
@@ -53,7 +53,7 @@ registerDoRNG(123456)
 
 foreach(
   i = 1:10,
-  .packages = 'pomp2',
+  .packages = 'pomp',
   .export = c(
     "rproc",
     "rmeas",
@@ -206,7 +206,7 @@ registerDoRNG(123456)
 
 foreach(
   i = 1:10,
-  .packages = 'pomp2',
+  .packages = 'pomp',
   .export = c(
     "rproc",
     "rmeas",
