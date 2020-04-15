@@ -162,6 +162,8 @@ Sup_Fig_5_ABC_plot_data
 head(Sup_Fig_5_ABC_plot_data)
 
 Sup_Fig_5_ABC_plot_data = join(Sup_Fig_5_ABC_plot_data, ML_df)
+Sup_Fig_5_ABC_plot_data = join(Sup_Fig_5_ABC_plot_data, Sup_Fig_5_prof_peak_treshold_df)
+
 cutoff_value  = -174 
 Sup_Fig_5_ABC_plot_data = filter(Sup_Fig_5_ABC_plot_data, LL > ML - 10 )
 
@@ -290,7 +292,7 @@ Sup_Fig_5_combined_data$model_var_label = factor(Sup_Fig_5_combined_data$model_v
 Fig_S5_comb_plot = ggplot()  + geom_point(data = Sup_Fig_5_combined_data, aes(x = var_value, y = LL, color = Metric, shape = Metric)) +
   scale_linetype_manual(values = c("blank", "solid")) +
   rahul_man_figure_theme + rahul_big_panel_theme  +theme_white_background  +
-  geom_hline(data = Sup_Fig_5_combined_data, aes(yintercept = ML -2), size = 1.0, linetype = "dashed", color = 'grey70') +
+  geom_hline(data = Sup_Fig_5_combined_data, aes(yintercept = Profile_threshold), size = 1.0, linetype = "dashed", color = 'grey70') +
   geom_vline(data = Sup_Fig_5_combined_data, aes(xintercept = MLE_value_for_prof_var),
              size = 1.0, linetype = "twodash",show.legend= F, color = 'grey70') +
   facet_wrap(~model_var_label, scales = "free", 
