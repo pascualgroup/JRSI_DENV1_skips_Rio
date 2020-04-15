@@ -121,8 +121,9 @@ S10_plot = ggplot(data = relevant_skip_plot_data_melt,
   theme(legend.position = "None") +
   theme(axis.text.y = element_text(size = 16),
         axis.text.x = element_text(size = 16),
-        axis.title.x = element_blank()) +
-  ylab(expression(paste("Number of skips (", n[c], ")")))
+        axis.title.x = element_text(face = "plain")) +
+  ylab(expression(paste("Number of skips (", n[c], ")"))) +
+  xlab("Recovery Rate     Reproductive Number     Reporting Rate   Seasonality Amplitude")
 S10_plot
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_10/Sup_Fig_10.pdf",
     height = 5, width = 10)
@@ -148,22 +149,15 @@ S11_plot = ggplot(data = S11_plot_data_melt,
   ) + 
   theme(legend.position = "None") +
   theme(axis.text.y = element_text(size = 16),
-        axis.text.x = element_text(size = 16)) +
-  xlab(expression(paste("Reporting Rate (", rho, ")"))) +
-  ylab("Process Noise           Reproductive Number")
+        axis.text.x = element_text(size = 16),
+        axis.title.y = element_text(face = "plain")) +
+  xlab(expression(paste("Reporting Rate ", rho, ""))) +
+  ylab("    Process Noise                      Reproductive Number")
 S11_plot
 
-p = ggplot(data = A_7_gamma_2_LL, aes(x= rho, y = LL)) + geom_point()
-p
-p = ggplot(data = A_7_gamma_2_LL, aes(x= rho, y = gamma)) + geom_point()
-p
-p = ggplot(data = A_7_gamma_2_LL, aes(x= rho, y = R_naught_theo,
-                                      shape = LL > max(A_7_gamma_2_LL$LL))) +
-  scale_color_viridis_c()+
-  geom_point() + rahul_theme
-p
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_12/Sup_Fig_12.pdf")
-p
+
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_11/Sup_Fig_11.pdf")
+S11_plot
 dev.off()
 
 p = ggplot(data = A_7_gamma_2_LL, aes(x = rho, y = sigma_P)) +
