@@ -313,7 +313,7 @@ Fig_S7_comb_plot = ggplot()  + geom_point(data = Sup_Fig_7_combined_data, aes(x 
         axis.title.x = element_text(face = "plain"),
         strip.text = element_text(face = "plain")) +
   theme(panel.spacing = unit(1.75, "lines")) +
-  xlab(expression(I[0]))
+  xlab(expression(paste(" Initial Infected Population ", (I[0]))))
 
 #theme(axis.title.x=element_blank()) + 
 Fig_S7_comb_plot

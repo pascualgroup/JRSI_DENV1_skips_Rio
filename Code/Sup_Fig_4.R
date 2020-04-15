@@ -337,7 +337,7 @@ Fig_S4_comb_plot = ggplot()  + geom_point(data = Sup_Fig_4_combined_data, aes(x 
         axis.title.x = element_text(face = "plain"),
         strip.text = element_text(face = "plain")) +
   theme(panel.spacing = unit(1.75, "lines")) +
-  xlab(expression(rho))
+  xlab(expression(paste(" Reporting Rate ", (rho))))
 
 #theme(axis.title.x=element_blank()) + 
 Fig_S4_comb_plot

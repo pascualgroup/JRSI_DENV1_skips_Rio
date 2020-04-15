@@ -310,7 +310,7 @@ Fig_S5_comb_plot = ggplot()  + geom_point(data = Sup_Fig_5_combined_data, aes(x 
         axis.title.x = element_text(face = "plain"),
         strip.text = element_text(face = "plain")) +
   theme(panel.spacing = unit(1.75, "lines")) +
-  xlab(expression(sigma[P]))
+  xlab(expression(paste(" Process Noise ", (sigma[P]))))
 
 #theme(axis.title.x=element_blank()) + 
 Fig_S5_comb_plot
