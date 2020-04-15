@@ -159,16 +159,3 @@ S11_plot
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_11/Sup_Fig_11.pdf")
 S11_plot
 dev.off()
-
-p = ggplot(data = A_7_gamma_2_LL, aes(x = rho, y = sigma_P)) +
-  geom_point() + rahul_theme
-p
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_13/Sup_Fig_13.pdf")
-p
-dev.off()
-p = ggplot(data = A_7_gamma_2_LL, aes(x = R_naught_theo, y = sigma_P)) + geom_point() +
-  rahul_theme
-p
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_14/Sup_Fig_14.pdf")
-p
-dev.off()
