@@ -160,7 +160,7 @@ Sup_Fig_10_B = ggplot(data = gamma_profile_all_params,
                           shape = LL > Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold ),
                       size = 3 ) +
     geom_point() + rahul_theme +
-  scale_shape_manual(values = c(18,17)) + theme(legend.position = "None")
+  scale_shape_manual(values = c(1,16)) + theme(legend.position = "None")
   Sup_Fig_10_B
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_10/Sup_Figure_10B.pdf")
 print(Sup_Fig_10_B)
@@ -172,20 +172,45 @@ range(gamma_profile_all_params$R_naught)
 Sup_Fig_10_C = ggplot(data = gamma_profile_all_params,
                       aes(x = gamma, y = R_naught,
                           shape = LL > Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold  )) +
-  geom_point() + rahul_theme +scale_shape_manual(values = c(18,17)) +
+  geom_point() + rahul_theme +scale_shape_manual(values = c(1,16)) +
   theme(legend.position = "None")
 Sup_Fig_10_C
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_10/Sup_Figure_10C.pdf")
 print(Sup_Fig_10_C)
 dev.off()
 combined_data = gamma_profile_all_params
-combined_data$LL_col = combined_data$LL > ML_df$ML -2
-combined_data_melt = melt(combined_data, id.vars = c("gamma", "LL_col", "phi",
+
+p = ggplot(data = combined_data, aes(x = gamma, y  = value)) +
+  geom_point(aes(fill = LL_col),size=3, shape=21, stroke=0) + facet_wrap(~variable,ncol = 1, scales = "free_y")
+
+
+
+combined_data$LL_shape = combined_data$LL > Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold
+combined_data = combined_data %>%
+  mutate("R[0]" = R_naught)
+combined_data_melt = melt(combined_data, id.vars = c("gamma", "LL_shape", "phi",
                                                        "sigma_P", "sigma_M", "Beta_0",
                                                        "delta", "mu_H", "N_0", "I_0", "R_0",
-                                                       "C_0", "r", "omega", "epsilon", "seed"))
+                                                       "C_0", "r", "omega", "epsilon", "seed", "LL",
+                                                     "R_naught"))
+
 head(combined_data_melt)
-p = ggplot(data = combined_data_melt, aes(x = color))
+p = ggplot(data = combined_data_melt, aes(x = gamma, y = value, shape = LL_shape)) +
+  geom_point(size = 3) + facet_wrap(~variable, scales = "free",
+                                    strip.position = "left", labeller=label_parsed,
+                                    ncol = 1) +
+  rahul_man_figure_theme +theme_white_background  +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) +
+  theme(
+    aspect.ratio = 1,
+    strip.background = element_blank(),
+    strip.placement = "outside"
+  ) +
+  theme(axis.title.y=element_blank()) +
+  theme(legend.position = "None") +
+  xlab(expression(paste("Recovery Rate ", (gamma)))) +
+  scale_shape_manual(values = c(1,16))
+p
 
 ML_df$Line_Col_Group = as.factor(
   as.numeric(ML_df$ML-2 == Sup_Fig_10A_prof_peak_treshold_df$Profile_threshold)*4 +1)
