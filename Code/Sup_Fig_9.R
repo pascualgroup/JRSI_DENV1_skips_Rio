@@ -42,33 +42,33 @@ model_ref_df = data.frame(model_name = model_name_list, model_label = model_labe
                           Num_est_parameters = Num_est_parameters_list,
                           data_file_path = data_file_path_list,
                           num_years = num_years_list,stringsAsFactors = FALSE)
-Sup_Fig_8_df_colnames = c("phi","LL", "Model",     
+Sup_Fig_9_df_colnames = c("gamma","LL", "Model",     
                            "Model_Name", "Profile_Var")
-Sup_Fig_8_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
-Sup_Fig_8_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
-Sup_Fig_8_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_9_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
+Sup_Fig_9_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_9_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
 
 ML_df_colnames = c("ML", "Model", "Model_Name")
 
 
-Sup_Fig_8_df = data.frame(matrix(nrow = 0,
-                                  ncol = length(Sup_Fig_8_df_colnames)))
+Sup_Fig_9_df = data.frame(matrix(nrow = 0,
+                                  ncol = length(Sup_Fig_9_df_colnames)))
 
 
-Sup_Fig_8_prof_peak_treshold_df = data.frame(matrix(nrow = 0,
-                                                     ncol = length(Sup_Fig_8_prof_peak_treshold_df_colnames)))
-Sup_Fig_8_MLE_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_8_MLE_value_for_prof_var_df_colnames)))
-Sup_Fig_8_prof_peak_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_8_prof_peak_value_for_prof_var_df_colnames)))
+Sup_Fig_9_prof_peak_treshold_df = data.frame(matrix(nrow = 0,
+                                                     ncol = length(Sup_Fig_9_prof_peak_treshold_df_colnames)))
+Sup_Fig_9_MLE_value_for_prof_var_df =
+  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_9_MLE_value_for_prof_var_df_colnames)))
+Sup_Fig_9_prof_peak_value_for_prof_var_df =
+  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_9_prof_peak_value_for_prof_var_df_colnames)))
 
 ML_df = data.frame(matrix(nrow = 0,
                           ncol = length(ML_df_colnames)))
 
-colnames(Sup_Fig_8_df) = Sup_Fig_8_df_colnames
-colnames(Sup_Fig_8_prof_peak_treshold_df) = Sup_Fig_8_prof_peak_treshold_df_colnames
-colnames(Sup_Fig_8_MLE_value_for_prof_var_df) = Sup_Fig_8_MLE_value_for_prof_var_df_colnames
-colnames(Sup_Fig_8_prof_peak_value_for_prof_var_df) = Sup_Fig_8_prof_peak_value_for_prof_var_df_colnames
+colnames(Sup_Fig_9_df) = Sup_Fig_9_df_colnames
+colnames(Sup_Fig_9_prof_peak_treshold_df) = Sup_Fig_9_prof_peak_treshold_df_colnames
+colnames(Sup_Fig_9_MLE_value_for_prof_var_df) = Sup_Fig_9_MLE_value_for_prof_var_df_colnames
+colnames(Sup_Fig_9_prof_peak_value_for_prof_var_df) = Sup_Fig_9_prof_peak_value_for_prof_var_df_colnames
 
 colnames(ML_df) = ML_df_colnames
 
@@ -108,30 +108,30 @@ for(model_index in seq(1:length(model_name_list))){
   single_model_ML_df = data.frame(ML = ML, Model = model_name, Model_Name = model_label)
   ML_df = rbind(ML_df, single_model_ML_df)
   #Get data for Sup Figure 8
-  profile_var = "phi"
+  profile_var = "gamma"
   single_model_output_list = get_profile_df(profile_var = profile_var, model_name = model_name,
                                             model_label = model_label, MLE = MLE)
-  Sup_Fig_8_df = rbind(Sup_Fig_8_df, single_model_output_list[[1]])
-  Sup_Fig_8_prof_peak_treshold_df = rbind(Sup_Fig_8_prof_peak_treshold_df, single_model_output_list[[2]])
-  Sup_Fig_8_prof_peak_treshold_df$Profile_Var = profile_var
-  Sup_Fig_8_MLE_value_for_prof_var_df = rbind(Sup_Fig_8_MLE_value_for_prof_var_df,
+  Sup_Fig_9_df = rbind(Sup_Fig_9_df, single_model_output_list[[1]])
+  Sup_Fig_9_prof_peak_treshold_df = rbind(Sup_Fig_9_prof_peak_treshold_df, single_model_output_list[[2]])
+  Sup_Fig_9_prof_peak_treshold_df$Profile_Var = profile_var
+  Sup_Fig_9_MLE_value_for_prof_var_df = rbind(Sup_Fig_9_MLE_value_for_prof_var_df,
                                                single_model_output_list[[3]])
-  Sup_Fig_8_MLE_value_for_prof_var_df$Profile_Var = profile_var
-  Sup_Fig_8_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_8_prof_peak_value_for_prof_var_df,
+  Sup_Fig_9_MLE_value_for_prof_var_df$Profile_Var = profile_var
+  Sup_Fig_9_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_9_prof_peak_value_for_prof_var_df,
                                                      single_model_output_list[[4]])
-  Sup_Fig_8_prof_peak_value_for_prof_var_df$Profile_Var = profile_var
+  Sup_Fig_9_prof_peak_value_for_prof_var_df$Profile_Var = profile_var
 }
 
-Sup_Fig_8_df  =  Sup_Fig_8_df %>%
-  mutate(var_value = phi) %>%
-  dplyr::select(-phi)
+Sup_Fig_9_df  =  Sup_Fig_9_df %>%
+  mutate(var_value = gamma) %>%
+  dplyr::select(-gamma)
 
-ymin = Sup_Fig_8_prof_peak_treshold_df %>%
+ymin = Sup_Fig_9_prof_peak_treshold_df %>%
   group_by(Model) %>%
   summarize(ymin = Profile_threshold-10) %>%
   as.data.frame() 
 
-min_prof_value = Sup_Fig_8_df %>%
+min_prof_value = Sup_Fig_9_df %>%
   group_by(Model) %>%
   summarize(prof_min = min(LL)) %>%
   as.data.frame()
@@ -145,59 +145,59 @@ y_thres_df = ymin %>%
 
 y_lim_min = min(y_thres_df$y_thres)
 
-Sup_Fig_8_df_clean = filter(Sup_Fig_8_df, LL > y_lim_min)
+Sup_Fig_9_df_clean = filter(Sup_Fig_9_df, LL > y_lim_min)
 
-plot_label_df = data.frame(Model_Name = Sup_Fig_8_MLE_value_for_prof_var_df$Model_Name,
+plot_label_df = data.frame(Model_Name = Sup_Fig_9_MLE_value_for_prof_var_df$Model_Name,
                            plot_var_label = c("rho", "rho", "rho"),
                            model_var_label = c("SIR Cosine", "SIR Spline", "SEIR Spline"))
-Sup_Fig_8_df = join(Sup_Fig_8_df, plot_label_df)
+Sup_Fig_9_df = join(Sup_Fig_9_df, plot_label_df)
 
-Sup_Fig_8_ABC_plot_data = join(Sup_Fig_8_df, Sup_Fig_8_MLE_value_for_prof_var_df)
+Sup_Fig_9_ABC_plot_data = join(Sup_Fig_9_df, Sup_Fig_9_MLE_value_for_prof_var_df)
 
 
-Sup_Fig_8_ABC_plot_data
-head(Sup_Fig_8_ABC_plot_data)
+Sup_Fig_9_ABC_plot_data
+head(Sup_Fig_9_ABC_plot_data)
 
-Sup_Fig_8_ABC_plot_data = join(Sup_Fig_8_ABC_plot_data, ML_df)
-Sup_Fig_8_ABC_plot_data = join(Sup_Fig_8_ABC_plot_data, Sup_Fig_8_prof_peak_treshold_df)
+Sup_Fig_9_ABC_plot_data = join(Sup_Fig_9_ABC_plot_data, ML_df)
+Sup_Fig_9_ABC_plot_data = join(Sup_Fig_9_ABC_plot_data, Sup_Fig_9_prof_peak_treshold_df)
 
 
 cutoff_value  = -174 
-Sup_Fig_8_ABC_plot_data = filter(Sup_Fig_8_ABC_plot_data, LL > ML - 10 )
+Sup_Fig_9_ABC_plot_data = filter(Sup_Fig_9_ABC_plot_data, LL > ML - 10 )
 
-Sup_Fig_8_ABC_plot_data$Metric = "LL"
-Sup_Fig_8_ABC_plot_data$low_bound = ML-11
-Sup_Fig_8_ABC_plot_data$Line_Color = "Show_Line"
+Sup_Fig_9_ABC_plot_data$Metric = "LL"
+Sup_Fig_9_ABC_plot_data$low_bound = ML-11
+Sup_Fig_9_ABC_plot_data$Line_Color = "Show_Line"
 
-Sup_Fig_8_combined_data = Sup_Fig_8_ABC_plot_data
-#Sup_Fig_8_combined_data$Model_Name = factor(Sup_Fig_8_combined_data$Model_Name, levels = c("SIR Cosine",
+Sup_Fig_9_combined_data = Sup_Fig_9_ABC_plot_data
+#Sup_Fig_9_combined_data$Model_Name = factor(Sup_Fig_9_combined_data$Model_Name, levels = c("SIR Cosine",
 #                                                                                           "SIR Spline","SEIR Spline"))
-head(Sup_Fig_8_combined_data)
+head(Sup_Fig_9_combined_data)
 
-#### phi Profile
-phi_poly_data = Sup_Fig_8_ABC_plot_data %>%
-  filter(Profile_Var == "phi") %>%
+#### gamma Profile
+gamma_poly_data = Sup_Fig_9_ABC_plot_data %>%
+  filter(Profile_Var == "gamma") %>%
   dplyr::select(Profile_Var, var_value, LL)
-phi_poly_fit_model <- lm(phi_poly_data$LL ~ poly(phi_poly_data$var_value,2, raw = TRUE))
+gamma_poly_fit_model <- lm(gamma_poly_data$LL ~ poly(gamma_poly_data$var_value,2, raw = TRUE))
 
-phi_poly_data$Poly_Fit = phi_poly_fit_model$fitted.values
+gamma_poly_data$Poly_Fit = gamma_poly_fit_model$fitted.values
 
-small_breaks_phi = seq(from= min(phi_poly_data$var_value), to = max(phi_poly_data$var_value), length = 10^3)
-phi_poly_intercept =summary(phi_poly_fit_model)$coefficients[1,1]
-phi_poly_order_1 = summary(phi_poly_fit_model)$coefficients[2,1]
-phi_poly_order_2 = summary(phi_poly_fit_model)$coefficients[3,1]
-#phi_poly_order_3 = summary(phi_poly_fit_model)$coefficients[4,1]
+small_breaks_gamma = seq(from= min(gamma_poly_data$var_value), to = max(gamma_poly_data$var_value), length = 10^3)
+gamma_poly_intercept =summary(gamma_poly_fit_model)$coefficients[1,1]
+gamma_poly_order_1 = summary(gamma_poly_fit_model)$coefficients[2,1]
+gamma_poly_order_2 = summary(gamma_poly_fit_model)$coefficients[3,1]
+#gamma_poly_order_3 = summary(gamma_poly_fit_model)$coefficients[4,1]
 
 
-phi_poly_curve = phi_poly_intercept + phi_poly_order_1*small_breaks_phi +
-  phi_poly_order_2*I(small_breaks_phi^2) 
-#phi_poly_order_3*I(small_breaks_phi^3)
+gamma_poly_curve = gamma_poly_intercept + gamma_poly_order_1*small_breaks_gamma +
+  gamma_poly_order_2*I(small_breaks_gamma^2) 
+#gamma_poly_order_3*I(small_breaks_gamma^3)
 
-phi_poly_curve_df = data.frame(small_breaks = small_breaks_phi,
-                                  poly_curve = phi_poly_curve,
+gamma_poly_curve_df = data.frame(small_breaks = small_breaks_gamma,
+                                  poly_curve = gamma_poly_curve,
                                   plot_var_label = "beta[0]")
 
-combined_poly_data = phi_poly_curve_df
+combined_poly_data = gamma_poly_curve_df
 
 rahul_big_panel_theme = theme(
   axis.title.x = element_text(size = 14,
@@ -223,14 +223,14 @@ rahul_big_panel_theme = theme(
   legend.box.margin = unit(c(.5,.5,.5,.5), "cm")
 )
 
-### Plot Figure S8
-Fig_S8_comb_plot = ggplot()  + geom_point(data = Sup_Fig_8_combined_data, aes(x = var_value, y = LL, color = Metric, shape = Metric)) +
+### Plot Figure S9
+Fig_S9_comb_plot = ggplot()  + geom_point(data = Sup_Fig_9_combined_data, aes(x = var_value, y = LL, color = Metric, shape = Metric)) +
   scale_linetype_manual(values = c("blank", "solid")) +
   rahul_man_figure_theme + rahul_big_panel_theme  +theme_white_background  +
-  geom_hline(data = Sup_Fig_8_combined_data, aes(yintercept = Profile_threshold), size = 1.0, linetype = "dashed", color = 'grey70') +
-  geom_vline(data = Sup_Fig_8_combined_data, aes(xintercept = MLE_value_for_prof_var),
+  geom_hline(data = Sup_Fig_9_combined_data, aes(yintercept = Profile_threshold), size = 1.0, linetype = "dashed", color = 'grey70') +
+  geom_vline(data = Sup_Fig_9_combined_data, aes(xintercept = MLE_value_for_prof_var),
              size = 1.0, linetype = "twodash",show.legend= F, color = 'grey70') +
-  geom_hline(data = Sup_Fig_8_combined_data, aes(yintercept = low_bound), color = 'white', linetype = 'blank') +
+  geom_hline(data = Sup_Fig_9_combined_data, aes(yintercept = low_bound), color = 'white', linetype = 'blank') +
   geom_line(data = combined_poly_data, aes(x = small_breaks, y = poly_curve), color = 'red', show.legend = F) +
   scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) +
   theme(
@@ -249,16 +249,16 @@ Fig_S8_comb_plot = ggplot()  + geom_point(data = Sup_Fig_8_combined_data, aes(x 
         axis.title.x = element_text(face = "plain"),
         strip.text = element_text(face = "plain")) +
   theme(panel.spacing = unit(1.75, "lines")) +
-  xlab(expression(paste("Transmission Phase", (phi))))
+  xlab(expression(paste("Transmission Phase", (gamma))))
 
 #theme(axis.title.x=element_blank()) + 
-Fig_S8_comb_plot
+Fig_S9_comb_plot
 
 pdf(
   paste0(
-    "../Figures/Supplemental_Figures/Supplemental_Figure_8/Supplemental_Figure_8.pdf"),
+    "../Figures/Supplemental_Figures/Supplemental_Figure_9/Supplemental_Figure_9.pdf"),
   height = 5, width = 5)
-Fig_S8_comb_plot
+Fig_S9_comb_plot
 dev.off()
 
 
