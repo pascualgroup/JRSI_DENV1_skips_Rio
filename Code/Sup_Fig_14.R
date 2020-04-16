@@ -115,11 +115,13 @@ p = ggplot(data = no_na,
            aes(x =sigma_P, y = total_re_emergence_prob_1_year,
                color = spark_size)) + geom_point(size = 3) +
   rahul_theme + theme_white_background + xlab(expression(paste(" Process Noise ", (sigma[P])))) +
-  ylab("Re-Emergence \n Probability in 1990") +
+  ylab(expression(paste("Re-Emergence Probability in ", 1990))) +
   rahul_man_figure_theme +
   geom_point(data = ML_with_re_emerge_prob,
              aes(x = sigma_P, y = total_re_emergence_prob_1_year),
-             color = 'red', fill = "NA", size = 5, shape = 21, stroke = 3)
+             color = 'red', fill = "NA", size = 5, shape = 21, stroke = 3) +
+  scale_color_continuous(name = " Sparks \n per Day \n in Jan 1990") +
+  theme(legend.title = element_text(face = "plain"))
   
 p
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_14/Sup_Fig_14.pdf",
@@ -127,18 +129,3 @@ pdf("../Figures/Supplemental_Figures/Supplemental_Figure_14/Sup_Fig_14.pdf",
 print(p)
 dev.off()
 
-
-p = ggplot(data = no_na_20,
-           aes(x =sigma_P, y = R_naught, color =  total_re_emergence_prob_1_year)) + geom_point() +
-  rahul_theme
-p
-
-p = ggplot(data = no_na_20,
-           aes(x =rho, y = total_re_emergence_prob_1_year)) + geom_point(size = 3) +
-  rahul_theme + theme_white_background + xlab(expression(sigma[P])) + ylab("Re-Emergence \n Probability in 1990") +
-  rahul_man_figure_theme +
-  geom_point(data = ML_with_re_emerge_prob,
-             aes(x = sigma_P, y = total_re_emergence_prob_1_year),
-             color = 'red', fill = "NA", size = 5, shape = 21, stroke = 3)
-
-p
