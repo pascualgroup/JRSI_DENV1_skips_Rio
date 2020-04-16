@@ -89,7 +89,8 @@ foreach(
     pred.mean = TRUE,
     pred.var = TRUE,
     filter.mean = TRUE,
-    filter.traj = TRUE
+    filter.traj = TRUE,
+    save.states = TRUE
   )
 } -> pfilter_ML_output_two_and_a_half_years
 proc.time() - ptm
@@ -112,11 +113,24 @@ for(i in seq(from = 1, to = 10, by = 1)){
   single_pfilter_run = pfilter_ML_output_two_and_a_half_years[[i]]
   single_pfilter_filter_mean = filter.mean(single_pfilter_run)
   single_pfilter_pred_var = pred.var(single_pfilter_run)
+  single_pfilter_pred_mean = pred.mean(single_pfilter_run)
   
+  single_pfilter_saved_states = single_pfilter_run@saved.states
+  single_pfilter_saved_states_df = as.data.frame(single_pfilter_saved_states)
+  head(single_pfilter_saved_states)
+  
+  nrow(single_pfilter_saved_states_df)
   single_pfilter_filter_mean_df = as.data.frame(single_pfilter_filter_mean,
                                                 row.names = row.names(single_pfilter_filter_mean))
   single_pfilter_pred_var_df = as.data.frame(single_pfilter_pred_var,
                                                 row.names = row.names(single_pfilter_pred_var))
+  single_pfilter_saved_states_df = as.data.frame(single_pfilter_saved_states,
+                                             row.names = row.names(single_pfilter_saved_states))
+  single_pfilter_saved_states_df$variable = row.names(single_pfilter_saved_states_df)
+  
+  single_pfilter_saved_states_C = single_pfilter_saved_states_df %>%
+    filter(variable == "C")
+  
   single_pfilter_filter_mean_df$variable = row.names(single_pfilter_filter_mean)
   single_pfilter_pred_var_df$variable = row.names(single_pfilter_pred_var)
   
@@ -126,6 +140,9 @@ for(i in seq(from = 1, to = 10, by = 1)){
                                             variable == "C")
   single_pfilter_filter_mean_cases = dplyr::select(single_pfilter_filter_mean_cases, -variable)
   single_pfilter_pred_var_cases = dplyr::select(single_pfilter_pred_var_cases, -variable)
+  
+  single_pfilter_saved_states_C = dplyr::select(single_pfilter_saved_states_C, -variable)
+  
   
   single_pfilter_filter_resid_cases = Rio_data_first_two_and_half_years_only$Y - single_pfilter_filter_mean_cases
   pfilter_mean_cases = rbind(pfilter_mean_cases, single_pfilter_filter_mean_cases)
