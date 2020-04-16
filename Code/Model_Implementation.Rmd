@@ -780,7 +780,7 @@ write.csv(combined_profile_data, file = paste0("../Generated_Data/Profiles/", mo
           append = FALSE, row.names = FALSE)
 ```
 
-#  Figure 1 Revised
+#  Figure 1 
 
 ```{r}
 rm(list =ls())
@@ -921,7 +921,7 @@ source("TIFF_Man_Fig_1.R")
 
 ```
 
-# Plot Figure 2 Revised 
+# Figure 2 
 ```{r}
 rm(list =ls())
 source("load_libraries_essential.R")
@@ -1415,7 +1415,7 @@ dev.off()
 
 
 
-# Plot Figure 3
+# Figure 3
 
 ### Source plot function
 
@@ -1945,7 +1945,7 @@ Fig_3_comb_plot
 dev.off()
 ```
 
-
+# Figure 4
 
 ## Fig 4 Panel A
 ```{r}
@@ -2730,7 +2730,7 @@ for(param_index in c(seq(1:23),seq(from = 25,to = 168),seq(from = 170,to = 450),
 # ))
 ```
 
-# Plot Figure 5
+# Figure 5
 ### Figure 5 Panel A
 ```{r}
 source("load_libraries_essential.R")
