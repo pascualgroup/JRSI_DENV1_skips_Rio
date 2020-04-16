@@ -1,7 +1,7 @@
 rm(list = ls())
 source("load_libraries_essential.R")
 library(zoo)
-library(pomp2)
+library(pomp)
 source("rahul_theme.R")
 args = commandArgs(trailingOnly = TRUE)
 
@@ -79,7 +79,7 @@ for(param_index in c(seq(1:23),seq(from = 25,to = 168),seq(from = 170,to = 450),
     paste0(
       "../Generated_Data/Profiles/",
       model_name,
-      "_Model/sup_fig_21_stoch_re_emerge_test/",
+      "_Model/sup_fig_stoch_re_emergence_test/",
       model_name,
       "_re_mergence_spark_probability_data_subset_", param_index,
       ".csv"
@@ -92,13 +92,13 @@ for(param_index in c(seq(1:23),seq(from = 25,to = 168),seq(from = 170,to = 450),
   
 }
 
-## Save data (FILE IS LARGE SO COMMENTED OUT)
-write.csv(all_param_spark_data, file = paste0("../Generated_Data/Profiles/",
-          model_name,
-          "_Model/sup_fig_21_stoch_re_emerge_test/",
-          model_name,
-          "_re_mergence_spark_prob_all_params.csv"
-))
+# ## Save data (FILE IS LARGE SO COMMENTED OUT)
+# write.csv(all_param_spark_data, file = paste0("../Generated_Data/Profiles/",
+#           model_name,
+#           "_Model/sup_fig_stoch_re_emergence_test/",
+#           model_name,
+#           "_re_mergence_spark_prob_all_params.csv"
+# ))
 
 spark_data_90_only = filter(all_param_spark_data, spark_year == 1990)
 
@@ -114,21 +114,20 @@ ML_with_re_emerge_prob = join(ML_df, no_na)
 p = ggplot(data = no_na,
            aes(x =sigma_P, y = total_re_emergence_prob_1_year,
                color = spark_size)) + geom_point(size = 3) +
-  rahul_theme + theme_white_background + xlab(expression(sigma[P])) + ylab("Re-Emergence \n Probability in 1990") +
+  rahul_theme + theme_white_background + xlab(expression(paste(" Process Noise ", (sigma[P])))) +
+  ylab("Re-Emergence \n Probability in 1990") +
   rahul_man_figure_theme +
   geom_point(data = ML_with_re_emerge_prob,
              aes(x = sigma_P, y = total_re_emergence_prob_1_year),
              color = 'red', fill = "NA", size = 5, shape = 21, stroke = 3)
   
 p
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_21/Sup_Fig_21.pdf")
-print(p)
-dev.off()
-
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_21/Sup_Fig_21_zoom.pdf",
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_14/Sup_Fig_14.pdf",
     height = 5, width = 10)
 print(p)
 dev.off()
+
+
 p = ggplot(data = no_na_20,
            aes(x =sigma_P, y = R_naught, color =  total_re_emergence_prob_1_year)) + geom_point() +
   rahul_theme
