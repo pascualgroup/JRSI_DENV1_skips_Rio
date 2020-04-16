@@ -161,6 +161,8 @@ p = ggplot(data = third_year_melt_data, aes(x = time, y = value, color = variabl
 p    
 
 mean_of_filter_means_accross_all_pfilter_runs = colMeans(pfilter_mean_cases)
+sd_of_filter_means_accross_all_pfilter_runs = sapply(pfilter_mean_cases, sd)
+
 mean_of_pred_var_accross_all_pfilter_runs = colMeans(pfilter_var_cases)
 
 
@@ -219,7 +221,7 @@ foreach(
     "params",
     "par_trans",
     "acumvarnames",
-    "covar"
+   "covar"
   )
 ) %dopar% {
   pfilter(
@@ -292,23 +294,36 @@ for(i in seq(from = 1, to = 10, by = 1)){
 big_sigma_mean_of_residuals_accross_all_pfilter_runs = colMeans(big_sigma_pfilter_resid_cases)
 big_sigma_mean_of_filter_means_accross_all_pfilter_runs = colMeans(big_sigma_pfilter_mean_cases)
 big_sigma_mean_of_pred_var_accross_all_pfilter_runs = colMeans(big_sigma_ppred_var_cases)
-
+big_sigma_sd_of_filter_means_accross_all_pfilter_runs = sapply(big_sigma_pfilter_mean_cases, sd)
 ##
 Combined_filter_mean_case_comp_plot = data.frame(time = Rio_data_first_two_and_half_years_only$times,
                             MLE = mean_of_filter_means_accross_all_pfilter_runs,
                             Big_sigma_P = big_sigma_mean_of_filter_means_accross_all_pfilter_runs,
-                            log_data = Rio_data_first_two_and_half_years_only$Y)
-Combined_pred_var_case_comp_plot = data.frame(time = Rio_data_first_two_and_half_years_only$times,
-                                                 MLE = mean_of_pred_var_accross_all_pfilter_runs,
-                                                 Big_sigma_P = big_sigma_mean_of_pred_var_accross_all_pfilter_runs)
+                            obs_data = Rio_data_first_two_and_half_years_only$Y)
+Combined_filter_mean_sd_case_comp_plot = data.frame(time = Rio_data_first_two_and_half_years_only$times,
+                                                 MLE = sd_of_filter_means_accross_all_pfilter_runs,
+                                                 Big_sigma_P = big_sigma_sd_of_filter_means_accross_all_pfilter_runs)
+Combined_pred_var_case_comp_plot= data.frame(time = Rio_data_first_two_and_half_years_only$times,
+                                              MLE = mean_of_pred_var_accross_all_pfilter_runs,
+                                              Big_sigma_P = big_sigma_mean_of_pred_var_accross_all_pfilter_runs)
+
 Combined_filter_mean_case_comp_plot_melt = melt(Combined_filter_mean_case_comp_plot, id.vars = ("time"))
 Combined_pred_var_case_comp_plot_melt = melt(Combined_pred_var_case_comp_plot, id.vars = ("time"))
-colnames(Combined_filter_mean_case_comp_plot_melt) = c("time", "variable", "filter_mean")
+Combined_filter_mean_sd_case_comp_plot = melt(Combined_filter_mean_sd_case_comp_plot, id.vars = ("time"))
+
+colnames(Combined_filter_mean_case_comp_plot_melt) = c("time", "variable", "mean_filter_mean")
 colnames(Combined_pred_var_case_comp_plot_melt) = c("time", "variable", "pred_var")
+colnames(Combined_filter_mean_sd_case_comp_plot) = c("time", "variable", "sd_filter_mean")
+
 combined_filter_mean_and_pred_var_df = join(Combined_filter_mean_case_comp_plot_melt,
                                             Combined_pred_var_case_comp_plot_melt)
+combined_filter_mean_mean_and_sd_df = join(Combined_filter_mean_case_comp_plot_melt,
+                                           Combined_filter_mean_sd_case_comp_plot)
 third_year_melt_data = filter(Combined_filter_mean_case_comp_plot_melt, time >= 365*2)
+ 
 third_year_combined_melt_data = filter(combined_filter_mean_and_pred_var_df, time >= 365*2)
+
+third_year_combined_sd_melt_data = filter(combined_filter_mean_mean_and_sd_df, time >= 365*2)
 
 p = ggplot(data = third_year_melt_data, aes(x = time, y = filter_mean, color = variable)) +
   geom_point() + geom_line() + rahul_theme + facet_wrap(~variable,ncol = 1, scales = "free_y")
@@ -316,21 +331,36 @@ p
 p = ggplot(data = third_year_melt_data, aes(x = time/365, y = value, color = variable)) +
   geom_point() + geom_line() + rahul_theme
 p
-p = ggplot(data = third_year_combined_melt_data, aes(x = time/365, y = filter_mean, color = variable)) +
-  geom_point() + geom_line() + rahul_theme + xlab("Years since January 1, 1986")
+
+plot_mapping_df  = data.frame(variable = c("MLE", "Big_sigma_P", "obs_data"),
+                              plot_label = c("Maximum Likelihood \n Estimate",
+                                        "Large Process Noise", "Observed Data")) 
+third_year_combined_melt_data_adj = join(third_year_combined_melt_data, plot_mapping_df) 
+third_year_combined_sd_melt_data_adj = join(third_year_combined_sd_melt_data, plot_mapping_df)
+p = ggplot(data = third_year_combined_melt_data_adj, aes(x = time/365, y = filter_mean,
+                                                     color = plot_label)) +
+  geom_point() + geom_line() + rahul_theme + xlab("Years since January 1, 1986") +
+  scale_color_manual(name = "Parameter Combinations", values = c("red", "darkgreen", "blue"))+
+  rahul_man_figure_theme + theme_white_background
 p
 
 pdf("../Figures/Supplemental_Figures/Supplemental_Figure_12/Supplemental_Figure_12.pdf")
 print(p)
 dev.off()
-p = ggplot(data = third_year_combined_melt_data, aes(x = time/365, y = filter_mean, color = variable)) +
-  geom_ribbon(aes(ymin = filter_mean-2*sqrt(pred_var),
-                   ymax = filter_mean+2*sqrt(pred_var),
-                   fill = variable),
+p = ggplot(data = third_year_combined_sd_melt_data_adj, aes(x = time/365, y = mean_filter_mean,
+                                                        color = plot_label)) +
+  geom_ribbon(aes(ymin = mean_filter_mean-2*sd_filter_mean,
+                   ymax = mean_filter_mean+2*sd_filter_mean,
+                   fill = plot_label),
               alpha = 0.25) +
-  geom_point() + geom_line() + rahul_theme + xlab("Years since January 1, 1986")
+  geom_point() + geom_line() +  xlab("Years since January 1, 1986") +
+  scale_color_manual(name = "Parameter Combinations", values = c("red", "darkgreen", "blue"))+
+  scale_fill_manual(name = "Parameter Combinations", values = c("red", "darkgreen", "blue"))+
+  rahul_man_figure_theme + theme_white_background +
+  ylab("Filter Mean of Simuated Cases (C) " )
 p
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_16/Supplemental_Figure_16.pdf")
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_12/Supplemental_Figure_12.pdf",
+    height = 5, width = 10)
 print(p)
 dev.off()
 second_year_melt_data = filter(Combined_filter_mean_case_comp_plot_melt, time >= 365*1)
@@ -339,16 +369,24 @@ p = ggplot(data = second_year_melt_data, aes(x = time, y = value, color = variab
   geom_point() + geom_line() + rahul_theme
 p    
 
-second_year_combined_melt_data = filter(combined_filter_mean_and_pred_var_df, time >= 365*1)
+second_year_combined_melt_data = filter(combined_filter_mean_mean_and_sd_df, time >= 365*1)
 second_year_combined_melt_data = filter(second_year_combined_melt_data, time <= 365*2)
 
-p = ggplot(data = second_year_combined_melt_data, aes(x = time/365, y = filter_mean, color = variable)) +
-  geom_ribbon(aes(ymin = filter_mean-2*sqrt(pred_var),
-                  ymax = filter_mean+2*sqrt(pred_var),
-                  fill = variable),
+second_year_combined_melt_data_adj = join(second_year_combined_melt_data,
+                                          plot_mapping_df)
+p = ggplot(data = second_year_combined_melt_data_adj, aes(x = time/365, y = mean_filter_mean,
+                                                            color = plot_label)) +
+  geom_ribbon(aes(ymin = mean_filter_mean-2*sd_filter_mean,
+                  ymax = mean_filter_mean+2*sd_filter_mean,
+                  fill = plot_label),
               alpha = 0.25) +
-  geom_point() + geom_line() + rahul_theme + xlab("Years since January 1, 1986")
+  geom_point() + geom_line() +  xlab("Years since January 1, 1986") +
+  scale_color_manual(name = "Parameter Combinations", values = c("red", "darkgreen", "blue"))+
+  scale_fill_manual(name = "Parameter Combinations", values = c("red", "darkgreen", "blue"))+
+  rahul_man_figure_theme + theme_white_background +
+  ylab("Filter Mean of Simuated Cases (C) " )
 p
-pdf("../Figures/Supplemental_Figures/Supplemental_Figure_17/Supplemental_Figure_17.pdf")
+pdf("../Figures/Supplemental_Figures/Supplemental_Figure_13/Supplemental_Figure_13.pdf",
+    height = 5, width = 10)
 print(p)
 dev.off()
