@@ -383,13 +383,19 @@ Sup_Fig_2_C_comb = Sup_Fig_2_C + rahul_panel_theme + theme(legend.position = "No
   theme(strip.text = element_blank())
 
 
-tiff("../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2_Raw.tiff",
-     height = 5, width = 10, res = 700, units = "in")
+pdf(
+  "../Figures/Supplemental_Figures/Supplemental_Figure_2/Supplemental_Figure_2_Raw.pdf",
+  height = 6, width = 8)
 print(grid.arrange(Sup_Fig_2_A_comb, Sup_Fig_2_B_comb, Sup_Fig_2_C_comb, 
                    ncol = 3))
 dev.off()
 
+pdf("..")
 
 
+setEPS()
+postscript("whatever.eps")
+plot(rnorm(100), main="Hey Some Data")
+dev.off()
 #grid.newpage()
 #grid.draw(legend)
