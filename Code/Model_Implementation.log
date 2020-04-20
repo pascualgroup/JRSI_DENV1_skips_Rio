@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  20 APR 2020 11:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  20 APR 2020 17:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -841,53 +841,53 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 140.
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 142.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 141.
-LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 157
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 143.
+LaTeX Font Info:    Try loading font information for TS1+lmtt on input line 160
 .
 (/usr/local/texlive/2015/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [1
 
 {/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 265.
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 269.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 265.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 269.
 
 (/usr/local/texlive/2015/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 265
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 269
 .
 (/usr/local/texlive/2015/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 265
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 269
 .
 (/usr/local/texlive/2015/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 265.
+(Font)              <10> on input line 269.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 265.
+(Font)              <7> on input line 269.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 265.
-LaTeX Font Info:    Try loading font information for U+msa on input line 265.
+(Font)              <5> on input line 269.
+LaTeX Font Info:    Try loading font information for U+msa on input line 269.
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 265.
+LaTeX Font Info:    Try loading font information for U+msb on input line 269.
 (/usr/local/texlive/2015/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/local/texlive/2015/texmf-dist/tex/latex/microtype/mt-msb.cfg
@@ -895,476 +895,542 @@ File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 ) [2] [3]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 315.
-
-
-Overfull \hbox (53.17378pt too wide) in paragraph at lines 382--384
-[]\T1/lmr/m/n/10 (-20) At that site, the name of the file (which can be down-lo
-aded) is: cd_1991_n20_caracteristicas_populacao_domicilios_rj.pdf 
- []
+               Default added (so using `tbp') on input line 319.
 
 [4pdfTeX warning (ext4): destination with the same identifier (name{table.1}) h
 as been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.399 W
-       e next obtained the estimated resident pouplation of the municipality] [
-5] [6] [7] [8]
-Underfull \vbox (badness 10000) detected at line 759
+l.401 
+      ] [5] [6] [7] [8]
+Underfull \vbox (badness 10000) detected at line 767
  []
 
 
-Underfull \vbox (badness 10000) detected at line 759
+Underfull \vbox (badness 10000) detected at line 767
  []
 
-[9] [10] [11]
+[9] [10]
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 820.
+               Default added (so using `tbp') on input line 826.
 
-
-Underfull \vbox (badness 10000) detected at line 890
- []
-
-[12pdfTeX warning (ext4): destination with the same identifier (name{table.2}) 
+[11pdfTeX warning (ext4): destination with the same identifier (name{table.2}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.890 \end{Shaded}
-                  ] [13]
-Underfull \vbox (badness 10000) detected at line 1052
+l.896 \end{Shaded}
+                  ] [12]
+Underfull \vbox (badness 10000) detected at line 1065
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1052
+Underfull \vbox (badness 10000) detected at line 1065
+ []
+
+[13]
+Underfull \vbox (badness 10000) detected at line 1065
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1065
  []
 
 [14] [15]
-Overfull \vbox (0.85545pt too high) detected at line 1297
+Underfull \vbox (badness 10000) detected at line 1365
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 1365
  []
 
 [16]
-Underfull \vbox (badness 10000) detected at line 1297
+Underfull \vbox (badness 10000) detected at line 1365
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1297
+Underfull \vbox (badness 10000) detected at line 1365
  []
 
 [17]
-Underfull \vbox (badness 10000) detected at line 1297
+Underfull \vbox (badness 10000) detected at line 1365
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1297
+Underfull \vbox (badness 10000) detected at line 1365
  []
 
 [18]
-Underfull \vbox (badness 10000) detected at line 1297
+Underfull \vbox (badness 10000) detected at line 1365
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1297
+Underfull \vbox (badness 10000) detected at line 1365
  []
 
 [19] [20]
-Underfull \vbox (badness 10000) detected at line 1707
+Underfull \vbox (badness 10000) detected at line 1748
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1707
+Underfull \vbox (badness 10000) detected at line 1748
  []
 
 [21]
-Underfull \vbox (badness 10000) detected at line 1707
+Underfull \vbox (badness 10000) detected at line 1748
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1707
+Underfull \vbox (badness 10000) detected at line 1748
  []
 
 [22]
-Underfull \vbox (badness 10000) detected at line 1707
+Underfull \vbox (badness 10000) detected at line 1748
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1707
+Underfull \vbox (badness 10000) detected at line 1748
  []
 
 [23]
-Underfull \vbox (badness 10000) detected at line 1707
+Underfull \vbox (badness 10000) detected at line 1748
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1707
+Underfull \vbox (badness 10000) detected at line 1748
  []
 
 [24]
-Underfull \vbox (badness 10000) detected at line 1707
+Underfull \vbox (badness 10000) detected at line 1748
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1707
+Underfull \vbox (badness 10000) detected at line 1748
  []
 
 [25]
-Underfull \vbox (badness 10000) detected at line 1707
+Underfull \vbox (badness 10000) detected at line 1748
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1707
+Underfull \vbox (badness 10000) detected at line 1748
  []
 
 [26]
-Overfull \hbox (18.49356pt too wide) in paragraph at lines 1741--1741
+Overfull \hbox (18.49356pt too wide) in paragraph at lines 1782--1782
 []\T1/lmtt/m/n/10 R CMD BATCH --vanilla \TS1/lmtt/m/n/10 '\T1/lmtt/m/n/10 --arg
 s I_0 A_7\TS1/lmtt/m/n/10 ' \T1/lmtt/m/n/10 MIF_run_Model_A_7.R   OUT_I_0/out.$
 SLURM_ARRAY_TASK_ID[] 
  []
 
 [27]
-Overfull \hbox (49.99347pt too wide) in paragraph at lines 1772--1772
+Overfull \hbox (49.99347pt too wide) in paragraph at lines 1813--1813
 []\T1/lmtt/m/n/10 R CMD BATCH --vanilla \TS1/lmtt/m/n/10 '\T1/lmtt/m/n/10 --arg
 s Beta_0 A_7\TS1/lmtt/m/n/10 ' \T1/lmtt/m/n/10 MIF_run_Model_A_7.R   OUT_Beta_0
 /out.$SLURM_ARRAY_TASK_ID[] 
  []
 
 
-Overfull \hbox (60.49344pt too wide) in paragraph at lines 1803--1803
+Overfull \hbox (60.49344pt too wide) in paragraph at lines 1844--1844
 []\T1/lmtt/m/n/10 R CMD BATCH --vanilla \TS1/lmtt/m/n/10 '\T1/lmtt/m/n/10 --arg
 s sigma_P A_7\TS1/lmtt/m/n/10 ' \T1/lmtt/m/n/10 MIF_run_Model_A_7.R   OUT_sigma
 _P/out.$SLURM_ARRAY_TASK_ID[] 
  []
 
 [28]
-Overfull \hbox (60.49344pt too wide) in paragraph at lines 1834--1834
+Overfull \hbox (60.49344pt too wide) in paragraph at lines 1875--1875
 []\T1/lmtt/m/n/10 R CMD BATCH --vanilla \TS1/lmtt/m/n/10 '\T1/lmtt/m/n/10 --arg
 s sigma_M A_7\TS1/lmtt/m/n/10 ' \T1/lmtt/m/n/10 MIF_run_Model_A_7.R   OUT_sigma
 _M/out.$SLURM_ARRAY_TASK_ID[] 
  []
 
 
-Overfull \hbox (18.49356pt too wide) in paragraph at lines 1865--1865
+Overfull \hbox (18.49356pt too wide) in paragraph at lines 1906--1906
 []\T1/lmtt/m/n/10 R CMD BATCH --vanilla \TS1/lmtt/m/n/10 '\T1/lmtt/m/n/10 --arg
 s rho A_7\TS1/lmtt/m/n/10 ' \T1/lmtt/m/n/10 MIF_run_Model_A_7.R   OUT_rho/out.$
 SLURM_ARRAY_TASK_ID[] 
  []
 
-[29]
-Overfull \hbox (18.49356pt too wide) in paragraph at lines 1896--1896
+
+Overfull \hbox (18.49356pt too wide) in paragraph at lines 1937--1937
 []\T1/lmtt/m/n/10 R CMD BATCH --vanilla \TS1/lmtt/m/n/10 '\T1/lmtt/m/n/10 --arg
 s phi A_7\TS1/lmtt/m/n/10 ' \T1/lmtt/m/n/10 MIF_run_Model_A_7.R   OUT_phi/out.$
 SLURM_ARRAY_TASK_ID[] 
  []
 
-
-Overfull \vbox (0.99272pt too high) detected at line 1979
+[29]
+Underfull \vbox (badness 4242) detected at line 2032
  []
 
 [30] [31] [32]
-<Model_Implementation_files/figure-latex/unnamed-chunk-22-1.pdf, id=485, 460.72
+<Model_Implementation_files/figure-latex/unnamed-chunk-22-1.pdf, id=493, 460.72
 125pt x 315.1775pt>
 File: Model_Implementation_files/figure-latex/unnamed-chunk-22-1.pdf Graphic fi
 le (type pdf)
 <use Model_Implementation_files/figure-latex/unnamed-chunk-22-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-22-1.pdf used on input line 2117.
+22-1.pdf used on input line 2186.
 (pdftex.def)             Requested size: 460.72012pt x 315.17673pt.
+[33]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 2126.
+(Font)              <12> on input line 2195.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 2126.
+(Font)              <8> on input line 2195.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 2126.
+(Font)              <6> on input line 2195.
 
-<Model_Implementation_files/figure-latex/unnamed-chunk-23-1.pdf, id=486, 459.71
+<Model_Implementation_files/figure-latex/unnamed-chunk-23-1.pdf, id=499, 459.71
 75pt x 315.1775pt>
 File: Model_Implementation_files/figure-latex/unnamed-chunk-23-1.pdf Graphic fi
 le (type pdf)
 <use Model_Implementation_files/figure-latex/unnamed-chunk-23-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-23-1.pdf used on input line 2134.
+23-1.pdf used on input line 2204.
 (pdftex.def)             Requested size: 459.74442pt x 315.19595pt.
-[33 <./Model_Implementation_files/figure-latex/unnamed-chunk-22-1.pdf>]
-<Model_Implementation_files/figure-latex/unnamed-chunk-24-1.pdf, id=501, 459.71
+[34 <./Model_Implementation_files/figure-latex/unnamed-chunk-22-1.pdf>]
+<Model_Implementation_files/figure-latex/unnamed-chunk-24-1.pdf, id=514, 459.71
 75pt x 315.1775pt>
 File: Model_Implementation_files/figure-latex/unnamed-chunk-24-1.pdf Graphic fi
 le (type pdf)
 <use Model_Implementation_files/figure-latex/unnamed-chunk-24-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-24-1.pdf used on input line 2151.
+24-1.pdf used on input line 2222.
 (pdftex.def)             Requested size: 459.74442pt x 315.19595pt.
-[34 <./Model_Implementation_files/figure-latex/unnamed-chunk-23-1.pdf>]
-<Model_Implementation_files/figure-latex/unnamed-chunk-25-1.pdf, id=514, 464.73
+[35 <./Model_Implementation_files/figure-latex/unnamed-chunk-23-1.pdf>]
+<Model_Implementation_files/figure-latex/unnamed-chunk-25-1.pdf, id=527, 464.73
 625pt x 315.1775pt>
 File: Model_Implementation_files/figure-latex/unnamed-chunk-25-1.pdf Graphic fi
 le (type pdf)
 <use Model_Implementation_files/figure-latex/unnamed-chunk-25-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-25-1.pdf used on input line 2168.
+25-1.pdf used on input line 2239.
 (pdftex.def)             Requested size: 464.74928pt x 315.18634pt.
-[35 <./Model_Implementation_files/figure-latex/unnamed-chunk-24-1.pdf>]
-<Model_Implementation_files/figure-latex/unnamed-chunk-26-1.pdf, id=528, 459.71
+[36 <./Model_Implementation_files/figure-latex/unnamed-chunk-24-1.pdf>]
+<Model_Implementation_files/figure-latex/unnamed-chunk-26-1.pdf, id=541, 459.71
 75pt x 312.16624pt>
 File: Model_Implementation_files/figure-latex/unnamed-chunk-26-1.pdf Graphic fi
 le (type pdf)
 <use Model_Implementation_files/figure-latex/unnamed-chunk-26-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-26-1.pdf used on input line 2185.
+26-1.pdf used on input line 2256.
 (pdftex.def)             Requested size: 459.72337pt x 312.17024pt.
-[36 <./Model_Implementation_files/figure-latex/unnamed-chunk-25-1.pdf>]
-<Model_Implementation_files/figure-latex/unnamed-chunk-27-1.pdf, id=541, 459.71
+[37 <./Model_Implementation_files/figure-latex/unnamed-chunk-25-1.pdf>]
+<Model_Implementation_files/figure-latex/unnamed-chunk-27-1.pdf, id=555, 459.71
 75pt x 312.16624pt>
 File: Model_Implementation_files/figure-latex/unnamed-chunk-27-1.pdf Graphic fi
 le (type pdf)
 <use Model_Implementation_files/figure-latex/unnamed-chunk-27-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-27-1.pdf used on input line 2202.
+27-1.pdf used on input line 2273.
 (pdftex.def)             Requested size: 459.72337pt x 312.17024pt.
-[37 <./Model_Implementation_files/figure-latex/unnamed-chunk-26-1.pdf>]
-<Model_Implementation_files/figure-latex/unnamed-chunk-28-1.pdf, id=555, 459.71
+[38 <./Model_Implementation_files/figure-latex/unnamed-chunk-26-1.pdf>]
+<Model_Implementation_files/figure-latex/unnamed-chunk-28-1.pdf, id=568, 459.71
 75pt x 315.1775pt>
 File: Model_Implementation_files/figure-latex/unnamed-chunk-28-1.pdf Graphic fi
 le (type pdf)
 <use Model_Implementation_files/figure-latex/unnamed-chunk-28-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-28-1.pdf used on input line 2219.
+28-1.pdf used on input line 2290.
 (pdftex.def)             Requested size: 459.74442pt x 315.19595pt.
-[38 <./Model_Implementation_files/figure-latex/unnamed-chunk-27-1.pdf>] [39 <./
-Model_Implementation_files/figure-latex/unnamed-chunk-28-1.pdf>] [40] [41] [42]
-[43] [44] [45] [46] [47]
-Underfull \vbox (badness 10000) detected at line 2885
+[39 <./Model_Implementation_files/figure-latex/unnamed-chunk-27-1.pdf>]
+Overfull \vbox (0.7409pt too high) detected at line 2380
  []
 
-[48]
-<Model_Implementation_files/figure-latex/unnamed-chunk-30-1.pdf, id=620, 453.69
-5pt x 311.1625pt>
-File: Model_Implementation_files/figure-latex/unnamed-chunk-30-1.pdf Graphic fi
-le (type pdf)
-<use Model_Implementation_files/figure-latex/unnamed-chunk-30-1.pdf>
-Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-30-1.pdf used on input line 2915.
-(pdftex.def)             Requested size: 453.6939pt x 311.16174pt.
-[49] [50 <./Model_Implementation_files/figure-latex/unnamed-chunk-30-1.pdf>] [5
-1] [52]
-Underfull \vbox (badness 10000) detected at line 3188
+[40 <./Model_Implementation_files/figure-latex/unnamed-chunk-28-1.pdf>]
+Underfull \vbox (badness 10000) detected at line 2380
  []
 
-[53] [54] [55]
-<Model_Implementation_files/figure-latex/unnamed-chunk-31-1.pdf, id=661, 452.69
-125pt x 312.16624pt>
-File: Model_Implementation_files/figure-latex/unnamed-chunk-31-1.pdf Graphic fi
-le (type pdf)
-<use Model_Implementation_files/figure-latex/unnamed-chunk-31-1.pdf>
-Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-31-1.pdf used on input line 3384.
-(pdftex.def)             Requested size: 452.69014pt x 312.16548pt.
-[56] [57 <./Model_Implementation_files/figure-latex/unnamed-chunk-31-1.pdf>] [5
-8] [59]
-Underfull \vbox (badness 3148) detected at line 3660
+
+Underfull \vbox (badness 10000) detected at line 2380
  []
 
-[60]
-<Model_Implementation_files/figure-latex/unnamed-chunk-32-1.pdf, id=692, 460.72
-125pt x 311.1625pt>
-File: Model_Implementation_files/figure-latex/unnamed-chunk-32-1.pdf Graphic fi
-le (type pdf)
-<use Model_Implementation_files/figure-latex/unnamed-chunk-32-1.pdf>
-Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-32-1.pdf used on input line 3662.
-(pdftex.def)             Requested size: 460.72012pt x 311.16174pt.
-[61] [62 <./Model_Implementation_files/figure-latex/unnamed-chunk-32-1.pdf>]
+[41] [42]
+Underfull \vbox (badness 10000) detected at line 2536
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 2536
+ []
+
+[43]
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 3728.
+(hyperref)                than one, level fixed on input line 2564.
 
-[63]
-Underfull \vbox (badness 10000) detected at line 3939
+[44] [45]
+Underfull \vbox (badness 10000) detected at line 2694
  []
 
 
-Underfull \vbox (badness 10000) detected at line 3939
+Underfull \vbox (badness 10000) detected at line 2694
  []
 
-[64]
-Underfull \vbox (badness 10000) detected at line 3939
- []
-
-
-Underfull \vbox (badness 10000) detected at line 3939
- []
-
-[65] [66]
-Underfull \vbox (badness 10000) detected at line 4012
- []
-
-[67]
-<Model_Implementation_files/figure-latex/unnamed-chunk-36-1.pdf, id=738, 464.73
-625pt x 146.5475pt>
-File: Model_Implementation_files/figure-latex/unnamed-chunk-36-1.pdf Graphic fi
+[46]
+<Model_Implementation_files/figure-latex/unnamed-chunk-33-1.pdf, id=622, 452.69
+125pt x 312.16624pt>
+File: Model_Implementation_files/figure-latex/unnamed-chunk-33-1.pdf Graphic fi
 le (type pdf)
-<use Model_Implementation_files/figure-latex/unnamed-chunk-36-1.pdf>
+<use Model_Implementation_files/figure-latex/unnamed-chunk-33-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-36-1.pdf used on input line 4081.
-(pdftex.def)             Requested size: 464.7351pt x 146.54712pt.
-[68] [69 <./Model_Implementation_files/figure-latex/unnamed-chunk-36-1.pdf>] [7
-0] [71] [72] [73] [74]
-Underfull \vbox (badness 10000) detected at line 4491
+33-1.pdf used on input line 2710.
+(pdftex.def)             Requested size: 452.69014pt x 312.16548pt.
+[47 <./Model_Implementation_files/figure-latex/unnamed-chunk-33-1.pdf>] [48]
+Underfull \vbox (badness 4995) detected at line 2922
+ []
+
+[49]
+Underfull \vbox (badness 10000) detected at line 2922
  []
 
 
-Underfull \vbox (badness 10000) detected at line 4491
+Underfull \vbox (badness 10000) detected at line 2922
  []
 
-[75]
-<Model_Implementation_files/figure-latex/unnamed-chunk-39-1.pdf, id=783, 469.75
+[50]
+<Model_Implementation_files/figure-latex/unnamed-chunk-34-1.pdf, id=650, 460.72
+125pt x 311.1625pt>
+File: Model_Implementation_files/figure-latex/unnamed-chunk-34-1.pdf Graphic fi
+le (type pdf)
+<use Model_Implementation_files/figure-latex/unnamed-chunk-34-1.pdf>
+Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
+34-1.pdf used on input line 2924.
+(pdftex.def)             Requested size: 460.72012pt x 311.16174pt.
+[51 <./Model_Implementation_files/figure-latex/unnamed-chunk-34-1.pdf>]
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 2982.
+
+[52] [53]
+Underfull \vbox (badness 10000) detected at line 3386
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 3386
+ []
+
+[54]
+Underfull \vbox (badness 10000) detected at line 3386
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 3386
+ []
+
+[55]
+Underfull \vbox (badness 10000) detected at line 3386
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 3386
+ []
+
+[56]
+Underfull \vbox (badness 10000) detected at line 3386
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 3386
+ []
+
+[57]
+Underfull \vbox (badness 10000) detected at line 3386
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 3386
+ []
+
+[58]
+Underfull \vbox (badness 10000) detected at line 3456
+ []
+
+[59]
+Underfull \vbox (badness 2173) detected at line 3485
+ []
+
+[60] [61] [62] [63] [64] [65]
+Underfull \vbox (badness 10000) detected at line 3919
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 3919
+ []
+
+[66]
+Underfull \vbox (badness 10000) detected at line 3919
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 3919
+ []
+
+[67] [68]
+<Model_Implementation_files/figure-latex/unnamed-chunk-41-1.pdf, id=744, 469.75
 5pt x 154.5775pt>
-File: Model_Implementation_files/figure-latex/unnamed-chunk-39-1.pdf Graphic fi
+File: Model_Implementation_files/figure-latex/unnamed-chunk-41-1.pdf Graphic fi
 le (type pdf)
-<use Model_Implementation_files/figure-latex/unnamed-chunk-39-1.pdf>
+<use Model_Implementation_files/figure-latex/unnamed-chunk-41-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-39-1.pdf used on input line 4532.
+41-1.pdf used on input line 3986.
 (pdftex.def)             Requested size: 469.75386pt x 154.5771pt.
-[76] [77 <./Model_Implementation_files/figure-latex/unnamed-chunk-39-1.pdf>] [7
-8]
-<Model_Implementation_files/figure-latex/unnamed-chunk-40-1.pdf, id=808, 455.70
+
+Underfull \vbox (badness 5681) detected at line 3998
+ []
+
+[69 <./Model_Implementation_files/figure-latex/unnamed-chunk-41-1.pdf>] [70] [7
+1] [72]
+<Model_Implementation_files/figure-latex/unnamed-chunk-42-1.pdf, id=772, 455.70
 25pt x 311.1625pt>
-File: Model_Implementation_files/figure-latex/unnamed-chunk-40-1.pdf Graphic fi
-le (type pdf)
-<use Model_Implementation_files/figure-latex/unnamed-chunk-40-1.pdf>
-Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-40-1.pdf used on input line 4745.
-(pdftex.def)             Requested size: 455.70831pt x 311.16649pt.
-[79] [80 <./Model_Implementation_files/figure-latex/unnamed-chunk-40-1.pdf>]
-Underfull \vbox (badness 3229) detected at line 4889
- []
-
-[81] [82] [83] [84]
-Underfull \vbox (badness 10000) detected at line 5100
- []
-
-
-Underfull \vbox (badness 10000) detected at line 5100
- []
-
-[85] [86]
-<Model_Implementation_files/figure-latex/unnamed-chunk-42-1.pdf, id=854, 449.68
-pt x 312.16624pt>
 File: Model_Implementation_files/figure-latex/unnamed-chunk-42-1.pdf Graphic fi
 le (type pdf)
 <use Model_Implementation_files/figure-latex/unnamed-chunk-42-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-42-1.pdf used on input line 5170.
-(pdftex.def)             Requested size: 449.68575pt x 312.17024pt.
-[87 <./Model_Implementation_files/figure-latex/unnamed-chunk-42-1.pdf>] [88]
-Underfull \vbox (badness 10000) detected at line 5319
+42-1.pdf used on input line 4241.
+(pdftex.def)             Requested size: 455.70831pt x 311.16649pt.
+[73 <./Model_Implementation_files/figure-latex/unnamed-chunk-42-1.pdf>]
+Underfull \vbox (badness 3229) detected at line 4407
  []
 
-[89]
-<Model_Implementation_files/figure-latex/unnamed-chunk-44-1.pdf, id=875, 449.68
-pt x 325.215pt>
+[74]
+Underfull \vbox (badness 10000) detected at line 4407
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 4407
+ []
+
+[75]
+Underfull \vbox (badness 3148) detected at line 4432
+ []
+
+[76] [77] [78]
+Underfull \vbox (badness 10000) detected at line 4648
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 4648
+ []
+
+[79]
+Underfull \vbox (badness 4805) detected at line 4671
+ []
+
+[80] [81]
+<Model_Implementation_files/figure-latex/unnamed-chunk-44-1.pdf, id=821, 449.68
+pt x 312.16624pt>
 File: Model_Implementation_files/figure-latex/unnamed-chunk-44-1.pdf Graphic fi
 le (type pdf)
 <use Model_Implementation_files/figure-latex/unnamed-chunk-44-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-44-1.pdf used on input line 5337.
-(pdftex.def)             Requested size: 449.69948pt x 325.22908pt.
-[90 <./Model_Implementation_files/figure-latex/unnamed-chunk-44-1.pdf>]
-<Model_Implementation_files/figure-latex/unnamed-chunk-44-2.pdf, id=891, 220.82
-5pt x 318.18875pt>
-File: Model_Implementation_files/figure-latex/unnamed-chunk-44-2.pdf Graphic fi
+44-1.pdf used on input line 4723.
+(pdftex.def)             Requested size: 449.68575pt x 312.17024pt.
+[82 <./Model_Implementation_files/figure-latex/unnamed-chunk-44-1.pdf>]
+Underfull \vbox (badness 10000) detected at line 4844
+ []
+
+[83]
+<Model_Implementation_files/figure-latex/unnamed-chunk-46-1.pdf, id=839, 449.68
+pt x 325.215pt>
+File: Model_Implementation_files/figure-latex/unnamed-chunk-46-1.pdf Graphic fi
 le (type pdf)
-<use Model_Implementation_files/figure-latex/unnamed-chunk-44-2.pdf>
+<use Model_Implementation_files/figure-latex/unnamed-chunk-46-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-44-2.pdf used on input line 5391.
+46-1.pdf used on input line 4862.
+(pdftex.def)             Requested size: 449.69948pt x 325.22908pt.
+[84]
+Underfull \vbox (badness 10000) detected at line 4900
+ []
+
+[85 <./Model_Implementation_files/figure-latex/unnamed-chunk-46-1.pdf>]
+<Model_Implementation_files/figure-latex/unnamed-chunk-46-2.pdf, id=860, 220.82
+5pt x 318.18875pt>
+File: Model_Implementation_files/figure-latex/unnamed-chunk-46-2.pdf Graphic fi
+le (type pdf)
+<use Model_Implementation_files/figure-latex/unnamed-chunk-46-2.pdf>
+Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
+46-2.pdf used on input line 4918.
 (pdftex.def)             Requested size: 220.82445pt x 318.18796pt.
-[91] [92 <./Model_Implementation_files/figure-latex/unnamed-chunk-44-2.pdf>]
-Overfull \hbox (123.49326pt too wide) in paragraph at lines 5471--5471
+[86 <./Model_Implementation_files/figure-latex/unnamed-chunk-46-2.pdf>]
+Overfull \hbox (123.49326pt too wide) in paragraph at lines 5000--5000
 []\T1/lmtt/m/n/10 R CMD BATCH --vanilla  \TS1/lmtt/m/n/10 '\T1/lmtt/m/n/10 --ar
 gs A_7\TS1/lmtt/m/n/10 ' \T1/lmtt/m/n/10 Man_Fig_5_gardner_top_2_LL_Model_A_7.R
   OUT_re_prob_2/out.$MOAB_JOBARRAYINDEX[] 
  []
 
-[93]
-Underfull \vbox (badness 10000) detected at line 5580
+[87]
+Underfull \vbox (badness 10000) detected at line 5130
  []
 
 
-Underfull \vbox (badness 10000) detected at line 5580
+Underfull \vbox (badness 10000) detected at line 5130
+ []
+
+[88]
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 5136.
+
+[89] [90]
+Underfull \vbox (badness 10000) detected at line 5296
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 5296
+ []
+
+[91] [92]
+Underfull \vbox (badness 10000) detected at line 5392
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 5392
+ []
+
+[93]
+Underfull \vbox (badness 4048) detected at line 5468
  []
 
 [94]
-
-Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 5586.
-
-[95]
-Underfull \vbox (badness 3148) detected at line 5719
- []
-
-[96]
-Underfull \vbox (badness 3291) detected at line 5815
- []
-
-[97]
-<Model_Implementation_files/figure-latex/unnamed-chunk-49-1.pdf, id=939, 459.71
-75pt x 315.1775pt>
-File: Model_Implementation_files/figure-latex/unnamed-chunk-49-1.pdf Graphic fi
-le (type pdf)
-<use Model_Implementation_files/figure-latex/unnamed-chunk-49-1.pdf>
-Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-49-1.pdf used on input line 5821.
-(pdftex.def)             Requested size: 459.74442pt x 315.19595pt.
-[98] [99 <./Model_Implementation_files/figure-latex/unnamed-chunk-49-1.pdf>]
-<Model_Implementation_files/figure-latex/unnamed-chunk-49-2.pdf, id=955, 461.72
-5pt x 313.17pt>
-File: Model_Implementation_files/figure-latex/unnamed-chunk-49-2.pdf Graphic fi
-le (type pdf)
-<use Model_Implementation_files/figure-latex/unnamed-chunk-49-2.pdf>
-Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-49-2.pdf used on input line 5879.
-(pdftex.def)             Requested size: 461.72388pt x 313.16922pt.
-[100 <./Model_Implementation_files/figure-latex/unnamed-chunk-49-2.pdf>] [101]
-<Model_Implementation_files/figure-latex/unnamed-chunk-50-1.pdf, id=972, 310.15
+<Model_Implementation_files/figure-latex/unnamed-chunk-52-1.pdf, id=916, 310.15
 875pt x 294.09875pt>
-File: Model_Implementation_files/figure-latex/unnamed-chunk-50-1.pdf Graphic fi
+File: Model_Implementation_files/figure-latex/unnamed-chunk-52-1.pdf Graphic fi
 le (type pdf)
-<use Model_Implementation_files/figure-latex/unnamed-chunk-50-1.pdf>
+<use Model_Implementation_files/figure-latex/unnamed-chunk-52-1.pdf>
 Package pdftex.def Info: Model_Implementation_files/figure-latex/unnamed-chunk-
-50-1.pdf used on input line 6011.
+52-1.pdf used on input line 5474.
 (pdftex.def)             Requested size: 310.15799pt x 294.09802pt.
-[102]
-Overfull \hbox (149.74318pt too wide) in paragraph at lines 6033--6033
+[95]
+Overfull \hbox (149.74318pt too wide) in paragraph at lines 5499--5499
 []\T1/lmtt/m/n/10 ## Joining by: sigma_P, gamma, phi, sigma_M, rho, Beta_0, del
 ta, mu_H, N_0, I_0, R_0, C_0, r, omega, epsilon, R_naught[] 
  []
 
-[103 <./Model_Implementation_files/figure-latex/unnamed-chunk-50-1.pdf>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 6093.
-[104]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 6093.
+[96 <./Model_Implementation_files/figure-latex/unnamed-chunk-52-1.pdf>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 5568.
+[97]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 5568.
 (./Model_Implementation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 6093.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 6093.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 5568.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 5568.
 
 Package rerunfilecheck Info: File `Model_Implementation.out' has not changed.
-(rerunfilecheck)             Checksum: 72F6D1400B036DEA563F858176F61D0D;11176.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 6093.
+(rerunfilecheck)             Checksum: 8F9CA3BCA38D51B6998EEE3F366D4579;11255.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 5568.
  ) 
 Here is how much of TeX's memory you used:
- 13304 strings out of 493089
- 198141 string characters out of 6134842
- 356846 words of memory out of 5000000
- 16235 multiletter control sequences out of 15000+600000
- 77054 words of font info for 107 fonts, out of 8000000 for 9000
+ 13287 strings out of 493089
+ 197023 string characters out of 6134842
+ 368838 words of memory out of 5000000
+ 16223 multiletter control sequences out of 15000+600000
+ 76971 words of font info for 106 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 31i,13n,35p,569b,453s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/
-texlive/2015/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2015/t
-exmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2015/texmf-dist/
-fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvi
+ 31i,13n,35p,484b,453s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local
+/texlive/2015/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2015/
+texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2015/texmf-dist/fon
+ts/enc/dvips/lm/lm-mathit.enc}{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvi
 ps/lm/lm-mathsy.enc}</usr/local/texlive/2015/texmf-dist/fonts/type1/public/lm/l
 mbx10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/lm/lmbx12.pfb>
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/lm/lmbx7.pfb></usr/local
@@ -1383,10 +1449,10 @@ c/lm/lmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/lm/lmsy5
 local/texlive/2015/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texl
 ive/2015/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2015/t
 exmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Model_Implementation.pdf (104 pages, 800488 bytes).
+Output written on Model_Implementation.pdf (97 pages, 635034 bytes).
 PDF statistics:
- 1133 PDF objects out of 1200 (max. 8388607)
- 940 compressed objects within 10 object streams
- 269 named destinations out of 1000 (max. 500000)
- 12856 words of extra memory for PDF output out of 14400 (max. 10000000)
+ 1078 PDF objects out of 1200 (max. 8388607)
+ 904 compressed objects within 10 object streams
+ 266 named destinations out of 1000 (max. 500000)
+ 12852 words of extra memory for PDF output out of 14400 (max. 10000000)
 

@@ -4,7 +4,8 @@
 # Header ------------------------------------------------------------------
 ## Name: generate_profile_combinations_SIR_Cosine.R
 ## Author: Rahul Subramanian
-## Description: Creates 30*40-combination list for given by profile_var as 1st command line argument
+## Description: Creates 30*40-combination list for given by
+## profile_var as 1st command line argument
 rm(list = ls())
 
 ptm <- proc.time()
@@ -35,40 +36,71 @@ Immigration_status = as.character(args[6])
 
 Duration_status = as.character(args[7])
 
-city_specific_param_boundaries = data.frame(City = c("Rio", "Rio", "Fortaleza", "Rio",
-                                                     "Rio", "Rio", "Rio", "Rio",
-                                                     "Rio"),
-                                            Serotype = c("DENV1", "DENV4", "DENV4", "DENV1", 
-                                                         "DENV1",  "DENV1", "DENV1", "DENV1",
+city_specific_param_boundaries = data.frame(City = c("Rio", "Rio", "Fortaleza",
+                                                     "Rio","Rio", "Rio",
+                                                     "Rio", "Rio","Rio"),
+                                            Serotype = c("DENV1", "DENV4",
+                                                         "DENV4", "DENV1", 
+                                                         "DENV1",  "DENV1",
+                                                         "DENV1", "DENV1",
                                                          "DENV1"),
-                                            R_Init_Status = c("Fix_R_Init", "Fix_R_Init", "Fix_R_Init", "Fit_R_Init",
-                                                              "Fit_R_Init", "Fit_R_Init", "Fix_R_Init", "Fix_R_Init",
+                                            R_Init_Status = c("Fix_R_Init",
+                                                              "Fix_R_Init",
+                                                              "Fix_R_Init",
+                                                              "Fit_R_Init",
+                                                              "Fit_R_Init",
+                                                              "Fit_R_Init",
+                                                              "Fix_R_Init",
+                                                              "Fix_R_Init",
                                                               "Fix_R_Init"),
-                                            Immigration = c("No_Immigration", "No_Immigration",
-                                                            "No_Immigration", "No_Immigration",
-                                                            "Immigration", "Immigration", "Immigration",
-                                                            "No_Immigration","No_Immigration"),
-                                            Duration_Params = c("Fit_Duration", "Fit_Duration",
-                                                            "Fit_Duration", "Fit_Duration",
-                                                            "Fit_Duration", "Fix_Duration", "Fix_Duration",
-                                                            "Fix_Duration", "Profile_Duration"),
-                                            rho_upper = c(0.001, 0.15, 0.001, 0.001,
-                                                          0.001,  0.001,  0.001,  0.001,
-                                                          0.001),
+                                            Immigration = c("No_Immigration",
+                                                            "No_Immigration",
+                                                            "No_Immigration",
+                                                            "No_Immigration",
+                                                            "Immigration",
+                                                            "Immigration",
+                                                            "Immigration",
+                                                            "No_Immigration",
+                                                            "No_Immigration"),
+                                            Duration_Params = c("Fit_Duration",
+                                                                "Fit_Duration",
+                                                            "Fit_Duration",
+                                                            "Fit_Duration",
+                                                            "Fit_Duration",
+                                                            "Fix_Duration",
+                                                            "Fix_Duration",
+                                                            "Fix_Duration",
+                                                            "Profile_Duration"),
+                                            rho_upper = c(0.001, 0.15, 0.001,
+                                                          0.001,0.001,  0.001,
+                                                          0.001,  0.001,0.001),
                                             rho_lower = c(0.15, 0.15, 0.15, 0.15,
                                                           0.15, 0.15, 0.15, 0.15,
                                                           0.15),
-                                            N_0_upper = c(5.301405e+06,6.320446e+06,2.452185e+06, 5.301405e+06,
-                                                          5.301405e+06, 5.301405e+06, 5.301405e+06, 5.281842e+06,
+                                            N_0_upper = c(5.301405e+06,
+                                                          6.320446e+06,
+                                                          2.452185e+06,
+                                                          5.301405e+06,
+                                                          5.301405e+06,
+                                                          5.301405e+06,
+                                                          5.301405e+06,
+                                                          5.281842e+06,
                                                           5.281842e+06),
-                                            N_0_lower = c(5.301405e+06,6.320446e+06,2.452185e+06, 5.301405e+06, 
-                                                          5.301405e+06, 5.301405e+06, 5.301405e+06, 5.281842e+06,
+                                            N_0_lower = c(5.301405e+06,
+                                                          6.320446e+06,
+                                                          2.452185e+06,
+                                                          5.301405e+06, 
+                                                          5.301405e+06,
+                                                          5.301405e+06,
+                                                          5.301405e+06,
+                                                          5.281842e+06,
                                                           5.281842e+06),
                                             R_0_lower = c(0, 0, 0, 0,
                                                           0, 0, 0, 0,
                                                           0),
                                             R_0_upper = c(0, 0, 0, 5.101405e+06,
-                                                          5.101405e+06, 5.101405e+06, 0, 0,
+                                                          5.101405e+06,
+                                                          5.101405e+06, 0, 0,
                                                           0),
                                             Beta_0_lower = c(-3, -2, -4, -3,
                                                              -5.5, -3,-3,0,
@@ -103,33 +135,54 @@ city_specific_param_boundaries = data.frame(City = c("Rio", "Rio", "Fortaleza", 
                                             I_0_lower = c(1, 1, 1, 1,
                                                           1, 1, 1, 1,
                                                           1),
-                                            I_0_upper = c(1.000000e+07, 2.000000e+05, 2.000000e+05, 1.000000e+06,
-                                                          1.000000e+06, 6.000000e+05, 6.000000e+05, 6.000000e+05,
+                                            I_0_upper = c(1.000000e+07,
+                                                          2.000000e+05,
+                                                          2.000000e+05,
+                                                          1.000000e+06,
+                                                          1.000000e+06,
+                                                          6.000000e+05,
+                                                          6.000000e+05,
+                                                          6.000000e+05,
                                                           6.000000e+05),
-                                            sigma_M_lower= c(.001, .001, .001, .001,
-                                                             0, .0001, .0001, .0001,
+                                            sigma_M_lower= c(.001, .001,
+                                                             .001, .001,
+                                                             0, .0001,
+                                                             .0001, .0001,
                                                              .0001),
                                             sigma_M_upper = c(1, .25, .25, 1,
                                                               1, 1, 1, 1,
                                                               1),
-                                            gamma_lower = c(1/17, 1/17, 1/17, 1/17,
-                                                            1/17, 1/17, 1/17, 1/17,
+                                            gamma_lower = c(1/17, 1/17,
+                                                            1/17, 1/17,
+                                                            1/17, 1/17,
+                                                            1/17, 1/17,
                                                             1/22),
-                                            gamma_upper = c(1/4, 1/4, 1/4, 1/4,
-                                                            1/4, 1/17, 1/17, 1/17,
+                                            gamma_upper = c(1/4, 1/4,
+                                                            1/4, 1/4,
+                                                            1/4, 1/17,
+                                                            1/17, 1/17,
                                                             1/2),
-                                            sigma_P_lower = c(1.9e-4, 1.9e-4, 1.9e-4, 1.9e-4,
-                                                              1.9e-4, 1.9e-4, 1.9e-4, 1.9e-4,
+                                            sigma_P_lower = c(1.9e-4, 1.9e-4,
+                                                              1.9e-4, 1.9e-4,
+                                                              1.9e-4, 1.9e-4,
+                                                              1.9e-4, 1.9e-4,
                                                               1.9e-4),
-                                            sigma_P_upper = c(3.8e1, 3.8e1, 3.8e1, 3.8e1,
-                                                              3.8e1, 3.8e1, 1, 1,
+                                            sigma_P_upper = c(3.8e1, 3.8e1,
+                                                              3.8e1, 3.8e1,
+                                                              3.8e1, 3.8e1,
+                                                              1, 1,
                                                               1))
 
-city_specific_param_boundaries = filter(city_specific_param_boundaries, City == city_name)
-city_specific_param_boundaries = filter(city_specific_param_boundaries, Serotype == serotype_name)
-city_specific_param_boundaries = filter(city_specific_param_boundaries, R_Init_Status == R_Init_status)
-city_specific_param_boundaries = filter(city_specific_param_boundaries, Immigration == Immigration_status)
-city_specific_param_boundaries = filter(city_specific_param_boundaries, Duration_Params == Duration_status)
+city_specific_param_boundaries = filter(city_specific_param_boundaries,
+                                        City == city_name)
+city_specific_param_boundaries = filter(city_specific_param_boundaries,
+                                        Serotype == serotype_name)
+city_specific_param_boundaries = filter(city_specific_param_boundaries,
+                                        R_Init_Status == R_Init_status)
+city_specific_param_boundaries = filter(city_specific_param_boundaries,
+                                        Immigration == Immigration_status)
+city_specific_param_boundaries = filter(city_specific_param_boundaries,
+                                        Duration_Params == Duration_status)
 
 rho_upper = city_specific_param_boundaries$rho_upper
 rho_lower = city_specific_param_boundaries$rho_lower
@@ -186,7 +239,8 @@ names <- c("gamma","phi","sigma_P","sigma_M","rho","Beta_0","delta",
            "mu_H","N_0","I_0","R_0","C_0", "r", "omega", "epsilon")
 colnames(par_box_boundaries) = names
 par_box_boundaries = as.data.frame(par_box_boundaries)
-par_box_boundaries_clean = dplyr::select(par_box_boundaries, -one_of(profile_var) )
+par_box_boundaries_clean = dplyr::select(par_box_boundaries,
+                                         -one_of(profile_var) )
 theta.t.lo = as.numeric(as.vector(par_box_boundaries_clean[1,]))
 theta.t.hi = as.numeric(as.vector(par_box_boundaries_clean[2,]))
 names(theta.t.lo) = colnames(par_box_boundaries_clean)
@@ -194,7 +248,8 @@ names(theta.t.hi) = colnames(par_box_boundaries_clean)
 
 prof_var_boundaries = dplyr::select(par_box_boundaries, one_of(profile_var))
 profileDesign(
-  prof_var=seq(from=prof_var_boundaries[1,],to=prof_var_boundaries[2,],length=30),
+  prof_var=seq(from=prof_var_boundaries[1,],
+               to=prof_var_boundaries[2,],length=30),
   lower=theta.t.lo,upper=theta.t.hi,nprof=40
 ) -> pd
 pd_col = colnames(pd)

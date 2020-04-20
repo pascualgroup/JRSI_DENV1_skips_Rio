@@ -23,14 +23,14 @@ knitr::opts_chunk$set(fig.pos = 'H')
 
 # Set up baseline model
 
-##Load Non-POMP Libraries and Files
+## Load Non-POMP Libraries and Files
 ```{r echo = TRUE, results = 'hide', warning=FALSE}
 rm(list = ls())
 source("load_libraries_essential.R")
 source("rahul_theme.R")
 ```
 
-##Load POMP2
+## Load POMP2
 ```{r}
 library(pomp)
 ```
@@ -38,7 +38,8 @@ We consider fitting a simple SEIR spline model to monthly case counts of DENV1 i
 
 ## Declare model name
 ```{r}
-full_model_name = "DENV1_SIR_Cosine_2_25_Year_Split_Fit_No_Immigration_Fix_R_Init_Fix_Duration_No_Sigma_P_Movement"
+full_model_name =
+  "DENV1_SIR_Cosine_Model"
 model_name = "A_7"
 rds_index = 0
 
@@ -155,6 +156,7 @@ The document can be accessed at the following site on the IBGE catalog:
 https://biblioteca.ibge.gov.br/biblioteca-catalogo?id=782&view=detalhes
 
 At that site, the name of the file (which can be downloaded) is:
+
 cd_1991_n20_caracteristicas_populacao_domicilios_rj.pdf
 
 In this document, the population estimate was found under Table 1.4: "População residente, por grupos de idade, segundo tU lolesorregiàes, as Microrregiões, os Municípios,os Distritos e o sexo"
@@ -195,7 +197,8 @@ human_pop_growth_rate
 ### Back-calculation of 1986 Population
 ```{r}
 time_before_1991_census_dates = 1991*365 - 1986*365
-Population_Rio_1986 = Population_Rio_1991/(exp(human_pop_growth_rate*time_before_1991_census_dates))
+Population_Rio_1986 = Population_Rio_1991/
+  (exp(human_pop_growth_rate*time_before_1991_census_dates))
 ```
 
 Thus, the estimated pouplation fo Rio de Janeiro is approximately $N_0 = 5281842$
@@ -209,7 +212,8 @@ A fraction $\rho$ of newly infected cases are reported and enter the reported ca
 The observed monthly cases are assumed to have a negative binomial distribution with mean equal to the true number of monthly cases and size parameter equal to $\frac{1}{\sigma_{\text{M}}^2}$, where $\sigma_{\text{M}}$ will be fit to the data. 
 
 We assume a duration of infection ($\frac{1}{\gamma}$) of
-10.25 days. Dengue is believed to have a symptomatic period of 2-7 days following an  incubation period of 4-7 days, which we have combined in our model into a single infectious period. (http://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue)
+10.25 days.
+Dengue is believed to have a symptomatic period of 2-7 days following an  incubation period of 4-7 days, which we have combined in our model into a single infectious period. (http://www.who.int/news-room/fact-sheets/detail/dengue-and-severe-dengue)
 
 
 
@@ -222,16 +226,15 @@ Let $h$ represent the per capita growth rate of the population (i.e. $h = r - \m
 \frac{dN}{dt} = h N(t)
 \end{equation}
 
-Let  $r$ represent the overall growth rate of the susceptible population taking into account both populato, where
+Let  $r$ represent the overall growth rate of the susceptible population taking into account both population growth and population turnover, where
 \begin{equation}
     r = h + \mu_{\text{H}}
 \end{equation}
-at rate $h$. Population growth would then occur at rate:
+at rate $h$.
 
-
+Population growth would then occur at rate:
 
 In this instance, we assume that $h = 0$.
-
 
 ## Process Model
 
@@ -289,7 +292,8 @@ Let $\mu_{\cdot N}$ represent the rate of net population growth.
  \mu_{\cdot N} = h
 \end{equation}
 
-Let $\mu_{\cdot S}$ represent the rate at which indiduals who die are replaced by susceptible individuals. We assume that this replacement rate is equivalent to the death rate. 
+Let $\mu_{\cdot S}$ represent the rate at which indiduals who die are replaced by susceptible individuals.
+We assume that this replacement rate is equivalent to the death rate. 
 
 \begin{equation}
  \mu_{\cdot S} = \mu_{H}
@@ -378,7 +382,6 @@ Y \sim\ NBinom(size = 1/(\sigma_{\text{M}})^2,\mu = \rho C)
 ```
 
 ## Initial Conditions
-\pagebreak
 We assume that a small fraction of the population $I_0$ starts out infected, but that everyone else is susceptible at the start of the DENV1 invasion.
 \begin{table}[]
 \centering
@@ -420,21 +423,27 @@ Term & Definition & Value & Units \\\hline
 ```
 
 ## MIF Function Call from Parallelized Midway Script
-Function to run single MIF run for given number of iterations followed by 10 Pfilter runs from final MIF values
+Function to run single MIF run for given number of iterations
+followed by 10 Pfilter runs from final MIF values
 ```{r MIF_and_pfilter_output_function}
 
 ```
 
 
 # Generate profiles
-I generated profiles for eleven model parameters: $\beta_0$, $\delta$, $E_\text{0}$, $I_\text{0}$, $\rho$, $\mu_{\text{EI}}$, $\gamma$ $\phi$, $N_0$, $\sigma_{\text{M}}$, and $\sigma_{\text{P}}$.
+I generated profiles for eleven model parameters:
+$\beta_0$, $\delta$, $E_\text{0}$,
+$I_\text{0}$, $\rho$, $\mu_{\text{EI}}$,
+$\gamma$ $\phi$, $N_0$, $\sigma_{\text{M}}$,
+and $\sigma_{\text{P}}$.
 
 ## Generate set of parameter combinations for profiles
 
-The profileDesign function was used to generate a set of starting points at 30 different evenly spaced values for the parameter being profiled. For each profile parameter value, the function created 40 different initial sampling points drawing from a box given by the boundaries of the original parameter range  defined in the beginning. For example, for the $I_\text{0}$ profile,  a set of 30 starting points evenly spaced between 1 and 10,000 was generated. For each of those 30 starting points, the profileDesign function created 40 different initial sampling points with the same value of $I_\text{0}$ but different values for the other parameters being fitted ($\beta_0$, $\delta$, $E_\text{0}$, $\mu_{\text{EI}}$, $\gamma$ $\phi$, , $\sigma_{\text{M}}$, and $\sigma_{\text{P}}$) where the different values were uniformly drawn from the boundaries for those parameters in the original box. This yielded a total of 1200 starting points for each parameter profile. 
-
-
-
+The profileDesign function was used to generate a set of starting points at 30 different evenly spaced values for the parameter being profiled.
+For each profile parameter value, the function created 40 different initial sampling points drawing from a box given by the boundaries of the original parameter range  defined in the beginning.
+For example, for the $I_\text{0}$ profile,  a set of 30 starting points evenly spaced between 1 and 10,000 was generated.
+For each of those 30 starting points, the profileDesign function created 40 different initial sampling points with the same value of $I_\text{0}$ but different values for the other parameters being fitted ($\beta_0$, $\delta$, $E_\text{0}$, $\mu_{\text{EI}}$, $\gamma$ $\phi$, , $\sigma_{\text{M}}$, and $\sigma_{\text{P}}$) where the different values were uniformly drawn from the boundaries for those parameters in the original box.
+This yielded a total of 1200 starting points for each parameter profile. 
 
 
 ```{r, cache=FALSE}
@@ -449,8 +458,12 @@ knitr::read_chunk('generate_profile_combinations_SIR_Cosine.R')
 ## Midway code for running MIF on each subset of parameter combinations
 For each of those 1200 starting points, MIF was run 10 times.
 
-Since this is a large number of iterations, two different parallelization strategies were employed at once on the University of Chicago's Research Computing Center's Midway cluster. First, multiple cores (28) were requested per job and a foreach loop was
-used to parallelize a single job between multiple cores on the cluster. However, if  a large amount of cores are requested for a job, the Midway scheduler will wait until sufficient resources are available on the cluster, which can create a long lag time. To remedy this, the overall job was split into 50 array jobs (the maximum number of jobs that can be submitted to or running on the Midway cluster at any point in time). Each of those 50 array jobs in turn was parallelized over 28 cores.
+Since this is a large number of iterations, two different parallelization strategies were employed at once on the University of Chicago's Research Computing Center's Midway cluster.
+First, multiple cores (28) were requested per job and a foreach loop was
+used to parallelize a single job between multiple cores on the cluster.
+However, if  a large amount of cores are requested for a job, the Midway scheduler will wait until sufficient resources are available on the cluster, which can create a long lag time.
+To remedy this, the overall job was split into 50 array jobs (the maximum number of jobs that can be submitted to or running on the Midway cluster at any point in time). 
+Each of those 50 array jobs in turn was parallelized over 28 cores.
 
 ```{r, cache=FALSE}
 
@@ -536,7 +549,8 @@ ptm = proc.time()
 print(profile_var)
 
 ###Load parameter list
-pd = read.csv(file = paste0("../Generated_Data/Profile_Combination_Lists/",
+pd = read.csv(file = paste0(
+  "../Generated_Data/Profile_Combination_Lists/",
                             model_name,"_Model/",profile_var,"_",
                             model_name,
                             "_profile_combination_list.csv"),
@@ -557,42 +571,59 @@ colnames(mif_sim_combined_output_df) = c(colnames(pd), "LL")
 for(param_index in seq(1:midway_max_jobs)){
 		#print(param_index)
 
-  input_file_name = paste0("../Generated_Data/Profiles/", model_name,
-                           "_Model/",profile_var,"_Profile/Subset_Outputs/",profile_var,
-                           "_", model_name,
-                           "_Profile_subset_",param_index,".csv")
+  input_file_name = paste0(
+    "../Generated_Data/Profiles/",
+    model_name, "_Model/",
+    profile_var,"_Profile/Subset_Outputs/",
+    profile_var, "_", model_name,
+    "_Profile_subset_",param_index,".csv")
+  
   if(file.exists(input_file_name) == TRUE){
-    mif_output_df_single_subset = read.csv(file = input_file_name)
+    mif_output_df_single_subset = read.csv(
+      file = input_file_name)
   }else{
     group_size = nrow(pd)/midway_max_jobs
     start_index = (param_index-1)*group_size + 1
     end_index = param_index*group_size
     Num_mif_runs_per_start = 10
     param_data_subset_act = pd[start_index:end_index,]
-    param_data_subset = param_data_subset_act[rep(seq_len(nrow(param_data_subset_act)), each = Num_mif_runs_per_start),]
+    param_data_subset = param_data_subset_act[
+      rep(seq_len(nrow(param_data_subset_act)),
+          each = Num_mif_runs_per_start),]
     param_data_subset$seed = NA;
     param_data_subset$LL = NA;
     mif_output_df_single_subset = param_data_subset
   }
 
   #head(mif_output_df_single_subset)
-  mif_sim_combined_output_df = rbind(mif_sim_combined_output_df, mif_output_df_single_subset)
+  mif_sim_combined_output_df = rbind(
+    mif_sim_combined_output_df,
+    mif_output_df_single_subset)
 }
 
-output_file_name = paste0("../Generated_Data/Profiles/", model_name,"_Model/", profile_var, "_Profile/",
+output_file_name = paste0("../Generated_Data/Profiles/",
+                          model_name,"_Model/",
+                          profile_var, "_Profile/",
                           profile_var, "_", model_name, "_profile_combined_data.csv")
 write.csv(mif_sim_combined_output_df, file = output_file_name, row.names=FALSE,na="")
 }
-combine_profile_output(profile_var = "sigma_P", model_name = model_name)
-combine_profile_output(profile_var = "sigma_M", model_name = model_name)
+combine_profile_output(profile_var = "sigma_P",
+                       model_name = model_name)
+combine_profile_output(profile_var = "sigma_M",
+                       model_name = model_name)
 
-combine_profile_output(profile_var = "I_0", model_name = model_name)
-combine_profile_output(profile_var = "Beta_0", model_name = model_name)
-combine_profile_output(profile_var = "delta", model_name = model_name)
+combine_profile_output(profile_var = "I_0",
+                       model_name = model_name)
+combine_profile_output(profile_var = "Beta_0",
+                       model_name = model_name)
+combine_profile_output(profile_var = "delta",
+                       model_name = model_name)
 
-combine_profile_output(profile_var = "rho", model_name = model_name)
+combine_profile_output(profile_var = "rho",
+                       model_name = model_name)
 
-combine_profile_output(profile_var = "phi", model_name = model_name)
+combine_profile_output(profile_var = "phi",
+                       model_name = model_name)
 
 
 
@@ -602,15 +633,20 @@ combine_profile_output(profile_var = "phi", model_name = model_name)
 
 
 # Plot profiles
-For each profile, three plots are generated. The first plot("all_clean_data_points") shows the likelihoods of every MIF run conducted for that profile. The second plot is the actual plot of the profile. For the second plot, only the maximum likelihood of each profiled parameter value is shown on the plot. The third plot is a "zoom-in" of the region near the MLE, only showing combinations within 20 log-likelihood units of the MLE. On all three plots, red horizontal lines denote likelihood values 20 log-likelihood units below the profile MLE, while blue horizontal lines denote likelihood values 2 log-likelihood units below the MLE.
+Each profile shows combinations within 20 log-likelihood units of the MLE.
+Blue horizontal lines denote likelihood values 2 log-likelihood units below the MLE.
 
 ## Plotting function
 ```{r}
 plot_profiles = function(profile_var, model_name){
 
 #Load results
-profile_data = read.csv(file = paste0("../Generated_Data/Profiles/", model_name, "_Model/", profile_var, "_Profile/",
-                          profile_var, "_", model_name, "_profile_combined_data.csv"))
+profile_data = read.csv(file = paste0(
+  "../Generated_Data/Profiles/",
+  model_name, "_Model/",
+  profile_var, "_Profile/",
+  profile_var, "_", model_name,
+  "_profile_combined_data.csv"))
 #head(profile_data)
 
 
@@ -629,20 +665,32 @@ cutoff_thres_2_LL_from_ML = ML - 2
 
 
 
-### Take trace of profile (max at each value of profile variable)
-profile_var_profile = aggregate(formula(paste0("LL ~ ",eval(profile_var))), profile_data_clean, max)
+### Take trace of profile 
+### (max at each value of profile variable)
+profile_var_profile = aggregate(
+  formula(paste0("LL ~ ",
+                 eval(profile_var))),
+  profile_data_clean, max)
 
 
 
 
-top_20_LL_units = filter(profile_var_profile, LL > cutoff_thres_20_LL_from_ML)
+top_20_LL_units = filter(
+  profile_var_profile,
+  LL > cutoff_thres_20_LL_from_ML)
 
-p = ggplot(data = top_20_LL_units, aes_string(x = eval(profile_var), y = "LL")) +
-  geom_point() + geom_hline(yintercept = cutoff_thres_2_LL_from_ML,color = 'blue') +
+p = ggplot(data = top_20_LL_units,
+           aes_string(x = eval(profile_var),
+                      y = "LL")) +
+  geom_point() +
+  geom_hline(yintercept = cutoff_thres_2_LL_from_ML,
+             color = 'blue') +
   rahul_theme
 print(p)
 
-png(paste0("../Figures/Profiles/", model_name, "_Model/", profile_var, "_Profile/20_LL_from_ML_",
+png(paste0("../Figures/Profiles/",
+           model_name, "_Model/",
+           profile_var, "_Profile/20_LL_from_ML_",
            profile_var, "_", model_name, "_profile.png"))
 print(p)
 dev.off()
@@ -652,7 +700,8 @@ dev.off()
 ## I_0 Profile
 
 ```{r}
-plot_profiles(profile_var = "I_0", model_name = model_name)
+plot_profiles(profile_var = "I_0",
+              model_name = model_name)
 ```
 
 
@@ -660,7 +709,8 @@ plot_profiles(profile_var = "I_0", model_name = model_name)
 
 
 ```{r}
-plot_profiles(profile_var = "sigma_P", model_name = model_name)
+plot_profiles(profile_var = "sigma_P",
+              model_name = model_name)
 ```
 
 
@@ -668,7 +718,8 @@ plot_profiles(profile_var = "sigma_P", model_name = model_name)
 
 
 ```{r}
-plot_profiles(profile_var = "sigma_M", model_name = model_name)
+plot_profiles(profile_var = "sigma_M",
+              model_name = model_name)
 ```
 
 
@@ -700,7 +751,6 @@ plot_profiles(profile_var = "phi", model_name = model_name)
 ```
 
 
-# Combine profiles and plot end parameter estimates from MIF runs
 
 
 
@@ -718,65 +768,72 @@ plot_profiles(profile_var = "phi", model_name = model_name)
 
 
 
-I_0_profile_data = read.csv(paste0("../Generated_Data/Profiles/", model_name,
-                            "_Model/I_0_Profile/I_0_", model_name, "_profile_combined_data.csv"))
+I_0_profile_data = read.csv(paste0(
+  "../Generated_Data/Profiles/", model_name,
+                            "_Model/I_0_Profile/I_0_",
+  model_name, "_profile_combined_data.csv"))
 I_0_profile_data$Profile_Type = "I_0"
-# E_0_profile_data = read.csv(paste0("../Generated_Data/Profiles/", model_name,
-#                             "_Model/E_0_Profile/E_0_", model_name, "_profile_combined_data.csv"))
-# E_0_profile_data$Profile_Type = "E_0"
 
-sigma_P_profile_data = read.csv(paste0("../Generated_Data/Profiles/", model_name,
-                                "_Model/sigma_P_Profile/sigma_P_", model_name, "_profile_combined_data.csv"))
+sigma_P_profile_data = read.csv(paste0(
+  "../Generated_Data/Profiles/", model_name,
+  "_Model/sigma_P_Profile/sigma_P_", model_name,
+  "_profile_combined_data.csv"))
 sigma_P_profile_data$Profile_Type = "sigma_P"
-sigma_M_profile_data = read.csv(paste0("../Generated_Data/Profiles/", model_name,
-                                "_Model/sigma_M_Profile/sigma_M_", model_name, "_profile_combined_data.csv"))
+sigma_M_profile_data = read.csv(paste0(
+  "../Generated_Data/Profiles/", model_name,
+  "_Model/sigma_M_Profile/sigma_M_", model_name,
+  "_profile_combined_data.csv"))
 sigma_M_profile_data$Profile_Type = "sigma_M"
 
- combined_profile_data = rbind(sigma_P_profile_data, sigma_M_profile_data)
-combined_profile_data = rbind(combined_profile_data, I_0_profile_data)
-# combined_profile_data = rbind(combined_profile_data, E_0_profile_data)
+ combined_profile_data = rbind(sigma_P_profile_data,
+                               sigma_M_profile_data)
+combined_profile_data = rbind(combined_profile_data,
+                              I_0_profile_data)
 
- Beta_0_profile_data = read.csv(paste0("../Generated_Data/Profiles/", model_name,
-                           "_Model/Beta_0_Profile/Beta_0_", model_name, "_profile_combined_data.csv"))
+ Beta_0_profile_data = read.csv(paste0(
+   "../Generated_Data/Profiles/", model_name,
+   "_Model/Beta_0_Profile/Beta_0_", model_name,
+   "_profile_combined_data.csv"))
 Beta_0_profile_data$Profile_Type = "Beta_0"
 
 
- combined_profile_data = rbind(combined_profile_data, Beta_0_profile_data)
-# #head(combined_profile_data)
-  delta_profile_data = read.csv(paste0("../Generated_Data/Profiles/", model_name,
-                            "_Model/delta_Profile/delta_", model_name, "_profile_combined_data.csv"))
+combined_profile_data = rbind(combined_profile_data,
+                               Beta_0_profile_data)
+
+delta_profile_data = read.csv(paste0(
+  "../Generated_Data/Profiles/", model_name,
+  "_Model/delta_Profile/delta_", model_name,
+  "_profile_combined_data.csv"))
   delta_profile_data$Profile_Type = "delta"
 
-combined_profile_data = rbind(combined_profile_data, delta_profile_data)
- rho_profile_data = read.csv(paste0("../Generated_Data/Profiles/", model_name,
-                             "_Model/rho_Profile/rho_", model_name, "_profile_combined_data.csv"))
+combined_profile_data = rbind(combined_profile_data,
+                              delta_profile_data)
+ rho_profile_data = read.csv(paste0(
+   "../Generated_Data/Profiles/", model_name,
+   "_Model/rho_Profile/rho_", model_name,
+   "_profile_combined_data.csv"))
  rho_profile_data$Profile_Type = "rho"
 
- combined_profile_data = rbind(combined_profile_data, rho_profile_data)
+ combined_profile_data = rbind(combined_profile_data,
+                               rho_profile_data)
 
-phi_profile_data = read.csv(paste0("../Generated_Data/Profiles/", model_name,
-                            "_Model/phi_Profile/phi_", model_name, "_profile_combined_data.csv"))
+phi_profile_data = read.csv(paste0(
+  "../Generated_Data/Profiles/", model_name,
+  "_Model/phi_Profile/phi_", model_name,
+  "_profile_combined_data.csv"))
 phi_profile_data$Profile_Type = "phi"
 
-combined_profile_data = rbind(combined_profile_data, phi_profile_data)
+combined_profile_data = rbind(combined_profile_data,
+                              phi_profile_data)
 
 
 
 
-#epsilon_profile_data = read.csv(paste0("../Generated_Data/Profiles/", model_name,
-#                            "_Model/epsilon_Profile/epsilon_", model_name, "_profile_combined_data.csv"))
-#epsilon_profile_data$Profile_Type = "epsilon"
 
-#combined_profile_data = rbind(combined_profile_data, epsilon_profile_data)
-
-
-#head(combined_profile_data)
-# N_0_profile_data = read.csv(paste0("../Generated_Data/Profiles/", model_name,
-#                             "_Model/N_0_Profile/N_0_", model_name, "_profile_combined_data.csv"))
-# combined_profile_data = rbind(combined_profile_data, N_0_profile_data)
-
-write.csv(combined_profile_data, file = paste0("../Generated_Data/Profiles/", model_name,
-          "_Model/combined_", model_name, "_profile_data_directory.csv"),
+write.csv(combined_profile_data, file = paste0(
+  "../Generated_Data/Profiles/", model_name,
+          "_Model/combined_", model_name,
+  "_profile_data_directory.csv"),
           append = FALSE, row.names = FALSE)
 ```
 
@@ -790,21 +847,21 @@ library(stringr)
 library(gridExtra)
 library(zoo)
 library(pomp)
-load("../Generated_Data/Skip_Data/nCritics.Rdata")
-head(nCritics)
-row.names(nCritics)
-colnames(nCritics)
+load(
+  "../Generated_Data/Skip_Data/nCritics.Rdata")
+
 skip_raw_data = as.numeric(as.character(nCritics))
 skip_data = as.data.frame(as.matrix(nCritics))
 
-dim(nCritics) #18 (Reporitng rate) x 11 (delta) x 491 (R_0 value)
+#dim(nCritics) #18 (Reporitng rate) x 11 (delta) x 491 (R_0 value)
 # Row name: Reporting rate (18 from 1% to 50%)
 
 
-#reporting_rates = strsplit(reporting_rate, "%")
-rep_rate_header = str_split(row.names(nCritics), pattern = "%", n = Inf,
+rep_rate_header = str_split(row.names(nCritics),
+                            pattern = "%", n = Inf,
               simplify = TRUE)
-delta_col_header = str_split(colnames(nCritics), pattern = "_", n = Inf,
+delta_col_header = str_split(colnames(nCritics),
+                             pattern = "_", n = Inf,
                              simplify = TRUE)
 reporting_rate = as.numeric(rep_rate_header[,2])/100
 delta_val = as.numeric(delta_col_header[,2])
@@ -827,13 +884,10 @@ skip_data_rho_nine_percent =
            c(91:181)]
 skip_df_rho_9 = as.data.frame(skip_data_rho_nine_percent)
 skip_df_rho_9 <- tibble::rownames_to_column(skip_df_rho_9, "delta")
-strsplit(skip_df_rho_9$delta, split = "_")
-colnames(skip_df_rho_9)
-rownames(skip_df_rho_9)
+
 library(stringr)
 skip_df_rho_9$delta = str_split(skip_df_rho_9$delta,
                                 pattern = "_", simplify = TRUE)[,2]
-head(skip_df_rho_9)
 
 skip_df_rho_9 = melt(skip_df_rho_9, id.vars = c("delta"))
 skip_df_rho_9 = dplyr::select(skip_df_rho_9, delta, r0 = variable,
@@ -851,13 +905,10 @@ skip_data_rho_six_percent =
            c(91:181)]
 skip_df_rho_6 = as.data.frame(skip_data_rho_six_percent)
 skip_df_rho_6 <- tibble::rownames_to_column(skip_df_rho_6, "delta")
-strsplit(skip_df_rho_6$delta, split = "_")
-colnames(skip_df_rho_6)
-rownames(skip_df_rho_6)
+
 library(stringr)
 skip_df_rho_6$delta = str_split(skip_df_rho_6$delta,
                           pattern = "_", simplify = TRUE)[,2]
-head(skip_df_rho_6)
 
 skip_df_rho_6 = melt(skip_df_rho_6, id.vars = c("delta"))
 skip_df_rho_6 = dplyr::select(skip_df_rho_6, delta, r0 = variable,
@@ -875,13 +926,10 @@ skip_data_rho_three_percent =
            c(91:181)]
 skip_df_rho_3 = as.data.frame(skip_data_rho_three_percent)
 skip_df_rho_3 <- tibble::rownames_to_column(skip_df_rho_3, "delta")
-strsplit(skip_df_rho_3$delta, split = "_")
-colnames(skip_df_rho_3)
-rownames(skip_df_rho_3)
+
 library(stringr)
 skip_df_rho_3$delta = str_split(skip_df_rho_3$delta,
                                  pattern = "_", simplify = TRUE)[,2]
-head(skip_df_rho_3)
 
 skip_df_rho_3 = melt(skip_df_rho_3, id.vars = c("delta"))
 skip_df_rho_3 = dplyr::select(skip_df_rho_3, delta, r0 = variable,
@@ -905,19 +953,32 @@ library(latex2exp)
 
 
 only_delta_07 = filter(skip_df, delta == 0.7)
-head(only_delta_07)
 only_delta_07$rho = as.factor(as.character(only_delta_07$rho))
-p = ggplot(data = only_delta_07, aes(x = r0, y = Num_Skips,
-                               color = rho)) + geom_point(size = 3) +
-  rahul_theme +
-  theme_white_background + scale_color_viridis_d(direction = -1)+
-  ylab("Number of skips")  + labs(x = expression(R[0])) +
-  labs(color = expression(rho))+
-  rahul_man_figure_theme 
-p
+
 
 # TIFF Figure 1 -----------------------------------------------------------
 source("TIFF_Man_Fig_1.R")
+
+```
+
+### TIFF Plotting Code for Figure 1
+```{r, cache=FALSE}
+
+knitr::read_chunk('TIFF_Man_Fig_1.R')
+
+```
+
+```{r, cache=FALSE}
+
+knitr::read_chunk('TIFF_Man_Fig_1_Panel_A.R')
+
+```
+
+```{r TIFF_Man_Fig_1}
+
+```
+
+```{r TIFF_Man_Fig_1_Panel_A}
 
 ```
 
@@ -932,20 +993,20 @@ library(zoo)
 
 library(pomp)
 load("../Generated_Data/Skip_Data/nCritics.Rdata")
-head(nCritics)
-row.names(nCritics)
-colnames(nCritics)
+#head(nCritics)
+
 skip_raw_data = as.numeric(as.character(nCritics))
 skip_data = as.data.frame(as.matrix(nCritics))
 
-dim(nCritics) #18 (Reporitng rate) x 11 (delta) x 491 (R_0 value)
+#dim(nCritics) #18 (Reporitng rate) x 11 (delta) x 491 (R_0 value)
 # Row name: Reporting rate (18 from 1% to 50%)
 
 
-#reporting_rates = strsplit(reporting_rate, "%")
-rep_rate_header = str_split(row.names(nCritics), pattern = "%", n = Inf,
+rep_rate_header = str_split(row.names(nCritics),
+                            pattern = "%", n = Inf,
               simplify = TRUE)
-delta_col_header = str_split(colnames(nCritics), pattern = "_", n = Inf,
+delta_col_header = str_split(colnames(nCritics),
+                             pattern = "_", n = Inf,
                              simplify = TRUE)
 reporting_rate = as.numeric(rep_rate_header[,2])/100
 delta_val = as.numeric(delta_col_header[,2])
@@ -956,7 +1017,8 @@ three_percent_rho_index = which(reporting_rate == .03)
 
 
 
-R_0_col_header = str_split(names(nCritics[1,1,]), pattern = "_", n = Inf,
+R_0_col_header = str_split(names(nCritics[1,1,]),
+                           pattern = "_", n = Inf,
                              simplify = TRUE)
 R_0_skip_val = as.numeric(R_0_col_header[,2])
 
@@ -967,13 +1029,10 @@ skip_data_rho_ten_percent =
            c(91:181)]
 skip_df_rho_10 = as.data.frame(skip_data_rho_ten_percent)
 skip_df_rho_10 <- tibble::rownames_to_column(skip_df_rho_10, "delta")
-strsplit(skip_df_rho_10$delta, split = "_")
-colnames(skip_df_rho_10)
-rownames(skip_df_rho_10)
+
 library(stringr)
 skip_df_rho_10$delta = str_split(skip_df_rho_10$delta,
                                 pattern = "_", simplify = TRUE)[,2]
-head(skip_df_rho_10)
 
 skip_df_rho_10 = melt(skip_df_rho_10, id.vars = c("delta"))
 skip_df_rho_10 = dplyr::select(skip_df_rho_10, delta, r0 = variable,
@@ -990,13 +1049,10 @@ skip_data_rho_three_percent =
            c(91:181)]
 skip_df_rho_3 = as.data.frame(skip_data_rho_three_percent)
 skip_df_rho_3 <- tibble::rownames_to_column(skip_df_rho_3, "delta")
-strsplit(skip_df_rho_3$delta, split = "_")
-colnames(skip_df_rho_3)
-rownames(skip_df_rho_3)
+
 library(stringr)
 skip_df_rho_3$delta = str_split(skip_df_rho_3$delta,
                                  pattern = "_", simplify = TRUE)[,2]
-head(skip_df_rho_3)
 skip_df_rho_3 = melt(skip_df_rho_3, id.vars = c("delta"))
 skip_df_rho_3 = dplyr::select(skip_df_rho_3, delta, r0 = variable,
                                Num_Skips = value)
@@ -1006,12 +1062,14 @@ skip_df_rho_3$rho = 0.03
 skip_df_rho_3$rho_lab = "\rho~=~0.03" 
 skip_df = rbind(skip_df_rho_3,
                 skip_df_rho_10)
-save(skip_df_rho_3, file = "../Generated_Data/Data_for_Manuscript_Figures/skip_data_rho_3.RData")
+save(skip_df_rho_3,
+     file = 
+       "../Generated_Data/Data_for_Manuscript_Figures/skip_data_rho_3.RData"
+     )
 skip_df$r0 = as.numeric(as.character(skip_df$r0))
 skip_df$Num_Skips = as.numeric(as.character(skip_df$Num_Skips))
 
 only_delta_07 = filter(skip_df, delta == 0.7)
-head(only_delta_07)
 only_delta_07$rho = as.factor(as.character(only_delta_07$rho))
 
 
@@ -1023,11 +1081,18 @@ Fig_2_B = ggplot(data = only_delta_07) + geom_point(data = only_delta_07,
                               shape = rho),size = 3 )+
   labs(shape = expression(rho)) +
   rahul_theme +
-  theme_white_background + scale_shape_manual(values = c(18,17), name = expression(atop("Reporting", paste("Rate ", (rho)))))+
+  theme_white_background +
+  scale_shape_manual(values = c(18,17),
+                     name = expression(
+                       atop("Reporting",
+                            paste("Rate ",
+                                  (rho)))))+
   labs(x = expression(R[0])) +
   labs(y = expression(n[c])) +
-  labs(y = expression(paste("Number of skips (", n[c], ")")))
-  labs(shape = expression(rho))+
+  labs(y = expression(
+    paste("Number of skips (",
+          n[c], ")")))
+  labs(shape = expression(rho)) +
   rahul_man_figure_theme
 Fig_2_B
 tiff(
@@ -1041,9 +1106,6 @@ dev.off()
 
 
 
-#only_delta_07$Type = "Simulated"
-##### Load data from old figure 8 
-
 
 #Load bio_good LL
 
@@ -1051,22 +1113,33 @@ model_name = "A_7"
 
 
 ## R_naught_act_data
-profile_data_with_R_naught_act = read.csv(file = paste0("../Generated_Data/Profiles/", model_name,
-                                                        "_Model/combined_", model_name, "_profile_data_directory_with_mean_R_0.csv"))
+profile_data_with_R_naught_act = read.csv(
+  file = paste0("../Generated_Data/Profiles/",
+                model_name, "_Model/combined_", model_name,
+                "_profile_data_directory_with_mean_R_0.csv"))
 
-head(profile_data_with_R_naught_act)
-MLE_with_R_naught_act = filter(profile_data_with_R_naught_act, LL == max(LL))
-bio_good_2_LL_with_R_naught = read.csv(file = paste0("../Generated_Data/Profiles/", model_name,
-                                                     "_Model/combined_", model_name, "_bio_good_2_LL_param_list.csv"))
+MLE_with_R_naught_act = filter(profile_data_with_R_naught_act,
+                               LL == max(LL))
+bio_good_2_LL_with_R_naught = read.csv(
+  file = paste0("../Generated_Data/Profiles/",
+                model_name, "_Model/combined_",
+                model_name, "_bio_good_2_LL_param_list.csv"))
 A_7_MLE_R_naught_act = MLE_with_R_naught_act$R_naught
-A_7_min_R_naught_act = min(bio_good_2_LL_with_R_naught$R_naught)
-A_7_max_R_naught_act = max(bio_good_2_LL_with_R_naught$R_naught)
+A_7_min_R_naught_act = min(
+  bio_good_2_LL_with_R_naught$R_naught)
+A_7_max_R_naught_act = max(
+  bio_good_2_LL_with_R_naught$R_naught)
 
-A_7_bio_good_2_LL = read.csv(paste0("../Generated_Data/Profiles/", model_name, "_Model/",model_name, "_Model_BP_top_2_LL_all_params_bio_good_2_LL.csv"))
+A_7_bio_good_2_LL = read.csv(paste0(
+  "../Generated_Data/Profiles/", model_name,
+  "_Model/",model_name,
+  "_Model_BP_top_2_LL_all_params_bio_good_2_LL.csv"))
 
-A_7_bio_good_2_LL$R_naught_theo = A_7_bio_good_2_LL$Beta_0/(A_7_bio_good_2_LL$gamma + A_7_bio_good_2_LL$mu_H)
+A_7_bio_good_2_LL$R_naught_theo =
+  A_7_bio_good_2_LL$Beta_0/(
+    A_7_bio_good_2_LL$gamma +
+      A_7_bio_good_2_LL$mu_H)
 
-head(A_7_bio_good_2_LL)
 A_7_bio_good_2_LL$nearest_skip_rho = 0
 A_7_bio_good_2_LL$nearest_skip_R_naught = 0
 A_7_bio_good_2_LL$nearest_skip_delta = 0
@@ -1086,56 +1159,56 @@ A_7_bio_good_2_LL$nearest_skip_rho_index = NA
 
 
 
-Rio_data_clean = read.csv("../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
-head(Rio_data_clean)
+Rio_data_clean = read.csv(
+  "../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
 Rio_clean_data = Rio_data_clean
-t0 = as.numeric(as.Date("1986/05/01") - as.Date("1986/01/01"))
-Rio_data_first_three_years_only = filter(Rio_data_clean, times < 365*4)
-
-
-#add_a_week = Rio_city_DENV1_clean$Date %m+% weeks(1)
-#last_day_of_month = add_a_month - 1
-
-
-
-
-
+t0 = as.numeric(as.Date("1986/05/01") -
+                  as.Date("1986/01/01"))
+Rio_data_first_three_years_only = filter(Rio_data_clean,
+                                         times < 365*4)
 
 # Data plot
 load(file = "../Down_Data/denguerj1986-1996.RData")
 
-Rio_city_DENV1_clean = data.frame(Y = as.matrix(dengue.ts),
-                                  Date = as.Date(as.yearmon(time(dengue.ts))))
-Rio_city_DENV1_clean = filter(Rio_city_DENV1_clean, Date >= "1986-05-01")
-Rio_city_DENV1_clean = filter(Rio_city_DENV1_clean, Date <= "1995-12-31")
+Rio_city_DENV1_clean = data.frame(
+  Y = as.matrix(dengue.ts),
+  Date = as.Date(
+    as.yearmon(time(dengue.ts))))
+Rio_city_DENV1_clean = filter(Rio_city_DENV1_clean,
+                              Date >= "1986-05-01")
+Rio_city_DENV1_clean = filter(Rio_city_DENV1_clean,
+                              Date <= "1995-12-31")
 
 Rio_city_DENV1_clean$Year = year(Rio_city_DENV1_clean$Date)
 
 serotype_year_map = data.frame(
-  Serotype = factor(c(rep("DENV1", 5), rep("DENV1 or \n DENV2",6)),
+  Serotype = factor(c(rep("DENV1", 5),
+                      rep("DENV1 or \n DENV2",6)),
                     levels = c("DENV1",
                                "DENV2",
                                "DENV1 or \n DENV2")),
   Year = seq(from = 1986, to = 1996, by = 1))
-Rio_city_dengue_86_to_96 = filter(Rio_city_DENV1_clean, Date < "1997-01-01")
+Rio_city_dengue_86_to_96 = filter(Rio_city_DENV1_clean,
+                                  Date < "1997-01-01")
 dengue_data_with_serotype = join(Rio_city_dengue_86_to_96,
                                  serotype_year_map)
-dengue_data_with_serotype$Scale = rep("Observed Monthly Cases",
-                                      nrow(dengue_data_with_serotype))
-dengue_data_with_serotype$Scale_index = rep(1, nrow(dengue_data_with_serotype))
-dengue_data_with_serotype$Serotype = as.factor(dengue_data_with_serotype$Serotype)
+dengue_data_with_serotype$Scale =
+  rep("Observed Monthly Cases",
+      nrow(dengue_data_with_serotype))
+dengue_data_with_serotype$Scale_index =
+  rep(1, nrow(dengue_data_with_serotype))
+dengue_data_with_serotype$Serotype = 
+  as.factor(dengue_data_with_serotype$Serotype)
 dengue_data_with_serotype$Serotype =
   ordered(dengue_data_with_serotype$Serotype,
           levels = c( "DENV1","DENV1 or \n DENV2"
           ))
 
-dengue_data_with_serotype$Serotype <- factor(dengue_data_with_serotype$Serotype, levels = c("DENV1 or \n DENV2",
-                                               "DENV1",
-                                               "DENV2"
-))
+dengue_data_with_serotype$Serotype <- factor(
+  dengue_data_with_serotype$Serotype,
+  levels = c("DENV1 or \n DENV2", "DENV1", "DENV2"))
 
 
-#dengue_data_with_serotype$Rect_max = dengue_data_with_serotype$Y
 dengue_data_with_serotype$Rect_max = 12500
 
 dengue_data_with_serotype$Rect_min = 0
@@ -1147,10 +1220,10 @@ log_dengue_data_with_serotype = data.frame(
   Year = dengue_data_with_serotype$Year,
   Serotype = dengue_data_with_serotype$Serotype,
   Y = log(dengue_data_with_serotype$Y),
-  Scale = rep("log(Observed Monthly Cases)", nrow(dengue_data_with_serotype)),
+  Scale = rep("log(Observed Monthly Cases)",
+              nrow(dengue_data_with_serotype)),
   Scale_index = rep(2, nrow(dengue_data_with_serotype))
 )
-#log_dengue_data_with_serotype$Rect_max =  log_dengue_data_with_serotype$Y
 log_dengue_data_with_serotype$Rect_max =  10
 log_dengue_data_with_serotype$Rect_min = 0.0
 log_dengue_data_with_serotype$Spark_Rect_max = 7.5
@@ -1158,8 +1231,6 @@ log_dengue_data_with_serotype$Spark_Rect_min = 2.5
 
 dengue_data_both_scales = rbind(dengue_data_with_serotype,
                                 log_dengue_data_with_serotype)
-#dengue_data_both_scales$Scale = relevel(c("Observed Monthly Cases",
-#                                          "log(Observed Monthly Cases)"))
 s_0_calc_point = as.Date("1987-9-01")
 dengue_data_with_serotype$Rect_max_x = as.Date("1988-07-01")
 dengue_data_with_serotype$Rect_min_x = as.Date("1986-05-01")
@@ -1167,11 +1238,14 @@ dengue_data_with_serotype$Rect_min_x = as.Date("1986-05-01")
 dengue_data_both_scales$spark_start_date = as.Date("1990-01-01")
 dengue_data_both_scales$spark_end_date = as.Date("1990-01-31")
 
-Fig_2_A = ggplot(data = dengue_data_with_serotype,
-               aes(x = Date, y = Y))+
+Fig_2_A = ggplot(
+  data = dengue_data_with_serotype,
+  aes(x = Date, y = Y))+
   geom_rect(aes(xmin = as.Date(Rect_max_x),
-                xmax = as.Date(Rect_min_x),ymin = Rect_min,
-                ymax = Rect_max), fill = 'grey70', alpha = 0.9) +
+                xmax = as.Date(Rect_min_x),
+                ymin = Rect_min,
+                ymax = Rect_max),
+            fill = 'grey70', alpha = 0.9) +
   geom_line() +
   geom_point(size = 3)  +
   theme(axis.line = element_line(colour = "black"),
@@ -1197,7 +1271,8 @@ Fig_2_A = ggplot(data = dengue_data_with_serotype,
                                     face = "plain"),
         legend.background = element_blank(),
         strip.background = element_blank(),
-        strip.text.x = element_blank()) + rahul_man_figure_theme +
+        strip.text.x = element_blank()) +
+  rahul_man_figure_theme +
   theme(axis.title.x = element_text(face = "plain")) +
     theme(axis.title.y = element_text(face = "plain")) +
   theme(axis.text.x = element_text(size = 14,
@@ -1231,189 +1306,6 @@ dev.off()
 
 
 
-<!-- ### Old TIFF Figure 2_A -->
-<!-- ```{r} -->
-<!-- # TIFF Figure 2_A ----------------------------------------------------------- -->
-
-
-<!-- rahul_poster_theme = theme( -->
-<!--   axis.title.x = element_text(size = 23, -->
-<!--                               face = "bold", -->
-<!--                               color = "black"), -->
-<!--   axis.text.x = element_text(size = 21, -->
-<!--                              face = "bold", -->
-<!--                              color = "black"), -->
-<!--   axis.title.y = element_text(size = 23, -->
-<!--                               face = "bold", -->
-<!--                               color = "black"), -->
-<!--   legend.title = element_text(size = 21, -->
-<!--                               face = "bold", -->
-<!--                               color = "black"), -->
-<!--   legend.text = element_text(size = 23, -->
-<!--                              face = "bold", -->
-<!--                              color = "black"), -->
-<!--   axis.text.y = element_text(size = 21, -->
-<!--                              face = "bold", -->
-<!--                              color = "black") -->
-<!-- ) -->
-
-<!-- Rio_data_clean = read.csv("../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv") -->
-<!-- head(Rio_data_clean) -->
-<!-- Rio_clean_data = Rio_data_clean -->
-<!-- t0 = as.numeric(as.Date("1986/05/01") - as.Date("1986/01/01")) -->
-<!-- Rio_data_first_three_years_only = filter(Rio_data_clean, times < 365*4) -->
-
-
-<!-- #add_a_week = Rio_city_DENV1_clean$Date %m+% weeks(1) -->
-<!-- #last_day_of_month = add_a_month - 1 -->
-
-
-
-
-
-
-<!-- # Data plot -->
-<!-- load(file = "../Down_Data/denguerj1986-1996.RData") -->
-
-<!-- Rio_city_DENV1_clean = data.frame(Y = as.matrix(dengue.ts), -->
-<!--                                   Date = as.Date(as.yearmon(time(dengue.ts)))) -->
-<!-- Rio_city_DENV1_clean = filter(Rio_city_DENV1_clean, Date >= "1986-05-01") -->
-<!-- Rio_city_DENV1_clean = filter(Rio_city_DENV1_clean, Date <= "1995-12-31") -->
-
-<!-- Rio_city_DENV1_clean$Year = year(Rio_city_DENV1_clean$Date) -->
-
-<!-- serotype_year_map = data.frame( -->
-<!--   Serotype = factor(c(rep("DENV1", 5), rep("DENV1 or \n DENV2",6)), -->
-<!--                     levels = c("DENV1", -->
-<!--                                "DENV2", -->
-<!--                                "DENV1 or \n DENV2")), -->
-<!--   Year = seq(from = 1986, to = 1996, by = 1)) -->
-<!-- Rio_city_dengue_86_to_96 = filter(Rio_city_DENV1_clean, Date < "1997-01-01") -->
-<!-- dengue_data_with_serotype = join(Rio_city_dengue_86_to_96, -->
-<!--                                  serotype_year_map) -->
-<!-- dengue_data_with_serotype$Scale = rep("Observed Monthly Cases", -->
-<!--                                       nrow(dengue_data_with_serotype)) -->
-<!-- dengue_data_with_serotype$Scale_index = rep(1, nrow(dengue_data_with_serotype)) -->
-<!-- dengue_data_with_serotype$Serotype = as.factor(dengue_data_with_serotype$Serotype) -->
-<!-- dengue_data_with_serotype$Serotype = -->
-<!--   ordered(dengue_data_with_serotype$Serotype, -->
-<!--           levels = c( "DENV1","DENV1 or \n DENV2" -->
-<!--           )) -->
-
-<!-- dengue_data_with_serotype$Serotype <- factor(dengue_data_with_serotype$Serotype, levels = c("DENV1 or \n DENV2", -->
-<!--                                                "DENV1", -->
-<!--                                                "DENV2" -->
-<!-- )) -->
-
-
-<!-- #dengue_data_with_serotype$Rect_max = dengue_data_with_serotype$Y -->
-<!-- dengue_data_with_serotype$Rect_max = 12500 -->
-
-<!-- dengue_data_with_serotype$Rect_min = 0 -->
-<!-- dengue_data_with_serotype$Spark_Rect_max = 8000 -->
-<!-- dengue_data_with_serotype$Spark_Rect_min = 4000 -->
-
-<!-- log_dengue_data_with_serotype = data.frame( -->
-<!--   Date = dengue_data_with_serotype$Date, -->
-<!--   Year = dengue_data_with_serotype$Year, -->
-<!--   Serotype = dengue_data_with_serotype$Serotype, -->
-<!--   Y = log(dengue_data_with_serotype$Y), -->
-<!--   Scale = rep("log(Observed Monthly Cases)", nrow(dengue_data_with_serotype)), -->
-<!--   Scale_index = rep(2, nrow(dengue_data_with_serotype)) -->
-<!-- ) -->
-<!-- #log_dengue_data_with_serotype$Rect_max =  log_dengue_data_with_serotype$Y -->
-<!-- log_dengue_data_with_serotype$Rect_max =  10 -->
-<!-- log_dengue_data_with_serotype$Rect_min = 0.0 -->
-<!-- log_dengue_data_with_serotype$Spark_Rect_max = 7.5 -->
-<!-- log_dengue_data_with_serotype$Spark_Rect_min = 2.5 -->
-
-<!-- dengue_data_both_scales = rbind(dengue_data_with_serotype, -->
-<!--                                 log_dengue_data_with_serotype) -->
-<!-- #dengue_data_both_scales$Scale = relevel(c("Observed Monthly Cases", -->
-<!-- #                                          "log(Observed Monthly Cases)")) -->
-<!-- s_0_calc_point = as.Date("1987-9-01") -->
-<!-- dengue_data_both_scales$Rect_max_x = as.Date("1988-07-01") -->
-<!-- dengue_data_both_scales$Rect_min_x = as.Date("1986-05-01") -->
-<!-- dengue_data_both_scales$Rect_max_re_emerge_x = as.Date("1990-01-01") -->
-<!-- dengue_data_both_scales$Rect_min_re_emerge_x = as.Date("1991-01-01") -->
-<!-- dengue_data_both_scales$spark_start_date = as.Date("1990-01-01") -->
-<!-- dengue_data_both_scales$spark_end_date = as.Date("1990-01-31") -->
-
-<!-- Fig_2_A = ggplot(data = dengue_data_both_scales, -->
-<!--                aes(x = Date, y = Y))+ -->
-<!--   geom_rect(aes(xmin = as.Date(Rect_max_x), -->
-<!--                 xmax = as.Date(Rect_min_x),ymin = Rect_min, -->
-<!--                 ymax = Rect_max), fill = 'skyblue', alpha = 0.9) + -->
-<!--   geom_rect(aes(xmin = as.Date(Rect_max_re_emerge_x), -->
-<!--                 xmax = as.Date(Rect_min_re_emerge_x),ymin = Rect_min, -->
-<!--                 ymax = Rect_max), fill = 'springgreen', alpha = 0.9)+ -->
-<!--   geom_rect(aes(xmin = as.Date(spark_start_date), -->
-<!--                 xmax = as.Date(spark_end_date),ymin = Rect_min, -->
-<!--                 ymax = Spark_Rect_max), fill = 'lightpink', alpha = 0.9)+ -->
-<!--   geom_line(aes(color = Serotype)) + -->
-<!--   geom_point(aes(color = Serotype), size = 3) + rahul_poster_theme + -->
-<!--   theme(axis.line = element_line(colour = "black"), -->
-<!--         panel.grid.major = element_blank(), -->
-<!--         panel.grid.minor = element_blank(), -->
-<!--         panel.border = element_blank(), -->
-<!--         panel.background = element_blank())+ -->
-<!--   theme(legend.position = c(.75,.87)) + xlab("Date") + -->
-<!--   ylab("log(Observed           Observed \n Monthly Cases)    Monthly Cases") + -->
-<!--   scale_color_manual(name = "Serotype", values = c("blue","red","darkgreen"))+ -->
-<!--   facet_wrap(~Scale_index, ncol = 1, scales = "free_y") + -->
-<!--   theme(axis.title.y = element_text(size = 20, -->
-<!--                                     face = "bold", -->
-<!--                                     color = "black"), -->
-<!--         legend.text = element_text(size = 18, -->
-<!--                                    face = "bold", -->
-<!--                                    color = "black"), -->
-<!--         legend.title = element_text(size = 21, -->
-<!--                                     face = "bold", -->
-<!--                                     color = "black"), -->
-<!--         legend.background = element_blank(), -->
-<!--         strip.background = element_blank(), -->
-<!--         strip.text.x = element_blank()) + rahul_man_figure_theme + -->
-<!--   geom_vline(xintercept = s_0_calc_point, color = 'red', -->
-<!--              size = 2, linetype = 2) -->
-<!-- Fig_2_A -->
-
-
-<!-- tiff( -->
-<!--   paste0( -->
-<!--     "../Figures/Manuscript_Figures/TIFF_Files/Fig2_A.tiff"), -->
-<!--   height = 5, width = 10, res = 300, units = "in") -->
-<!-- print(Fig_2_A) -->
-<!-- dev.off() -->
-
-<!-- Fig_2_B_mod = Fig_2_B + -->
-<!--   theme(legend.position = c(.50, .75)) -->
-
-
-<!-- tiff( -->
-<!--   paste0( -->
-<!--     "../Figures/Manuscript_Figures/TIFF_Files/Fig2_raw.tiff"), -->
-<!--   height = 5, width = 10, res = 300, units = "in") -->
-<!-- print(grid.arrange(Fig_2_A, Fig_2_B_mod, ncol = 2)) -->
-<!-- dev.off() -->
-
-
-
-<!-- ``` -->
-
-
-<!-- <!-- ## TIFF Figure 1 --> -->
-<!-- <!-- ```{r} --> -->
-<!-- <!-- # TIFF Figure 1 ----------------------------------------------------------- --> -->
-<!-- <!-- source("TIFF_Man_Fig_1.R") --> -->
-
-<!-- <!-- ``` --> -->
-
-<!-- <!-- ```{r, cache=FALSE} --> -->
-
-<!-- <!-- knitr::read_chunk('TIFF_Man_Fig_1.R') --> -->
-<!-- <!-- ``` --> -->
-
-
 
 # Figure 3
 
@@ -1428,6 +1320,9 @@ source("Man_Figure_profile_facet_plots_plot_functions_simplified.R")
 knitr::read_chunk('Man_Figure_profile_facet_plots_plot_functions_simplified.R')
 ```
 
+```{r plot_functions_simplified}
+
+```
 ## Fig_3_Panel_A_B_C
 ```{r}
 # Fig_3_Panel_A_B_C -------------------------------------------------------
@@ -1457,194 +1352,306 @@ model_name_list = c("A_7")
 model_label_list = factor(c("SIR Cosine No Immigration"))
 model_label_list = factor(model_label_list, levels = c("SIR Cosine No Immigration"))
 
-Csnippet_file_path_list = c("Csnippet_SIR_cosine_model.R")
+Csnippet_file_path_list = c(
+  "Csnippet_SIR_cosine_model.R")
 Num_est_parameters_list = c(7)
-data_file_path_list = c("../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
+data_file_path_list = c(
+  "../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
 
 num_years_list = c(2.50)
 
-model_ref_df = data.frame(model_name = model_name_list, model_label = model_label_list,
-                          Csnippet_file_path = Csnippet_file_path_list,
-                          Num_est_parameters = Num_est_parameters_list,
-                          data_file_path = data_file_path_list,
-                          num_years = num_years_list,stringsAsFactors = FALSE)
+model_ref_df = data.frame(
+  model_name = model_name_list,
+  model_label = model_label_list,
+  Csnippet_file_path = Csnippet_file_path_list,
+  Num_est_parameters = Num_est_parameters_list,
+  data_file_path = data_file_path_list,
+  num_years = num_years_list,
+  stringsAsFactors = FALSE)
 Sup_Fig_3A_df_colnames = c("Beta_0","LL", "Model",     
                            "Model_Name", "Profile_Var")
-Sup_Fig_3A_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
-Sup_Fig_3A_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
-Sup_Fig_3A_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_3A_prof_peak_treshold_df_colnames = c(
+  "Profile_threshold", "Model", "Model_Name")
+Sup_Fig_3A_MLE_value_for_prof_var_df_colnames = c(
+  "MLE_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_3A_prof_peak_value_for_prof_var_df_colnames = c(
+  "prof_peak_value_for_prof_var", "Model", "Model_Name")
 
 
 Sup_Fig_3B_df_colnames = c("rho","LL" ,"Model",     
                            "Model_Name", "Profile_Var")
-Sup_Fig_3B_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
-Sup_Fig_3B_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
-Sup_Fig_3B_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_3B_prof_peak_treshold_df_colnames = c(
+  "Profile_threshold", "Model", "Model_Name")
+Sup_Fig_3B_MLE_value_for_prof_var_df_colnames = c(
+  "MLE_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_3B_prof_peak_value_for_prof_var_df_colnames =
+  c("prof_peak_value_for_prof_var",
+    "Model", "Model_Name")
 
 Sup_Fig_3C_df_colnames = c("delta","LL" ,"Model",     
                            "Model_Name", "Profile_Var")
-Sup_Fig_3C_prof_peak_treshold_df_colnames = c("Profile_threshold", "Model", "Model_Name")
-Sup_Fig_3C_MLE_value_for_prof_var_df_colnames = c("MLE_value_for_prof_var", "Model", "Model_Name")
-Sup_Fig_3C_prof_peak_value_for_prof_var_df_colnames = c("prof_peak_value_for_prof_var", "Model", "Model_Name")
+Sup_Fig_3C_prof_peak_treshold_df_colnames = c(
+  "Profile_threshold", "Model",
+  "Model_Name")
 
-ML_df_colnames = c("ML", "Model", "Model_Name")
+Sup_Fig_3C_MLE_value_for_prof_var_df_colnames = c(
+  "MLE_value_for_prof_var", "Model",
+  "Model_Name")
+
+Sup_Fig_3C_prof_peak_value_for_prof_var_df_colnames =
+  c("prof_peak_value_for_prof_var",
+    "Model", "Model_Name")
+
+ML_df_colnames = c("ML", "Model",
+                   "Model_Name")
+
+Sup_Fig_3A_df = data.frame(
+  matrix(nrow = 0,
+         ncol = length(Sup_Fig_3A_df_colnames)))
 
 
-Sup_Fig_3A_df = data.frame(matrix(nrow = 0,
-                                  ncol = length(Sup_Fig_3A_df_colnames)))
-
-
-Sup_Fig_3A_prof_peak_treshold_df = data.frame(matrix(nrow = 0,
-                                                     ncol = length(Sup_Fig_3A_prof_peak_treshold_df_colnames)))
+Sup_Fig_3A_prof_peak_treshold_df = data.frame(
+  matrix(nrow = 0,
+         ncol = length(
+           Sup_Fig_3A_prof_peak_treshold_df_colnames)))
 Sup_Fig_3A_MLE_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3A_MLE_value_for_prof_var_df_colnames)))
+  data.frame(
+    matrix(nrow = 0,
+           ncol = length(
+             Sup_Fig_3A_MLE_value_for_prof_var_df_colnames)))
 Sup_Fig_3A_prof_peak_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3A_prof_peak_value_for_prof_var_df_colnames)))
+  data.frame(
+    matrix(
+      nrow = 0,
+      ncol = length(
+        Sup_Fig_3A_prof_peak_value_for_prof_var_df_colnames)))
 
-Sup_Fig_3B_df = data.frame(matrix(nrow = 0,
-                                  ncol = length(Sup_Fig_3B_df_colnames)))
-Sup_Fig_3B_prof_peak_treshold_df = data.frame(matrix(nrow = 0,
-                                                     ncol = length(Sup_Fig_3B_prof_peak_treshold_df_colnames)))
+Sup_Fig_3B_df = data.frame(
+  matrix(
+    nrow = 0,
+    ncol = length(Sup_Fig_3B_df_colnames)))
+Sup_Fig_3B_prof_peak_treshold_df = data.frame(
+  matrix(nrow = 0,
+         ncol = length(
+           Sup_Fig_3B_prof_peak_treshold_df_colnames)))
 Sup_Fig_3B_MLE_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3B_MLE_value_for_prof_var_df_colnames)))
+  data.frame(
+    matrix(
+      nrow = 0,
+      ncol = length(
+        Sup_Fig_3B_MLE_value_for_prof_var_df_colnames)))
 Sup_Fig_3B_prof_peak_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3B_prof_peak_value_for_prof_var_df_colnames)))
+  data.frame(
+    matrix(nrow = 0,
+           ncol = length(
+             Sup_Fig_3B_prof_peak_value_for_prof_var_df_colnames)))
 
-Sup_Fig_3C_df = data.frame(matrix(nrow = 0,
-                                  ncol = length(Sup_Fig_3C_df_colnames)))
-Sup_Fig_3C_prof_peak_treshold_df = data.frame(matrix(nrow = 0,
-                                                     ncol = length(Sup_Fig_3C_prof_peak_treshold_df_colnames)))
+Sup_Fig_3C_df = data.frame(
+  matrix(nrow = 0,
+         ncol = length(
+           Sup_Fig_3C_df_colnames)))
+Sup_Fig_3C_prof_peak_treshold_df = data.frame(
+  matrix(nrow = 0,
+         ncol = length(
+           Sup_Fig_3C_prof_peak_treshold_df_colnames)))
 Sup_Fig_3C_MLE_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3C_MLE_value_for_prof_var_df_colnames)))
+  data.frame(
+    matrix(
+      nrow = 0,
+      ncol = length(
+        Sup_Fig_3C_MLE_value_for_prof_var_df_colnames)))
 Sup_Fig_3C_prof_peak_value_for_prof_var_df =
-  data.frame(matrix(nrow = 0, ncol = length(Sup_Fig_3C_prof_peak_value_for_prof_var_df_colnames)))
+  data.frame(
+    matrix(
+      nrow = 0,
+      ncol = length(
+        Sup_Fig_3C_prof_peak_value_for_prof_var_df_colnames)))
 
-ML_df = data.frame(matrix(nrow = 0,
-                          ncol = length(ML_df_colnames)))
+ML_df = data.frame(
+  matrix(nrow = 0,
+         ncol = length(ML_df_colnames)))
 
-colnames(Sup_Fig_3A_df) = Sup_Fig_3A_df_colnames
-colnames(Sup_Fig_3A_prof_peak_treshold_df) = Sup_Fig_3A_prof_peak_treshold_df_colnames
-colnames(Sup_Fig_3A_MLE_value_for_prof_var_df) = Sup_Fig_3A_MLE_value_for_prof_var_df_colnames
-colnames(Sup_Fig_3A_prof_peak_value_for_prof_var_df) = Sup_Fig_3A_prof_peak_value_for_prof_var_df_colnames
+colnames(Sup_Fig_3A_df) =
+  Sup_Fig_3A_df_colnames
 
+colnames(Sup_Fig_3A_prof_peak_treshold_df) =
+  Sup_Fig_3A_prof_peak_treshold_df_colnames
+
+colnames(Sup_Fig_3A_MLE_value_for_prof_var_df) =
+  Sup_Fig_3A_MLE_value_for_prof_var_df_colnames
+
+colnames(Sup_Fig_3A_prof_peak_value_for_prof_var_df) =
+  Sup_Fig_3A_prof_peak_value_for_prof_var_df_colnames
 
 colnames(Sup_Fig_3B_df) = Sup_Fig_3B_df_colnames
-colnames(Sup_Fig_3B_prof_peak_treshold_df) = Sup_Fig_3B_prof_peak_treshold_df_colnames
-colnames(Sup_Fig_3B_MLE_value_for_prof_var_df) = Sup_Fig_3B_MLE_value_for_prof_var_df_colnames
-colnames(Sup_Fig_3B_prof_peak_value_for_prof_var_df) = Sup_Fig_3B_prof_peak_value_for_prof_var_df_colnames
+colnames(Sup_Fig_3B_prof_peak_treshold_df) =
+  Sup_Fig_3B_prof_peak_treshold_df_colnames
+
+colnames(Sup_Fig_3B_MLE_value_for_prof_var_df) =
+  Sup_Fig_3B_MLE_value_for_prof_var_df_colnames
+
+colnames(Sup_Fig_3B_prof_peak_value_for_prof_var_df) =
+  Sup_Fig_3B_prof_peak_value_for_prof_var_df_colnames
 
 colnames(Sup_Fig_3C_df) = Sup_Fig_3C_df_colnames
-colnames(Sup_Fig_3C_prof_peak_treshold_df) = Sup_Fig_3C_prof_peak_treshold_df_colnames
-colnames(Sup_Fig_3C_MLE_value_for_prof_var_df) = Sup_Fig_3C_MLE_value_for_prof_var_df_colnames
-colnames(Sup_Fig_3C_prof_peak_value_for_prof_var_df) = Sup_Fig_3C_prof_peak_value_for_prof_var_df_colnames
+colnames(Sup_Fig_3C_prof_peak_treshold_df) =
+  Sup_Fig_3C_prof_peak_treshold_df_colnames
+
+colnames(Sup_Fig_3C_MLE_value_for_prof_var_df) =
+  Sup_Fig_3C_MLE_value_for_prof_var_df_colnames
+
+colnames(Sup_Fig_3C_prof_peak_value_for_prof_var_df) =
+  Sup_Fig_3C_prof_peak_value_for_prof_var_df_colnames
 
 colnames(ML_df) = ML_df_colnames
 
 for(model_index in seq(1:length(model_name_list))){
-  print(model_index)
-  model_name = as.character(model_name_list[model_index])
-  single_model_ref_data = filter(model_ref_df, model_name == !!model_name)
+  model_name = as.character(
+    model_name_list[model_index])
+  single_model_ref_data = filter(
+    model_ref_df, model_name == !!model_name)
   model_label = single_model_ref_data$model_label
-  Csnippet_file_path = single_model_ref_data$Csnippet_file_path
-  Num_est_parameters = single_model_ref_data$Num_est_parameters
-  data_file_path = single_model_ref_data$data_file_path
+  Csnippet_file_path =
+    single_model_ref_data$Csnippet_file_path
+  Num_est_parameters =
+    single_model_ref_data$Num_est_parameters
+  data_file_path =
+    single_model_ref_data$data_file_path
   num_years = single_model_ref_data$num_years
   
-  Rio_data_clean = read.csv(file = data_file_path)
+  Rio_data_clean = read.csv(
+    file = data_file_path)
   
   Rio_clean_data = Rio_data_clean
-  #head(Rio_data_clean)
-  
-  source(Csnippet_file_path, local = TRUE)
+
+  source(Csnippet_file_path,
+         local = TRUE)
   
   #Set t0
-  t0 = as.numeric(as.Date("1986/05/01") - as.Date("1986/01/01"))
+  t0 = as.numeric(as.Date("1986/05/01") -
+                    as.Date("1986/01/01"))
   
   #Load param combination directory
-  combined_profile_data = read.csv(file = paste0("../Generated_Data/Profiles/", model_name,
-                                                 "_Model/combined_", model_name,"_profile_data_directory.csv"))
+  combined_profile_data = read.csv(
+    file = paste0(
+      "../Generated_Data/Profiles/",
+      model_name, "_Model/combined_",
+      model_name,"_profile_data_directory.csv"))
+
+  ML = max(combined_profile_data$LL,
+           na.rm = TRUE)
+  MLE = filter(combined_profile_data,
+               LL >= ML)
   
-  
-  #head(combined_profile_data)
-  ML = max(combined_profile_data$LL, na.rm = TRUE)
-  MLE = filter(combined_profile_data, LL >= ML)
-  
-  ML_params = dplyr::select(MLE, -one_of("seed", "LL", "Profile_Type"))
+  ML_params = dplyr::select(MLE,
+                            -one_of(
+                              "seed", "LL",
+                              "Profile_Type"))
   
   MLE
-  single_model_ML_df = data.frame(ML = ML, Model = model_name, Model_Name = model_label)
-  ML_df = rbind(ML_df, single_model_ML_df)
+  single_model_ML_df = data.frame(
+    ML = ML, Model = model_name,
+    Model_Name = model_label)
+  ML_df = rbind(ML_df,
+                single_model_ML_df)
   #Get data for Sup Figure 3A
   profile_var = "Beta_0"
-  single_model_output_list = get_profile_df(profile_var = profile_var, model_name = model_name,
-                                            model_label = model_label, MLE = MLE)
-  Sup_Fig_3A_df = rbind(Sup_Fig_3A_df, single_model_output_list[[1]])
-  Sup_Fig_3A_prof_peak_treshold_df = rbind(Sup_Fig_3A_prof_peak_treshold_df, single_model_output_list[[2]])
+  single_model_output_list = get_profile_df(
+    profile_var = profile_var,
+    model_name = model_name,
+    model_label = model_label,
+    MLE = MLE)
+  
+  Sup_Fig_3A_df = rbind(Sup_Fig_3A_df,
+                        single_model_output_list[[1]])
+  
+  Sup_Fig_3A_prof_peak_treshold_df = rbind(
+    Sup_Fig_3A_prof_peak_treshold_df,
+    single_model_output_list[[2]])
+  
   Sup_Fig_3A_prof_peak_treshold_df$Profile_Var = profile_var
-  Sup_Fig_3A_MLE_value_for_prof_var_df = rbind(Sup_Fig_3A_MLE_value_for_prof_var_df,
-                                               single_model_output_list[[3]])
+  Sup_Fig_3A_MLE_value_for_prof_var_df =
+    rbind(
+      Sup_Fig_3A_MLE_value_for_prof_var_df,
+      single_model_output_list[[3]])
+  
   Sup_Fig_3A_MLE_value_for_prof_var_df$Profile_Var = profile_var
-  Sup_Fig_3A_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_3A_prof_peak_value_for_prof_var_df,
-                                                     single_model_output_list[[4]])
-  Sup_Fig_3A_prof_peak_value_for_prof_var_df$Profile_Var = profile_var
+  
+  Sup_Fig_3A_prof_peak_value_for_prof_var_df =
+    rbind(
+      Sup_Fig_3A_prof_peak_value_for_prof_var_df,
+      single_model_output_list[[4]])
+  
+  Sup_Fig_3A_prof_peak_value_for_prof_var_df$Profile_Var =
+    profile_var
   
   #Get data for Sup Figure 3B
   profile_var = "rho"
-  single_model_output_list = get_profile_df(profile_var = profile_var, model_name = model_name,
-                                            model_label = model_label, MLE = MLE)
-  Sup_Fig_3B_df = rbind(Sup_Fig_3B_df, single_model_output_list[[1]])
-  Sup_Fig_3B_prof_peak_treshold_df = rbind(Sup_Fig_3B_prof_peak_treshold_df, single_model_output_list[[2]])
-  Sup_Fig_3B_prof_peak_treshold_df$Profile_Var = profile_var
-  Sup_Fig_3B_MLE_value_for_prof_var_df = rbind(Sup_Fig_3B_MLE_value_for_prof_var_df,
-                                               single_model_output_list[[3]])
-  Sup_Fig_3B_MLE_value_for_prof_var_df$Profile_Var = profile_var
-
-  Sup_Fig_3B_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_3B_prof_peak_value_for_prof_var_df,
-                                                     single_model_output_list[[4]])
-  Sup_Fig_3B_prof_peak_value_for_prof_var_df$Profile_Var = profile_var
-
+  single_model_output_list = get_profile_df(
+    profile_var = profile_var,
+    model_name = model_name,
+    model_label = model_label,
+    MLE = MLE)
   
+  Sup_Fig_3B_df = rbind(Sup_Fig_3B_df,
+                        single_model_output_list[[1]])
+  
+  Sup_Fig_3B_prof_peak_treshold_df = rbind(
+    Sup_Fig_3B_prof_peak_treshold_df,
+    single_model_output_list[[2]])
+  
+  Sup_Fig_3B_prof_peak_treshold_df$Profile_Var =
+    profile_var
+  
+  Sup_Fig_3B_MLE_value_for_prof_var_df =
+    rbind(
+      Sup_Fig_3B_MLE_value_for_prof_var_df,
+      single_model_output_list[[3]])
+  
+  Sup_Fig_3B_MLE_value_for_prof_var_df$Profile_Var =
+    profile_var
+
+  Sup_Fig_3B_prof_peak_value_for_prof_var_df =
+    rbind(
+      Sup_Fig_3B_prof_peak_value_for_prof_var_df,
+      single_model_output_list[[4]])
+  
+  Sup_Fig_3B_prof_peak_value_for_prof_var_df$Profile_Var =
+    profile_var
+
   #Get data for Sup Figure 3C
   profile_var = "delta"
-  single_model_output_list = get_profile_df(profile_var = profile_var, model_name = model_name,
-                                            model_label = model_label, MLE = MLE)
-  Sup_Fig_3C_df = rbind(Sup_Fig_3C_df, single_model_output_list[[1]])
-  Sup_Fig_3C_prof_peak_treshold_df = rbind(Sup_Fig_3C_prof_peak_treshold_df, single_model_output_list[[2]])
+  single_model_output_list = get_profile_df(
+    profile_var = profile_var,
+    model_name = model_name,
+    model_label = model_label,
+    MLE = MLE)
+  
+  Sup_Fig_3C_df = rbind(
+    Sup_Fig_3C_df,
+    single_model_output_list[[1]])
+  
+  Sup_Fig_3C_prof_peak_treshold_df = rbind(
+    Sup_Fig_3C_prof_peak_treshold_df,
+    single_model_output_list[[2]])
+  
   Sup_Fig_3C_prof_peak_treshold_df$Profile_Var = profile_var
 
-  Sup_Fig_3C_MLE_value_for_prof_var_df = rbind(Sup_Fig_3C_MLE_value_for_prof_var_df,
-                                               single_model_output_list[[3]])
+  Sup_Fig_3C_MLE_value_for_prof_var_df =
+    rbind(
+      Sup_Fig_3C_MLE_value_for_prof_var_df,
+      single_model_output_list[[3]])
+  
   Sup_Fig_3C_MLE_value_for_prof_var_df$Profile_Var = profile_var
 
-  Sup_Fig_3C_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_3C_prof_peak_value_for_prof_var_df,
-                                                     single_model_output_list[[4]])
-  Sup_Fig_3C_prof_peak_value_for_prof_var_df$Profile_Var = profile_var
+  Sup_Fig_3C_prof_peak_value_for_prof_var_df =
+    rbind(Sup_Fig_3C_prof_peak_value_for_prof_var_df,
+          single_model_output_list[[4]])
+  Sup_Fig_3C_prof_peak_value_for_prof_var_df$Profile_Var =
+    profile_var
   
 }
 
-##Plotting function
-
-Sup_Fig_3_A = plot_profiles_simple(profile_var = "Beta_0", Sup_Fig_df = Sup_Fig_3A_df,
-                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_3A_prof_peak_treshold_df,
-                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_3A_MLE_value_for_prof_var_df,
-                            Sup_Fig_prof_peak_value_for_prof_var_df =
-                              Sup_Fig_3A_prof_peak_value_for_prof_var_df,
-                            Fig_lab = "3A", ML_df = ML_df,
-                            plot_var_label = "beta[0]")
-Sup_Fig_3_B = plot_profiles_simple(profile_var = "rho", Sup_Fig_df = Sup_Fig_3B_df,
-                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_3B_prof_peak_treshold_df,
-                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_3B_MLE_value_for_prof_var_df,
-                            Sup_Fig_prof_peak_value_for_prof_var_df =
-                              Sup_Fig_3B_prof_peak_value_for_prof_var_df,
-                            Fig_lab = "3B", ML_df = ML_df,
-                            plot_var_label = "rho")
-Sup_Fig_3_C = plot_profiles_simple(profile_var = "delta", Sup_Fig_df = Sup_Fig_3C_df,
-                            Sup_Fig_prof_peak_treshold_df = Sup_Fig_3C_prof_peak_treshold_df,
-                            Sup_Fig_MLE_value_for_prof_var_df = Sup_Fig_3C_MLE_value_for_prof_var_df,
-                            Sup_Fig_prof_peak_value_for_prof_var_df =
-                              Sup_Fig_3C_prof_peak_value_for_prof_var_df,
-                            Fig_lab = "3C", ML_df = ML_df,
-                            plot_var_label = "delta")
 
 Sup_Fig_3A_df  =  Sup_Fig_3A_df %>%
   mutate(var_value = Beta_0) %>%
@@ -1656,23 +1663,44 @@ Sup_Fig_3C_df = Sup_Fig_3C_df %>%
   mutate(var_value = delta) %>%
   dplyr::select(-delta)
 
-combined_Sup_Fig_3_df = rbind(Sup_Fig_3A_df, Sup_Fig_3B_df)
-combined_Sup_Fig_3_df = rbind(combined_Sup_Fig_3_df, Sup_Fig_3C_df)
+combined_Sup_Fig_3_df = rbind(Sup_Fig_3A_df,
+                              Sup_Fig_3B_df)
 
-combined_profile_Sup_Fig_3_MLE_value_for_prof_var_df = rbind(Sup_Fig_3A_MLE_value_for_prof_var_df,
-                                                             Sup_Fig_3B_MLE_value_for_prof_var_df)
-combined_profile_Sup_Fig_3_MLE_value_for_prof_var_df = rbind(combined_profile_Sup_Fig_3_MLE_value_for_prof_var_df,
-                                                             Sup_Fig_3C_MLE_value_for_prof_var_df)
-combined_profile_Sup_Fig_3_prof_peak_treshold_df = rbind(Sup_Fig_3A_prof_peak_treshold_df,
-                                                         Sup_Fig_3B_prof_peak_treshold_df)
-combined_profile_Sup_Fig_3_prof_peak_treshold_df = rbind(combined_profile_Sup_Fig_3_prof_peak_treshold_df,
-                                                         Sup_Fig_3C_prof_peak_treshold_df)
+combined_Sup_Fig_3_df = rbind(combined_Sup_Fig_3_df,
+                              Sup_Fig_3C_df)
 
-combined_profile_Sup_Fig_3_prof_peak_value_for_prof_var_df = rbind(Sup_Fig_3A_prof_peak_value_for_prof_var_df,
-                                                                   Sup_Fig_3B_prof_peak_value_for_prof_var_df)
-combined_profile_Sup_Fig_3_prof_peak_value_for_prof_var_df = rbind(combined_profile_Sup_Fig_3_prof_peak_value_for_prof_var_df,
-                                                                   Sup_Fig_3C_prof_peak_value_for_prof_var_df)
-ymin = combined_profile_Sup_Fig_3_prof_peak_treshold_df %>%
+combined_profile_Sup_Fig_3_MLE_value_for_prof_var_df =
+  rbind(
+    Sup_Fig_3A_MLE_value_for_prof_var_df,
+    Sup_Fig_3B_MLE_value_for_prof_var_df)
+
+combined_profile_Sup_Fig_3_MLE_value_for_prof_var_df =
+  rbind(
+    combined_profile_Sup_Fig_3_MLE_value_for_prof_var_df,
+    Sup_Fig_3C_MLE_value_for_prof_var_df)
+
+combined_profile_Sup_Fig_3_prof_peak_treshold_df =
+  rbind(
+    Sup_Fig_3A_prof_peak_treshold_df,                                   
+    Sup_Fig_3B_prof_peak_treshold_df)
+
+combined_profile_Sup_Fig_3_prof_peak_treshold_df =
+  rbind(
+    combined_profile_Sup_Fig_3_prof_peak_treshold_df,                             
+    Sup_Fig_3C_prof_peak_treshold_df)
+
+combined_profile_Sup_Fig_3_prof_peak_value_for_prof_var_df =
+  rbind(
+    Sup_Fig_3A_prof_peak_value_for_prof_var_df,
+    Sup_Fig_3B_prof_peak_value_for_prof_var_df)
+
+combined_profile_Sup_Fig_3_prof_peak_value_for_prof_var_df =
+  rbind(
+    combined_profile_Sup_Fig_3_prof_peak_value_for_prof_var_df,
+    Sup_Fig_3C_prof_peak_value_for_prof_var_df)
+
+ymin =
+  combined_profile_Sup_Fig_3_prof_peak_treshold_df %>%
   group_by(Profile_Var) %>%
   summarize(ymin = Profile_threshold-10) %>%
   as.data.frame() 
@@ -1682,53 +1710,33 @@ min_prof_value = combined_Sup_Fig_3_df %>%
   summarize(prof_min = min(LL)) %>%
   as.data.frame()
 
-ymin = join(ymin, min_prof_value)
+ymin = join(
+  ymin, min_prof_value)
 
 y_thres_df = ymin %>%
   group_by(Profile_Var) %>%
   summarize(y_thres = max(ymin, prof_min)) %>%
   as.data.frame()
 
-
-
 ```
 
 ```{r}
 
 y_lim_min = min(y_thres_df$y_thres)
-combined_Sup_Fig_3_df_clean = filter(combined_Sup_Fig_3_df, LL > y_lim_min)
-# p = ggplot()  + geom_point(data = combined_Sup_Fig_3_df, aes(x = var_value, y = LL)) + facet_wrap(~Profile_Var, scales = "free") + ylim(y_lim_min, NA) +
-#   rahul_man_figure_theme + rahul_big_panel_theme + rahul_panel_theme +theme_white_background + geom_hline() +
-#     geom_hline(data = ML_df, aes(yintercept = ML -2), color =  'red', size = 1.0)
-# p
+combined_Sup_Fig_3_df_clean = filter(
+  combined_Sup_Fig_3_df, LL > y_lim_min)
 
-plot_label_df = data.frame(Profile_Var = combined_profile_Sup_Fig_3_MLE_value_for_prof_var_df$Profile_Var,
-                           plot_var_label = c("beta[0]","rho", "delta" ))
-combined_Sup_Fig_3_df = join(combined_Sup_Fig_3_df, plot_label_df)
+plot_label_df = data.frame(
+  Profile_Var =
+    combined_profile_Sup_Fig_3_MLE_value_for_prof_var_df$Profile_Var,
+  plot_var_label = c("beta[0]","rho", "delta" ))
 
-Fig_3_ABC_plot_data = join(combined_Sup_Fig_3_df, combined_profile_Sup_Fig_3_MLE_value_for_prof_var_df)
+combined_Sup_Fig_3_df = join(
+  combined_Sup_Fig_3_df, plot_label_df)
 
-Fig_3_ABC = ggplot(data = Fig_3_ABC_plot_data)  + geom_point(aes(x = var_value, y = LL)) +
-  ylim(y_lim_min, NA) +
-  rahul_man_figure_theme +theme_white_background  +
-    geom_hline(yintercept = ML -2, color =  'red', size = 1.0) +
-  geom_vline(aes(xintercept = MLE_value_for_prof_var),
-                   color =  'blue', size = 1.0, show.legend= F) +
-    facet_wrap(~plot_var_label, scales = "free",  strip.position = "bottom", labeller=label_parsed) +
-  scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) +
-  theme(
-    aspect.ratio = 1,
-    strip.background = element_blank(),
-    strip.placement = "outside"
-  ) + 
-  theme(axis.title.x=element_blank())
-  
-Fig_3_ABC
-
-
-#labels <- c(Beta_0 = parse(text=paste0("beta[0]")), rho = parse(text=paste0("rho")), delta = parse(text=paste0("delta")))
-#labels <- c(Beta_0 = "beta[0]", rho = "rho", delta = "delta")
-
+Fig_3_ABC_plot_data = join(
+  combined_Sup_Fig_3_df,
+  combined_profile_Sup_Fig_3_MLE_value_for_prof_var_df)
 
 ```
 
@@ -1738,7 +1746,7 @@ Fig_3_ABC
 
 
 
-## Make combined plot of panels A,B, and C
+### Load panel plot theme
 ```{r}
 # Combined Plot -----------------------------------------------------------
 
@@ -1787,45 +1795,35 @@ rahul_big_panel_theme = theme(
                              face = "bold",
                              color = "black"),
   plot.margin = unit(c(.5,.5,.5,.5), "cm"),
-  legend.background = element_rect(fill = "transparent"),
+  legend.background = element_rect(
+    fill = "transparent"),
   legend.box.margin = unit(c(.5,.5,.5,.5), "cm")
 )
 
-Sup_Fig_3_A_comb = Sup_Fig_3_A + rahul_big_panel_theme + theme(legend.position = "None")
-Sup_Fig_3_B_comb = Sup_Fig_3_B + rahul_big_panel_theme + theme(legend.position = "None")
-Sup_Fig_3_C_comb = Sup_Fig_3_C + rahul_big_panel_theme + theme(legend.position = "None")
 
-Sup_Fig_3_A_small_legend = Sup_Fig_3_A +
-  rahul_big_panel_theme +
-  theme(legend.key=element_blank()) 
-legend <- cowplot::get_legend(Sup_Fig_3_A_small_legend)
-
-
-
-
-
-Fig_3_Panel_A = Sup_Fig_3_A_comb
-Fig_3_Panel_B = Sup_Fig_3_B_comb
-Fig_3_Panel_C = Sup_Fig_3_C_comb
-Fig_3_ABC_Legend = legend
 ```
 
 ### Add Polynomial Fit Curves to Profiles for Figure 3
 
 ```{r}
 Fig_3_ABC_plot_data
-head(Fig_3_ABC_plot_data)
 
-Fig_3_ABC_plot_data = join(Fig_3_ABC_plot_data, ML_df)
+Fig_3_ABC_plot_data = join(
+  Fig_3_ABC_plot_data, ML_df)
 cutoff_value  = -174 
-Fig_3_ABC_plot_data = filter(Fig_3_ABC_plot_data, LL > ML - 10 )
+Fig_3_ABC_plot_data = filter(
+  Fig_3_ABC_plot_data, LL > ML - 10 )
 
 Fig_3_ABC_plot_data$Metric = "LL"
 Fig_3_ABC_plot_data$low_bound = ML-11
 Fig_3_ABC_plot_data$Line_Color = "Show_Line"
 
 Fig_3_combined_data = Fig_3_ABC_plot_data
-Fig_3_combined_data$plot_var_label = factor(Fig_3_combined_data$plot_var_label, levels = c("beta[0]", "delta","rho"))
+
+Fig_3_combined_data$plot_var_label =
+  factor(
+    Fig_3_combined_data$plot_var_label,
+    levels = c("beta[0]", "delta","rho"))
 
 ## Calculate polynomial fit
 
@@ -1833,97 +1831,165 @@ Fig_3_combined_data$plot_var_label = factor(Fig_3_combined_data$plot_var_label, 
 beta_0_poly_data = Fig_3_ABC_plot_data %>%
   filter(Profile_Var == "Beta_0") %>%
   dplyr::select(Profile_Var, var_value, LL)
-beta_0_poly_fit_model <- lm(beta_0_poly_data$LL ~ poly(beta_0_poly_data$var_value,2, raw = TRUE))
+beta_0_poly_fit_model <-
+  lm(beta_0_poly_data$LL ~ 
+       poly(beta_0_poly_data$var_value,
+            2, raw = TRUE))
 
-beta_0_poly_data$Poly_Fit = beta_0_poly_fit_model$fitted.values
+beta_0_poly_data$Poly_Fit =
+  beta_0_poly_fit_model$fitted.values
 
-small_breaks_beta_0 = seq(from= min(beta_0_poly_data$var_value), to = max(beta_0_poly_data$var_value), length = 10^3)
-beta_0_poly_intercept =summary(beta_0_poly_fit_model)$coefficients[1,1]
-beta_0_poly_order_1 = summary(beta_0_poly_fit_model)$coefficients[2,1]
-beta_0_poly_order_2 = summary(beta_0_poly_fit_model)$coefficients[3,1]
-#beta_0_poly_order_3 = summary(beta_0_poly_fit_model)$coefficients[4,1]
+small_breaks_beta_0 = seq(
+  from = min(beta_0_poly_data$var_value),
+  to = max(beta_0_poly_data$var_value),
+  length = 10^3)
 
+beta_0_poly_intercept =summary(
+  beta_0_poly_fit_model)$coefficients[1,1]
 
-beta_0_poly_curve = beta_0_poly_intercept + beta_0_poly_order_1*small_breaks_beta_0 +
+beta_0_poly_order_1 = summary(
+  beta_0_poly_fit_model)$coefficients[2,1]
+
+beta_0_poly_order_2 = summary(
+  beta_0_poly_fit_model)$coefficients[3,1]
+
+beta_0_poly_curve = beta_0_poly_intercept +
+  beta_0_poly_order_1*small_breaks_beta_0 +
   beta_0_poly_order_2*I(small_breaks_beta_0^2) 
-  #beta_0_poly_order_3*I(small_breaks_beta_0^3)
 
-beta_0_poly_curve_df = data.frame(small_breaks = small_breaks_beta_0,
-                                 poly_curve = beta_0_poly_curve,
-                                 plot_var_label = "beta[0]")
-
+beta_0_poly_curve_df = data.frame(
+  small_breaks = small_breaks_beta_0,
+  poly_curve = beta_0_poly_curve,
+  plot_var_label = "beta[0]")
 
 #### rho Profile
 rho_poly_data = Fig_3_ABC_plot_data %>%
   filter(Profile_Var == "rho") %>%
-  dplyr::select(Profile_Var, var_value, LL)
-rho_poly_fit_model <- lm(rho_poly_data$LL ~ poly(rho_poly_data$var_value,4, raw = TRUE))
+  dplyr::select(Profile_Var,
+                var_value, LL)
+rho_poly_fit_model <- lm(
+  rho_poly_data$LL ~ poly(
+    rho_poly_data$var_value,4, raw = TRUE))
 
-rho_poly_data$Poly_Fit = rho_poly_fit_model$fitted.values
-small_breaks_rho = seq(from= min(rho_poly_data$var_value), to = max(rho_poly_data$var_value), length = 10^3)
-rho_poly_intercept =summary(rho_poly_fit_model)$coefficients[1,1]
-rho_poly_order_1 = summary(rho_poly_fit_model)$coefficients[2,1]
-rho_poly_order_2 = summary(rho_poly_fit_model)$coefficients[3,1]
-rho_poly_order_3 = summary(rho_poly_fit_model)$coefficients[4,1]
-rho_poly_order_4 = summary(rho_poly_fit_model)$coefficients[5,1]
+rho_poly_data$Poly_Fit =
+  rho_poly_fit_model$fitted.values
 
-rho_poly_curve = rho_poly_intercept + rho_poly_order_1*small_breaks_rho + rho_poly_order_2*I(small_breaks_rho^2) +
-  rho_poly_order_3*I(small_breaks_rho^3) + rho_poly_order_4*I(small_breaks_rho^4)
-rho_poly_curve_df = data.frame(small_breaks = small_breaks_rho,
-                                 poly_curve = rho_poly_curve,
-                                 plot_var_label = "rho")
+small_breaks_rho = seq(
+  from= min(rho_poly_data$var_value),
+  to = max(rho_poly_data$var_value),
+  length = 10^3)
+
+rho_poly_intercept =summary(
+  rho_poly_fit_model)$coefficients[1,1]
+
+rho_poly_order_1 = summary(
+  rho_poly_fit_model)$coefficients[2,1]
+
+rho_poly_order_2 = summary(
+  rho_poly_fit_model)$coefficients[3,1]
+
+rho_poly_order_3 = summary(
+  rho_poly_fit_model)$coefficients[4,1]
+
+rho_poly_order_4 = summary(
+  rho_poly_fit_model)$coefficients[5,1]
+
+rho_poly_curve = rho_poly_intercept +
+  rho_poly_order_1*small_breaks_rho +
+  rho_poly_order_2*I(small_breaks_rho^2) +
+  rho_poly_order_3*I(small_breaks_rho^3) +
+  rho_poly_order_4*I(small_breaks_rho^4)
+
+rho_poly_curve_df = data.frame(
+  small_breaks = small_breaks_rho,
+  poly_curve = rho_poly_curve,
+  plot_var_label = "rho")
 
 #### delta Profile
 delta_poly_data = Fig_3_ABC_plot_data %>%
   filter(Profile_Var == "delta") %>%
-  dplyr::select(Profile_Var, var_value, LL)
-delta_poly_fit_model <- lm(delta_poly_data$LL ~ poly(delta_poly_data$var_value,2, raw = TRUE))
+  dplyr::select(Profile_Var,
+                var_value, LL)
 
-delta_poly_data$Poly_Fit = delta_poly_fit_model$fitted.values
+delta_poly_fit_model <- lm(
+  delta_poly_data$LL ~ poly(
+    delta_poly_data$var_value,2,
+    raw = TRUE))
 
-small_breaks_delta = seq(from= min(delta_poly_data$var_value), to = max(delta_poly_data$var_value), length = 10^3)
-delta_poly_intercept =summary(delta_poly_fit_model)$coefficients[1,1]
-delta_poly_order_1 = summary(delta_poly_fit_model)$coefficients[2,1]
-delta_poly_order_2 = summary(delta_poly_fit_model)$coefficients[3,1]
-#delta_poly_order_3 = summary(delta_poly_fit_model)$coefficients[4,1]
+delta_poly_data$Poly_Fit =
+  delta_poly_fit_model$fitted.values
 
-delta_poly_curve = delta_poly_intercept + delta_poly_order_1*small_breaks_delta +
+small_breaks_delta = seq(
+  from= min(delta_poly_data$var_value),
+  to = max(delta_poly_data$var_value),
+  length = 10^3)
+
+delta_poly_intercept =summary(
+  delta_poly_fit_model)$coefficients[1,1]
+
+delta_poly_order_1 = summary(
+  delta_poly_fit_model)$coefficients[2,1]
+
+delta_poly_order_2 = summary(
+  delta_poly_fit_model)$coefficients[3,1]
+
+delta_poly_curve = delta_poly_intercept +
+  delta_poly_order_1*small_breaks_delta +
   delta_poly_order_2*I(small_breaks_delta^2) 
-  #delta_poly_order_3*I(small_breaks_delta^3)
-delta_poly_curve_df = data.frame(small_breaks = small_breaks_delta,
-                                 poly_curve = delta_poly_curve,
-                                 plot_var_label = "delta")
 
-combined_poly_data = rbind(beta_0_poly_curve_df, rho_poly_curve_df)
-combined_poly_data = rbind(combined_poly_data, delta_poly_curve_df)
+delta_poly_curve_df = data.frame(
+  small_breaks = small_breaks_delta,
+  poly_curve = delta_poly_curve,
+  plot_var_label = "delta")
 
-#Fig_3_ABC_plot_data = join(Fig_3_ABC_plot_data, combined_poly_data, type = "full")
-
-
+combined_poly_data = rbind(
+  beta_0_poly_curve_df, rho_poly_curve_df)
+combined_poly_data = rbind(
+  combined_poly_data, delta_poly_curve_df)
 
 ```
 
 ### Make Combined Plot for Figure 3
 ```{r}
-Fig_3_comb_plot = ggplot()  + geom_point(data = Fig_3_combined_data, aes(x = var_value, y = LL, color = Metric, shape = Metric)) +
+Fig_3_comb_plot = ggplot()  +
+  geom_point(data = Fig_3_combined_data,
+             aes(x = var_value, y = LL,
+                 color = Metric, shape = Metric)) +
   scale_linetype_manual(values = c("blank", "solid")) +
-  rahul_man_figure_theme + rahul_big_panel_theme  +theme_white_background  +
-    geom_hline(data = Fig_3_combined_data, aes(yintercept = ML -2), size = 1.0, linetype = "dashed", color = 'grey70') +
-  geom_vline(data = Fig_3_combined_data, aes(xintercept = MLE_value_for_prof_var),
-                  size = 1.0, linetype = "twodash",show.legend= F, color = 'grey70') +
-    facet_wrap(~plot_var_label, scales = "free",  strip.position = "bottom", labeller=label_parsed,
-               nrow = 1) +
-    geom_hline(data = Fig_3_combined_data, aes(yintercept = low_bound), color = 'white', linetype = 'blank') +
-  geom_line(data = combined_poly_data, aes(x = small_breaks, y = poly_curve), color = 'red', show.legend = F) +
-  scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) +
+  rahul_man_figure_theme +
+  rahul_big_panel_theme  +
+  theme_white_background  +
+  geom_hline(data = Fig_3_combined_data,
+             aes(yintercept = ML -2),
+             size = 1.0, linetype = "dashed",
+             color = 'grey70') +
+  geom_vline(data = Fig_3_combined_data,
+             aes(xintercept = MLE_value_for_prof_var),
+             size = 1.0, linetype = "twodash",
+             show.legend= F, color = 'grey70') +
+  facet_wrap(~plot_var_label,
+             scales = "free",
+             strip.position = "bottom",
+             labeller=label_parsed,
+             nrow = 1) +
+  geom_hline(data = Fig_3_combined_data,
+             aes(yintercept = low_bound),
+             color = 'white', linetype = 'blank') +
+  geom_line(data = combined_poly_data,
+            aes(x = small_breaks, y = poly_curve),
+            color = 'red', show.legend = F) +
+  scale_x_continuous(
+    breaks = scales::pretty_breaks(n = 3)) +
   theme(
     aspect.ratio = 1,
     strip.background = element_blank(),
     strip.placement = "outside"
   ) + 
   theme(legend.position = "None") +
-  scale_color_manual(values = c("black", "red", "black", "white"),
-                     limits = c("LL", "Skips", "Show_Line", "No_Line")) +
+  scale_color_manual(values = c("black", "red",
+                                "black", "white"),
+                     limits = c("LL", "Skips",
+                                "Show_Line", "No_Line")) +
   scale_shape_manual(values = c(16, 1)) +
   scale_y_continuous(breaks = scales::pretty_breaks(n = 4))  +
   ylab(expression(paste(" Log Likelihood "))) +
@@ -1931,9 +1997,15 @@ Fig_3_comb_plot = ggplot()  + geom_point(data = Fig_3_combined_data, aes(x = var
         axis.text.x = element_text(size = 16),
         axis.title.x = element_text(face = "plain")) +
   theme(panel.spacing = unit(1.75, "lines")) +
-  xlab("(Transmission Rate)                            (Seasonality Amplitude)                       (Reporting Rate)      ")
+  xlab(
+    paste0(
+      "(Transmission Rate",
+      ")                            (",
+      "Seasonality Amplitude",
+      ")                       (",
+      "Reporting Rate)      ")
+    )
 
-#theme(axis.title.x=element_blank()) + 
 Fig_3_comb_plot
 
 tiff(
@@ -1954,27 +2026,44 @@ dev.off()
 
 model_name  = "A_7"
 
-bio_good_2_LL = read.csv(paste0("../Generated_Data/Profiles/", model_name, "_Model/",model_name, "_Model_BP_top_2_LL_all_params_bio_good_2_LL.csv"))
-ML_combo_num = which(bio_good_2_LL$LL == max(bio_good_2_LL$LL))
+bio_good_2_LL = read.csv(paste0(
+  "../Generated_Data/Profiles/",
+  model_name, "_Model/",model_name, "_Model_BP_top_2_LL_all_params_bio_good_2_LL.csv"))
+ML_combo_num = which(
+  bio_good_2_LL$LL == max(bio_good_2_LL$LL))
 all_R0_data = 
-  read.csv(paste0("../Generated_Data/Profiles/",
-                  model_name, "_Model/",
-                  model_name, "_Model_BP_top_2_LL_all_params_sim_R0_data.csv"))
+  read.csv(
+    paste0("../Generated_Data/Profiles/",
+           model_name, "_Model/",
+           model_name, 
+           "_Model_BP_top_2_LL_all_params_sim_R0_data.csv"))
 
-R0_min = aggregate(R_0 ~ time, all_R0_data, FUN = min)
-R0_min = dplyr::select(R0_min, time = time, R_0_min = R_0)
-R0_max = aggregate(R_0 ~ time, all_R0_data, FUN = max)
-R0_max = dplyr::select(R0_max, time = time, R_0_max = R_0)
-ML_R0_df = filter(all_R0_data, combo_num == ML_combo_num)
-ML_R0_df = dplyr::select(ML_R0_df, time = time, R_0_MLE = R_0)
+R0_min = aggregate(R_0 ~ time,
+                   all_R0_data, FUN = min)
+R0_min = dplyr::select(R0_min, time = time,
+                       R_0_min = R_0)
+R0_max = aggregate(R_0 ~ time,
+                   all_R0_data, FUN = max)
+R0_max = dplyr::select(R0_max,
+                       time = time, R_0_max = R_0)
+ML_R0_df = filter(all_R0_data,
+                  combo_num == ML_combo_num)
+ML_R0_df = dplyr::select(ML_R0_df,
+                         time = time, R_0_MLE = R_0)
 R_0_ribbon_df = join(R0_min, R0_max)
 
-R_0_ribbon_df = join(R_0_ribbon_df, ML_R0_df)
+R_0_ribbon_df = join(R_0_ribbon_df,
+                     ML_R0_df)
 
-R_0_ribbon_df_melt = melt(R_0_ribbon_df, id.vars = c("time", "R_0_min", "R_0_max" ))
+R_0_ribbon_df_melt = melt(
+  R_0_ribbon_df,
+  id.vars = c("time", "R_0_min", "R_0_max" ))
+
 ribbon_label = "R_0 range \n  (All  2 LL Combinations)"
 R_0_ribbon_df_melt$Ribbon_label = ribbon_label
-## R_0 upper and lower bounds for on and off-season peak and trough
+
+## R_0 upper and lower bounds 
+## for on and off-season peak and trough
 min(R_0_ribbon_df_melt$R_0_min)
 min(R_0_ribbon_df_melt$R_0_max)
 max(R_0_ribbon_df_melt$R_0_min)
@@ -1987,46 +2076,63 @@ names(fill_vec) = ribbon_label
 ### Plot 1 year only
 
 all_R0_data$Year = all_R0_data$time/365
-all_R0_data$Days_in_Year = (all_R0_data$time%%365)
-all_R0_data$Month = round((all_R0_data$Days_in_Year/365)*12) + 1
-single_year_R_0_data= filter(all_R0_data, Year <=  2 & Year >= 1 )
-month_lookup_table = data.frame(Month = seq(1:12),
-                                Month_Name = month.abb)
-all_R0_data = join(all_R0_data, month_lookup_table) 
+all_R0_data$Days_in_Year = (
+  all_R0_data$time%%365)
+all_R0_data$Month = round(
+  (all_R0_data$Days_in_Year/365)*12) + 1
+
+single_year_R_0_data= filter(
+  all_R0_data, Year <=  2 & Year >= 1 )
+
+month_lookup_table = data.frame(
+  Month = seq(1:12), Month_Name = month.abb)
+
+all_R0_data = join(all_R0_data,
+                   month_lookup_table) 
 
 
 
 all_R0_min = aggregate(R_0 ~ time, all_R0_data,
                                FUN = min)
-all_R0_min = dplyr::select(all_R0_min, time = time, R_0_min = R_0)
-all_R0_max = aggregate(R_0 ~ time, all_R0_data,
-                               FUN = max)
-all_R0_max = dplyr::select(all_R0_max, time = time,
-                                   R_0_max = R_0)
-all_ML_R0_df = filter(all_R0_data,
-                              combo_num == ML_combo_num)
-all_ML_R0_df = dplyr::select(all_ML_R0_df,
-                                     time = time, R_0_MLE = R_0)
-all_R_0_ribbon_df = join(all_R0_min,
-                                 all_R0_max)
+all_R0_min = dplyr::select(
+  all_R0_min, time = time,
+  R_0_min = R_0)
 
-all_R_0_ribbon_df = join(all_R_0_ribbon_df,
-                                 all_ML_R0_df)
+all_R0_max = aggregate(
+  R_0 ~ time, all_R0_data,FUN = max)
+
+all_R0_max = dplyr::select(
+  all_R0_max, time = time, R_0_max = R_0)
+all_ML_R0_df = filter(all_R0_data,
+                      combo_num == ML_combo_num)
+all_ML_R0_df = dplyr::select(
+  all_ML_R0_df, time = time, R_0_MLE = R_0)
+all_R_0_ribbon_df = join(all_R0_min, all_R0_max)
+
+all_R_0_ribbon_df = join(
+  all_R_0_ribbon_df, all_ML_R0_df)
 
 all_R_0_ribbon_df_melt = 
-  melt(all_R_0_ribbon_df,
-       id.vars = c("time", "R_0_min", "R_0_max" ))
-ribbon_label = "R_0 range \n  (All  2 LL Combinations)"
-all_R_0_ribbon_df_melt$Ribbon_label = ribbon_label
+  melt(
+    all_R_0_ribbon_df,
+    id.vars = c("time", "R_0_min", "R_0_max" ))
+ribbon_label = 
+  "R_0 range \n  (All  2 LL Combinations)"
+
+all_R_0_ribbon_df_melt$Ribbon_label =
+  ribbon_label
+
 fill_vec = c("grey70")
 names(fill_vec) = ribbon_label
-plot_label_months =seq(from = 1, to = length(unique(all_R0_data$time)), by = 2)
+plot_label_months =seq(
+  from = 1, to = length(unique(all_R0_data$time)),
+  by = 2)
+
 plot_label_month_names =
   all_R0_data$Month_Name[plot_label_months]
 
-plot_label_times = all_R0_data$time[plot_label_months]
-
-
+plot_label_times =
+  all_R0_data$time[plot_label_months]
 
 ribbon_label = "2 LL from \n MLE"
 all_R_0_ribbon_df_melt$Ribbon_label = ribbon_label
@@ -2034,23 +2140,31 @@ fill_vec = c("grey70")
 names(fill_vec) = ribbon_label
 
 Fig_4_Panel_A = ggplot(data = all_R_0_ribbon_df_melt) +
-  geom_ribbon(aes(x = time, ymin = R_0_min, ymax =  R_0_max, fill = Ribbon_label)) +
-  geom_line(aes(x = time, y = value, color = variable)) +
-  geom_point(aes(x = time, y = value, color = variable),
+  geom_ribbon(aes(x = time, ymin = R_0_min,
+                  ymax =  R_0_max,
+                  fill = Ribbon_label)) +
+  geom_line(aes(x = time, y = value,
+                color = variable)) +
+  geom_point(aes(x = time, y = value,
+                 color = variable),
              size = 3) +
   rahul_theme +
-  theme(legend.text = element_text(size = 12,
-                                   face = "bold",
-                                   color = "black")) +
+  theme(
+    legend.text = element_text(size = 12,
+                               face = "bold",
+                               color = "black")) +
   theme_white_background +
-  scale_color_manual(name = "", values = c("red"),
-                     labels = c(
-                       "MLE Trajectory \n (Shaded Region: \n 95% Quantiles)",
-                                         "Observed"))  +
-  scale_fill_manual(name = "", values = fill_vec,
-                    labels = c(
-                      "MLE Trajectory \n (Shaded Region: \n 95% Quantiles)",
-                      "Observed")) +
+  scale_color_manual(
+    name = "",
+    values = c("red"),
+    labels = c(
+      "MLE Trajectory \n (Shaded Region: \n 95% Quantiles)",
+      "Observed"))  +
+  scale_fill_manual(
+    name = "", values = fill_vec,
+    labels = c(
+      "MLE Trajectory \n (Shaded Region: \n 95% Quantiles)",
+      "Observed")) +
   xlab("Month")+
   scale_x_continuous(
     breaks = as.numeric(plot_label_times),
@@ -2059,7 +2173,6 @@ Fig_4_Panel_A = ggplot(data = all_R_0_ribbon_df_melt) +
   rahul_man_figure_theme +
   theme(legend.margin = margin(t = 0, unit='cm'))
 Fig_4_Panel_A
-
 
 ```
 
@@ -2090,12 +2203,17 @@ rahul_poster_theme = theme(
 )
 
 model_name_list = c("A_7")
-model_label_list = factor(c("SIR Cosine No Immigration"))
-model_label_list = factor(model_label_list, levels = c("SIR Cosine No Immigration"))
+model_label_list = factor(
+  c("SIR Cosine No Immigration"))
+model_label_list = factor(
+  model_label_list,
+  levels = c("SIR Cosine No Immigration"))
 
-Csnippet_file_path_list = c("Csnippet_SIR_cosine_model.R")
+Csnippet_file_path_list = c(
+  "Csnippet_SIR_cosine_model.R")
 Num_est_parameters_list = c(7)
-data_file_path_list = c("../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
+data_file_path_list = c(
+  "../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
 
 num_years_list = c(2.50)
 
@@ -2112,23 +2230,37 @@ model_ref_df = data.frame(
 
 model_index = 1
 print(model_index)
-model_name = as.character(model_name_list[model_index])
-single_model_ref_data = filter(model_ref_df, model_name == !!model_name)
-model_label = single_model_ref_data$model_label
-Csnippet_file_path = single_model_ref_data$Csnippet_file_path
-Num_est_parameters = single_model_ref_data$Num_est_parameters
-data_file_path = single_model_ref_data$data_file_path
-num_years = single_model_ref_data$num_years
+model_name = as.character(
+  model_name_list[model_index])
+
+single_model_ref_data = filter(
+  model_ref_df, model_name == !!model_name)
+
+model_label =
+  single_model_ref_data$model_label
+
+Csnippet_file_path =
+  single_model_ref_data$Csnippet_file_path
+
+Num_est_parameters =
+  single_model_ref_data$Num_est_parameters
+
+data_file_path = 
+  single_model_ref_data$data_file_path
+
+num_years =
+  single_model_ref_data$num_years
 
 Rio_data_clean = read.csv(file = data_file_path)
 
 Rio_clean_data = Rio_data_clean
-#head(Rio_data_clean)
 
-source(Csnippet_file_path, local = TRUE)
+source(Csnippet_file_path,
+       local = TRUE)
 
 #Set t0
-t0 = as.numeric(as.Date("1986/05/01") - as.Date("1986/01/01"))
+t0 = as.numeric(as.Date("1986/05/01") -
+                  as.Date("1986/01/01"))
 
 all_combo_data = read.csv(
   paste0(
@@ -2180,11 +2312,13 @@ bio_good_2_LL = read.csv(
   )
 )
 
-# Get data for Sup Figure 2A and 2B
 
-ML_combo_num = which(bio_good_2_LL$LL == max(bio_good_2_LL$LL))
+ML_combo_num = which(
+  bio_good_2_LL$LL ==
+    max(bio_good_2_LL$LL))
 
-ML_output = filter(all_combo_data, combo_num == ML_combo_num)
+ML_output = filter(
+  all_combo_data, combo_num == ML_combo_num)
 ML_output = dplyr::select(
   ML_output,
   time = time,
@@ -2192,23 +2326,27 @@ ML_output = dplyr::select(
   ML_high_Q = sim_data_high_Q,
   ML_low_Q = sim_data_low_Q
 )
-true_data = dplyr::select(Rio_clean_data, time = times,
+true_data = dplyr::select(Rio_clean_data,
+                          time = times,
                           Observed_Data = Y)
 comp_data = join(ML_output, true_data)
 
 
 
 
-comp_data_melt = melt(comp_data, id.vars = c("time",
-                                             "ML_high_Q", "ML_low_Q"))
+comp_data_melt = melt(
+  comp_data,
+  id.vars = c("time", "ML_high_Q", "ML_low_Q"))
 
 
 label_df  =
-  data.frame(Label_name =
-               c("Simulation Median \n (Shaded Region: \n 95% Quantiles)",
-                 "Observed"),
-             variable = c("ML_median",
-                          "Observed_Data"))
+  data.frame(
+    Label_name =
+      c(
+        "Simulation Median \n (Shaded Region: \n 95% Quantiles)",
+        "Observed"),
+    variable = c("ML_median",
+                 "Observed_Data"))
 
 comp_data_melt_with_label = 
   join(comp_data_melt, label_df)
@@ -2216,7 +2354,8 @@ comp_data_melt_with_label =
 
 
 Fig_4_Panel_B =
-  ggplot(data = comp_data_melt_with_label) +
+  ggplot(data =
+           comp_data_melt_with_label) +
   geom_ribbon(aes(
     x = time / 365,
     ymin = log(ML_low_Q),
@@ -2240,17 +2379,20 @@ Fig_4_Panel_B =
   ylab("log(Monthly \n Reported Cases)") 
 
 Fig_4_Panel_B = Fig_4_Panel_B +
-  scale_color_manual(name = "",
-                     values = c("red",
-                                "blue"),
-                     labels = c(
-                       "Simulation Median \n (Shaded Region: \n 95% Quantiles)",
-                     "Observed")) +
-  scale_fill_manual(name = "",
-                     values = c("grey70",
-                                "NA"),
-                     labels = c("Simulation Median \n (Shaded Region: \n 95% Quantiles)",
-                                "Observed"))
+  scale_color_manual(
+    name = "",
+    values = c("red",
+               "blue"),
+    labels = c(
+      "Simulation Median \n (Shaded Region: \n 95% Quantiles)",
+      "Observed")) +
+  scale_fill_manual(
+    name = "",
+    values = c("grey70",
+               "NA"),
+    labels = c(
+      "Simulation Median \n (Shaded Region: \n 95% Quantiles)",
+      "Observed"))
 
 
 
@@ -2280,12 +2422,17 @@ rahul_poster_theme = theme(
 )
 
 model_name_list = c("A_7")
-model_label_list = factor(c("SIR Cosine No Immigration"))
-model_label_list = factor(model_label_list, levels = c("SIR Cosine No Immigration"))
+model_label_list = factor(
+  c("SIR Cosine No Immigration"))
+model_label_list = factor(
+  model_label_list,
+  levels = c("SIR Cosine No Immigration"))
 
-Csnippet_file_path_list = c("Csnippet_SIR_cosine_model.R")
+Csnippet_file_path_list = c(
+  "Csnippet_SIR_cosine_model.R")
 Num_est_parameters_list = c(7)
-data_file_path_list = c("../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
+data_file_path_list = c(
+  "../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
 
 num_years_list = c(2.50)
 
@@ -2302,12 +2449,23 @@ model_ref_df = data.frame(
 
 model_index = 1
 print(model_index)
-model_name = as.character(model_name_list[model_index])
-single_model_ref_data = filter(model_ref_df, model_name == !!model_name)
+model_name = as.character(
+  model_name_list[model_index])
+
+single_model_ref_data = filter(
+  model_ref_df,
+  model_name == !!model_name)
+
 model_label = single_model_ref_data$model_label
-Csnippet_file_path = single_model_ref_data$Csnippet_file_path
-Num_est_parameters = single_model_ref_data$Num_est_parameters
-data_file_path = single_model_ref_data$data_file_path
+Csnippet_file_path =
+  single_model_ref_data$Csnippet_file_path
+
+Num_est_parameters =
+  single_model_ref_data$Num_est_parameters
+
+data_file_path =
+  single_model_ref_data$data_file_path
+
 num_years = single_model_ref_data$num_years
 
 Rio_data_clean = read.csv(file = data_file_path)
@@ -2318,7 +2476,8 @@ Rio_clean_data = Rio_data_clean
 source(Csnippet_file_path, local = TRUE)
 
 #Set t0
-t0 = as.numeric(as.Date("1986/05/01") - as.Date("1986/01/01"))
+t0 = as.numeric(as.Date("1986/05/01") -
+                  as.Date("1986/01/01"))
 
 all_combo_data = read.csv(
   paste0(
@@ -2370,11 +2529,15 @@ bio_good_2_LL = read.csv(
   )
 )
 
-# Get data for Sup Figure 2A and 2B
 
-ML_combo_num = which(bio_good_2_LL$LL == max(bio_good_2_LL$LL))
+ML_combo_num = which(
+  bio_good_2_LL$LL ==
+    max(bio_good_2_LL$LL))
 
-ML_output = filter(all_combo_data, combo_num == ML_combo_num)
+ML_output = filter(
+  all_combo_data,
+  combo_num == ML_combo_num)
+
 ML_output = dplyr::select(
   ML_output,
   time = time,
@@ -2382,28 +2545,29 @@ ML_output = dplyr::select(
   ML_high_Q = sim_data_high_Q,
   ML_low_Q = sim_data_low_Q
 )
-true_data = dplyr::select(Rio_clean_data, time = times,
-                          Observed_Data = Y)
+true_data = dplyr::select(
+  Rio_clean_data, time = times,
+  Observed_Data = Y)
+
 comp_data = join(ML_output, true_data)
 
 
 
 
-comp_data_melt = melt(comp_data, id.vars = c("time",
-                                             "ML_high_Q", "ML_low_Q"))
-
+comp_data_melt = melt(
+  comp_data, id.vars = c(
+    "time", "ML_high_Q", "ML_low_Q"))
 
 label_df  =
-  data.frame(Label_name =
-               c("Simulation Median \n (Shaded Region: \n 95% Quantiles)",
-                 "Observed"),
-             variable = c("ML_median",
-                          "Observed_Data"))
+  data.frame(
+    Label_name =
+      c("Simulation Median \n (Shaded Region: \n 95% Quantiles)",
+        "Observed"),
+    variable = c("ML_median",
+                 "Observed_Data"))
 
 comp_data_melt_with_label = 
   join(comp_data_melt, label_df)
-
-
 
 Fig_4_Panel_C =
   ggplot(data = comp_data_melt_with_label) +
@@ -2430,24 +2594,27 @@ Fig_4_Panel_C =
   ylab("Monthly \n Reported Cases") 
 
 Fig_4_Panel_C = Fig_4_Panel_C +
-  scale_color_manual(name = "",
-                     values = c("red",
-                                "blue"),
-                     labels = c(
-                       "Simulation Median \n (Shaded Region: \n 95% Quantiles)",
-                     "Observed")) +
-  scale_fill_manual(name = "",
-                     values = c("grey70",
-                                "NA"),
-                     labels = c("Simulation Median \n (Shaded Region: \n 95% Quantiles)",
-                                "Observed"))
+  scale_color_manual(
+    name = "",
+    values = c("red",
+               "blue"),
+    labels = c(
+      "Simulation Median \n (Shaded Region: \n 95% Quantiles)",
+      "Observed")) +
+  scale_fill_manual(
+    name = "",
+    values = c("grey70",
+               "NA"),
+    labels = c(
+      "Simulation Median \n (Shaded Region: \n 95% Quantiles)",
+      "Observed"))
+
 Fig_4_Panel_C
 ```
 
 ### Combine panels for Figure 4
 ```{r}
-head(all_R_0_ribbon_df_melt)
-head(comp_data_melt_with_label)
+
 Panel_A_df = all_R_0_ribbon_df_melt %>%
   dplyr::select(time, ribbon_min = R_0_min,
                 ribbon_max = R_0_max,
@@ -2508,8 +2675,10 @@ Panel_C_df = Panel_C_df %>%
 
 
 
-Figure_4_combined_df = rbind(Panel_A_df, Panel_B_df)
-Figure_4_combined_df = rbind(Figure_4_combined_df, Panel_C_df)
+Figure_4_combined_df = rbind(
+  Panel_A_df, Panel_B_df)
+Figure_4_combined_df = rbind(
+  Figure_4_combined_df, Panel_C_df)
 
 
 
@@ -2521,7 +2690,8 @@ Figure_4_combined_df = rbind(Figure_4_combined_df, Panel_C_df)
 
 ```{r}
 Fig_4_combined =
-  ggplot(data = Figure_4_combined_df) +
+  ggplot(data =
+           Figure_4_combined_df) +
   geom_ribbon(aes(
     x = time / 365,
     ymin = ribbon_min,
@@ -2551,8 +2721,16 @@ Fig_4_combined =
   theme_white_background +
    rahul_man_figure_theme +
   xlab(expression(paste("Years since Jan 1 1986"))) +
-  ylab(expression(paste("                 ", R[0], "                          Monthly Cases               log(Monthly Cases)")))  +
-  facet_wrap(~panel, ncol = 1, scales = "free", strip.position = "left")
+  ylab(
+    expression(
+      paste(
+        "                 ",
+        R[0],
+        "                          Monthly Cases               log(Monthly Cases)"
+    )))  +
+  facet_wrap(~panel, ncol = 1,
+             scales = "free",
+             strip.position = "left")
 Fig_4_combined
 Fig_4_combined = Fig_4_combined +
   scale_color_manual(name = "",
@@ -2574,8 +2752,10 @@ Fig_4_combined = Fig_4_combined +
     strip.background = element_blank(),
     strip.placement = "outside"
   ) 
-Fig_4_combined = Fig_4_combined + rahul_big_panel_theme +
-  theme(strip.text = element_blank()) + theme(legend.position = c(.75, .55)) +
+Fig_4_combined = Fig_4_combined +
+  rahul_big_panel_theme +
+  theme(strip.text = element_blank()) +
+  theme(legend.position = c(.75, .55)) +
   guides(fill=FALSE, alpha = FALSE) +
   theme(legend.key=element_blank()) +
   theme(axis.text.y = element_text(size = 18)) +
@@ -2594,9 +2774,11 @@ Fig_4_combined
 ```{r}
 tiff(
   paste0(
-    "../Figures/Manuscript_Figures/TIFF_Files/Fig4_raw.tiff"),
-  height = 10, width = 5, res = 700, units = "in")# print(grid.arrange(Sup_Fig_3_A_comb, Sup_Fig_3_B_comb, legend,Sup_Fig_3_C_comb, Sup_Fig_3_D_comb,
-#                    ncol = 3, widths = c(1,1,0.9)))
+    "../Figures/Manuscript_Figures/TIFF_Files/Fig4_raw.tiff"
+    ),
+  height = 10,
+  width = 5, res = 700,
+  units = "in")# 
 Fig_4_combined
 dev.off()
 ```
@@ -2614,8 +2796,6 @@ knitr::read_chunk('Man_Fig_5_gardner_top_2_LL_Model_A_7.R')
 ```
 
 ### Script for running code on computer cluster (uchicago BSD Gardner)
-
-
 
 
 ```{r engine='bash', comment=''}
@@ -2638,23 +2818,25 @@ args = commandArgs(trailingOnly = TRUE)
 model_name = "A_7"
 print(model_name)
 
-Rio_data_clean = read.csv("../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
-head(Rio_data_clean)
+Rio_data_clean = read.csv(
+  "../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
 Rio_clean_data = Rio_data_clean
-t0 = as.numeric(as.Date("1986/05/01") - as.Date("1986/01/01"))
-load(file = "../Down_Data/denguerj1986-1996.RData")
-Rio_city_DENV1_clean = data.frame(Y = as.matrix(dengue.ts),
-                                  Date = as.Date(as.yearmon(time(dengue.ts))))
-Rio_city_DENV1_clean = filter(Rio_city_DENV1_clean, Date >= "1986-05-01")
+t0 = as.numeric(as.Date("1986/05/01") -
+                  as.Date("1986/01/01"))
+load(
+  file = "../Down_Data/denguerj1986-1996.RData")
+
+Rio_city_DENV1_clean = data.frame(
+  Y = as.matrix(dengue.ts),
+  Date = as.Date(as.yearmon(time(dengue.ts))))
+
+Rio_city_DENV1_clean = filter(
+  Rio_city_DENV1_clean,
+  Date >= "1986-05-01")
 
 head(Rio_city_DENV1_clean)
-Rio_city_DENV1_clean$Date = Rio_city_DENV1_clean$Date %m+% months(1)
-#add_a_week = Rio_city_DENV1_clean$Date %m+% weeks(1)
-#last_day_of_month = add_a_month - 1
-
-
-head(Rio_city_DENV1_clean)
-
+Rio_city_DENV1_clean$Date =
+  Rio_city_DENV1_clean$Date %m+% months(1)
 
 Population_Rio_2000 = 5857904 #Census
 Population_Rio_1991 = 5480768# Census:
@@ -2675,9 +2857,11 @@ all_combos = read.csv(
 
 MLE_params = filter(all_combos, LL == max(LL))
 
-bio_good_2_LL = filter(all_combos, LL > max(all_combos$LL) - 2 )
+bio_good_2_LL = filter(all_combos, LL >
+                         max(all_combos$LL) - 2 )
 
-within_20_LL = filter(all_combos, LL > max(all_combos$LL) - 20 )
+within_20_LL = filter(all_combos, LL >
+                        max(all_combos$LL) - 20 )
 test_param_index = 1
 single_test_subset_output = read.csv(
   paste0(
@@ -2685,24 +2869,31 @@ single_test_subset_output = read.csv(
     model_name,
     "_Model/stoch_re_emerge_test/",
     model_name,
-    "_re_mergence_spark_probability_data_subset_", test_param_index,
+    "_re_mergence_spark_probability_data_subset_",
+    test_param_index,
     ".csv"
   ))
-all_param_spark_data = data.frame(matrix(nrow = 0, ncol = ncol(single_test_subset_output)))
-colnames(all_param_spark_data) = colnames(single_test_subset_output)
-head(all_param_spark_data)
+all_param_spark_data = data.frame(
+  matrix(nrow = 0,
+         ncol = ncol(single_test_subset_output)))
+
+colnames(all_param_spark_data) =
+  colnames(single_test_subset_output)
 num_param_combinations = 457
-for(param_index in c(seq(1:23),seq(from = 25,to = 168),seq(from = 170,to = 450),
-                     seq(from = 452, to = num_param_combinations))){
-  #param_index = as.numeric(Sys.getenv("MOAB_JOBARRAYINDEX"))
-  print("param_index")
-  print(param_index)
+for(param_index in c(seq(1:23),
+                     seq(from = 25,to = 168),
+                     seq(from = 170,to = 450),
+                     seq(from = 452,
+                         to = num_param_combinations))){
+
   gardner_max_jobs = 500
-  group_size = ceiling(nrow(bio_good_2_LL) / gardner_max_jobs)
+  group_size =
+    ceiling(nrow(bio_good_2_LL) / gardner_max_jobs)
   start_index = (param_index - 1) * group_size + 1
   end_index = param_index * group_size
   Num_mif_runs_per_start = 5
-  param_data_subset = bio_good_2_LL[start_index:end_index, ]
+  param_data_subset =
+    bio_good_2_LL[start_index:end_index, ]
   
   single_subset_output = read.csv(
     paste0(
@@ -2710,19 +2901,29 @@ for(param_index in c(seq(1:23),seq(from = 25,to = 168),seq(from = 170,to = 450),
       model_name,
       "_Model/stoch_re_emerge_test/",
       model_name,
-      "_re_mergence_spark_probability_data_subset_", param_index,
+      "_re_mergence_spark_probability_data_subset_",
+      param_index,
       ".csv"
     ))
-  if(sum(is.na(single_subset_output$total_re_emergence_prob_1_year)) > 0) {
-    print(paste0("Param set fail at ", param_index))
+  if(
+    sum(
+      is.na(
+        single_subset_output$total_re_emergence_prob_1_year)) >
+    0) {
+    print(paste0(
+      "Param set fail at ",
+      param_index))
   }
   
-  all_param_spark_data = rbind(all_param_spark_data, single_subset_output)
+  all_param_spark_data =
+    rbind(all_param_spark_data,
+          single_subset_output)
   
 }
 
 ## Save data (FILE IS LARGE SO COMMENTED OUT)
-# write.csv(all_param_spark_data, file = paste0("../Generated_Data/Profiles/",
+# write.csv(all_param_spark_data, file =
+#  paste0("../Generated_Data/Profiles/",
 #           model_name,
 #           "_Model/stoch_re_emerge_test/",
 #           model_name,
@@ -2739,20 +2940,23 @@ library(stringr)
 library(gridExtra)
 library(zoo)
 load("../Generated_Data/Skip_Data/nCritics.Rdata")
-head(nCritics)
-row.names(nCritics)
-colnames(nCritics)
-skip_raw_data = as.numeric(as.character(nCritics))
+#head(nCritics)
+
+skip_raw_data =
+  as.numeric(as.character(nCritics))
 skip_data = as.data.frame(as.matrix(nCritics))
 
-dim(nCritics) #18 (Reporitng rate) x 11 (delta) x 491 (R_0 value)
+#dim(nCritics) #18 (Reporitng rate) x 11 (delta)
+# x 491 (R_0 value)
 # Row name: Reporting rate (18 from 1% to 50%)
 
 
 #reporting_rates = strsplit(reporting_rate, "%")
-rep_rate_header = str_split(row.names(nCritics), pattern = "%", n = Inf,
-              simplify = TRUE)
-delta_col_header = str_split(colnames(nCritics), pattern = "_", n = Inf,
+rep_rate_header = str_split(row.names(nCritics),
+                            pattern = "%", n = Inf,
+                            simplify = TRUE)
+delta_col_header = str_split(colnames(nCritics),
+                             pattern = "_", n = Inf,
                              simplify = TRUE)
 reporting_rate = as.numeric(rep_rate_header[,2])/100
 delta_val = as.numeric(delta_col_header[,2])
@@ -2761,90 +2965,113 @@ delta_val = as.numeric(delta_col_header[,2])
 
 
 
-R_0_col_header = str_split(names(nCritics[1,1,]), pattern = "_", n = Inf,
+R_0_col_header = str_split(names(nCritics[1,1,]),
+                           pattern = "_", n = Inf,
                              simplify = TRUE)
 R_0_skip_val = as.numeric(R_0_col_header[,2])
 
-
-#only_delta_07$Type = "Simulated"
-##### Load data from old figure 8
-
-
-#Load bio_good LL
-
 model_name = "A_7"
 
-
 ## R_naught_act_data
-profile_data_with_R_naught_act = read.csv(file = paste0("../Generated_Data/Profiles/", model_name,
-                                                        "_Model/combined_", model_name, "_profile_data_directory_with_mean_R_0.csv"))
+profile_data_with_R_naught_act = read.csv(
+  file = paste0(
+    "../Generated_Data/Profiles/",
+    model_name,  "_Model/combined_",
+    model_name,
+    "_profile_data_directory_with_mean_R_0.csv"))
 
-head(profile_data_with_R_naught_act)
-MLE_with_R_naught_act = filter(profile_data_with_R_naught_act, LL == max(LL))
-bio_good_2_LL_with_R_naught = read.csv(file = paste0("../Generated_Data/Profiles/", model_name,
-                                                     "_Model/combined_", model_name, "_bio_good_2_LL_param_list.csv"))
+MLE_with_R_naught_act = filter(
+  profile_data_with_R_naught_act,
+  LL == max(LL))
+
+bio_good_2_LL_with_R_naught = read.csv(
+  file = paste0(
+    "../Generated_Data/Profiles/", model_name,
+    "_Model/combined_", model_name,
+    "_bio_good_2_LL_param_list.csv"))
+
 A_7_MLE_R_naught_act = MLE_with_R_naught_act$R_naught
-A_7_min_R_naught_act = min(bio_good_2_LL_with_R_naught$R_naught)
-A_7_max_R_naught_act = max(bio_good_2_LL_with_R_naught$R_naught)
+A_7_min_R_naught_act = min(
+  bio_good_2_LL_with_R_naught$R_naught)
 
-A_7_bio_good_2_LL = read.csv(paste0("../Generated_Data/Profiles/", model_name, "_Model/",model_name, "_Model_BP_top_2_LL_all_params_bio_good_2_LL.csv"))
+A_7_max_R_naught_act = max(
+  bio_good_2_LL_with_R_naught$R_naught)
 
-A_7_bio_good_2_LL$R_naught_theo = A_7_bio_good_2_LL$Beta_0/(A_7_bio_good_2_LL$gamma + A_7_bio_good_2_LL$mu_H)
+A_7_bio_good_2_LL = read.csv(
+  paste0("../Generated_Data/Profiles/",
+         model_name, "_Model/",model_name, "_Model_BP_top_2_LL_all_params_bio_good_2_LL.csv"))
 
-head(A_7_bio_good_2_LL)
+A_7_bio_good_2_LL$R_naught_theo =
+  A_7_bio_good_2_LL$Beta_0/(
+    A_7_bio_good_2_LL$gamma + A_7_bio_good_2_LL$mu_H)
+
 A_7_bio_good_2_LL$nearest_skip_rho = 0
 A_7_bio_good_2_LL$nearest_skip_R_naught = 0
 A_7_bio_good_2_LL$nearest_skip_delta = 0
 A_7_bio_good_2_LL$skips = -1
-#single_param_data$nearest_skip_R_naught_index = NA
 A_7_bio_good_2_LL$nearest_skip_delta_index = NA
 A_7_bio_good_2_LL$nearest_skip_rho_index = NA
-for(param_index in seq(1, nrow(A_7_bio_good_2_LL))){
-  load("../Generated_Data/Skip_Data/nCritics_detailedRepRate_From2to5.Rdata")
-  head(nCritics_detailedRepRate_From2to5)
-  row.names(nCritics_detailedRepRate_From2to5)
-  colnames(nCritics_detailedRepRate_From2to5)
+for(param_index in seq(1,
+                       nrow(A_7_bio_good_2_LL))){
+  load(
+    "../Generated_Data/Skip_Data/nCritics_detailedRepRate_From2to5.Rdata")
+  #head(nCritics_detailedRepRate_From2to5)
+  
 
-  dim(nCritics) #18 (Reporitng rate) x 11 (delta) x 491 (R_0 value)
+  #dim(nCritics) #18 (Reporitng rate) x
+  # 11 (delta) x 491 (R_0 value)
   # Row name: Reporting rate (18 from 1% to 50%)
 
 
   rep_rate_header_det = str_split(row.names(
-    nCritics_detailedRepRate_From2to5), pattern = "%", n = Inf,
-                              simplify = TRUE)
+    nCritics_detailedRepRate_From2to5),
+    pattern = "%", n = Inf,
+    simplify = TRUE)
   delta_col_header_det = str_split(colnames(
-    nCritics_detailedRepRate_From2to5), pattern = "_", n = Inf,
-                               simplify = TRUE)
-  reporting_rate_det = as.numeric(rep_rate_header_det[,2])/100
-  delta_val_det = as.numeric(delta_col_header_det[,2])
+    nCritics_detailedRepRate_From2to5),
+    pattern = "_", n = Inf,
+    simplify = TRUE)
+  
+  reporting_rate_det = as.numeric(
+    rep_rate_header_det[,2])/100
+  delta_val_det = as.numeric(
+    delta_col_header_det[,2])
 
 
   R_0_col_header_det = str_split(names(
-    nCritics_detailedRepRate_From2to5[1,1,]), pattern = "_", n = Inf,
-                             simplify = TRUE)
-  R_0_skip_val_det = as.numeric(R_0_col_header_det[,2])
+    nCritics_detailedRepRate_From2to5[1,1,]),
+    pattern = "_", n = Inf,
+    simplify = TRUE)
+  
+  R_0_skip_val_det = as.numeric(
+    R_0_col_header_det[,2])
 
-
-  #single_param_data = A_7_bio_good_2_LL[param_index,]
   #Get R_naught ref on skip plot
   A_7_bio_good_2_LL$nearest_skip_R_naught_index[param_index] =
-    which.min(abs(R_0_skip_val_det -
-                    A_7_bio_good_2_LL$R_naught_theo[param_index] ))
+    which.min(
+      abs(
+        R_0_skip_val_det -
+          A_7_bio_good_2_LL$R_naught_theo[param_index] ))
   A_7_bio_good_2_LL$nearest_skip_R_naught[param_index] =
     R_0_skip_val_det[
       A_7_bio_good_2_LL$nearest_skip_R_naught_index[param_index]]
+  
   #Get rho ref on skip plot
-
   A_7_bio_good_2_LL$nearest_skip_rho_index[param_index] =
-    which.min(abs(reporting_rate_det -
-                    A_7_bio_good_2_LL$rho[param_index] ))
+    which.min(
+      abs(
+        reporting_rate_det -
+          A_7_bio_good_2_LL$rho[param_index] ))
   A_7_bio_good_2_LL$nearest_skip_rho[param_index] =
     reporting_rate_det[
       A_7_bio_good_2_LL$nearest_skip_rho_index[param_index]]
 
   #Get delta ref on skip plot
   A_7_bio_good_2_LL$nearest_skip_delta_index[param_index] =
-    which.min(abs(delta_val_det -A_7_bio_good_2_LL$delta[param_index] ))
+    which.min(
+      abs(
+        delta_val_det -
+          A_7_bio_good_2_LL$delta[param_index] ))
   A_7_bio_good_2_LL$nearest_skip_delta[param_index] =
     delta_val[
       A_7_bio_good_2_LL$nearest_skip_delta_index[param_index]]
@@ -2855,55 +3082,43 @@ for(param_index in seq(1, nrow(A_7_bio_good_2_LL))){
       A_7_bio_good_2_LL$nearest_skip_R_naught_index[param_index]]
 }
 
-p = ggplot(data = A_7_bio_good_2_LL, aes(x = R_naught_theo,
-                                         y = skips)) + geom_point() +
-  rahul_theme
-p
-
-relevant_skip_plot_data = dplyr::select(A_7_bio_good_2_LL,
-                                        "R[0]" = nearest_skip_R_naught,
-                                        skips,
-                                        rho = nearest_skip_rho,
-                                        delta = nearest_skip_delta)
+relevant_skip_plot_data = dplyr::select(
+  A_7_bio_good_2_LL,
+  "R[0]" = nearest_skip_R_naught,
+  skips,
+  rho = nearest_skip_rho,
+  delta = nearest_skip_delta)
 min(A_7_bio_good_2_LL$skips, na.rm = TRUE)
 
 relevant_skip_plot_data_melt = melt(
   relevant_skip_plot_data, id.vars = c("skips"))
 relevant_skip_plot_data_melt$value = signif(
-  relevant_skip_plot_data_melt$value, digits = 3)
+  relevant_skip_plot_data_melt$value,
+  digits = 3)
+
 relevant_skip_plot_data_melt$skip_category = cut(
-  relevant_skip_plot_data_melt$skips,breaks = c(0,1,100,101),
+  relevant_skip_plot_data_melt$skips,
+  breaks = c(0,1,100,101),
   include.lowest = TRUE)
 
 relevant_skip_plot_data$r0 =
   relevant_skip_plot_data$`R[0]`
 
 
-relevant_skip_plot_data$rho = as.factor(as.character(relevant_skip_plot_data$rho))
+relevant_skip_plot_data$rho = as.factor(
+  as.character(relevant_skip_plot_data$rho))
+
 relevant_skip_plot_data_delta_07 = filter(
   relevant_skip_plot_data, delta == 0.7)
 
-
-#relevant_skip_plot_data_delta_07$Type = "Fitted"
-
-
-
 Fig_5_A_plot_data = relevant_skip_plot_data_delta_07
-Fig_5_A = ggplot(data = relevant_skip_plot_data_delta_07,
-             aes(x = r0, y = skips)) +
-  geom_point(color = 'red', size = 3,
-             shape =  "circle open") +
-  theme_white_background +
-  labs(x = expression(R[0])) +
-  labs(y = expression(n[c])) +
-  labs(y = expression(paste("Number of skips (", n[c], ")")))
-  
-Fig_5_A
+
 Fig_5_A_plot_data$plot_var = ""
 test = ggplot(data = Fig_5_A_plot_data,
              aes(x = r0, y = skips)) +
   geom_point(color = 'red', size = 3,
-             shape =  "circle open") +facet_wrap(~plot_var) +
+             shape =  "circle open") +
+  facet_wrap(~plot_var) +
   theme_white_background +
   labs(x = expression(R[0])) +
   labs(y = expression(n[c])) +
@@ -2912,19 +3127,26 @@ test = ggplot(data = Fig_5_A_plot_data,
   
 
 ### Add line
-load("../Generated_Data/Data_for_Manuscript_Figures/skip_data_rho_3.RData")
+load(
+  "../Generated_Data/Data_for_Manuscript_Figures/skip_data_rho_3.RData"
+  )
+
 skip_df_rho_3$rho_lab = "\rho~=~0.03"
 rho_3_line_df = skip_df_rho_3
 
-rho_3_line_df$r0 = as.numeric(as.character(rho_3_line_df$r0))
-rho_3_line_df$Num_Skips = as.numeric(as.character(rho_3_line_df$Num_Skips))
+rho_3_line_df$r0 = as.numeric(as.character(
+  rho_3_line_df$r0))
+
+rho_3_line_df$Num_Skips = as.numeric(as.character(
+  rho_3_line_df$Num_Skips))
 
 rho_3_line_df = filter(rho_3_line_df, delta == 0.7)
-head(rho_3_line_df)
-rho_3_line_df$rho = as.factor(as.character(rho_3_line_df$rho))
+rho_3_line_df$rho = as.factor(as.character(
+  rho_3_line_df$rho))
 rho_3_line_df$'R[0]' = rho_3_line_df$r0
 rho_3_line_df = rho_3_line_df %>%
-  dplyr::select('R[0]' ='R[0]', skips = Num_Skips,
+  dplyr::select('R[0]' ='R[0]',
+                skips = Num_Skips,
                 rho = rho, delta = delta,
                 r0 = r0)
 rho_3_line_df$plot_var = ""
@@ -2932,21 +3154,27 @@ rho_3_line_df$Line_Color = "Show_Line"
 
 Fig_5_A_plot_data$Line_Color = "No_Line"
 
-#Fig_5_A_plot_data = rbind(Fig_5_A_plot_data, rho_3_line_df)
 
 Fig_5_A_plot_data_subset = Fig_5_A_plot_data %>%
-  dplyr::select(var_value =  'R[0]', LL = skips)
-Fig_5_A_plot_data_subset$Profile_Var = 'R[0]'
-Fig_5_A_plot_data_subset$plot_var_label = ' R[0]'
+  dplyr::select(var_value =  'R[0]',
+                LL = skips)
+Fig_5_A_plot_data_subset$Profile_Var =
+  'R[0]'
+Fig_5_A_plot_data_subset$plot_var_label =
+  ' R[0]'
 Fig_5_A_plot_data_subset$Metric = "Skips"
 Fig_5_A_plot_data_subset$low_bound = -1
 Fig_5_A_combined_data = Fig_5_A_plot_data_subset
 
-Fig_5_A_combined_data$plot_var_label = factor(Fig_5_A_combined_data$plot_var_label, levels = c(" R[0]"))
+Fig_5_A_combined_data$plot_var_label = factor(
+  Fig_5_A_combined_data$plot_var_label,
+  levels = c(" R[0]"))
 
 rho_3_line_df = rho_3_line_df %>%
-  dplyr::select(var_value =  'R[0]', LL = skips) %>%
-  mutate(Profile_Var = 'R[0]', plot_var_label = ' R[0]',
+  dplyr::select(var_value =  'R[0]',
+                LL = skips) %>%
+  mutate(Profile_Var = 'R[0]',
+         plot_var_label = ' R[0]',
          )
 rho_3_line_df = na.omit(rho_3_line_df)
 
@@ -2977,68 +3205,96 @@ rahul_big_panel_theme = theme(
                              face = "bold",
                              color = "black"),
   plot.margin = unit(c(.5,.5,.5,.5), "cm"),
-  legend.background = element_rect(fill = "transparent"),
+  legend.background = element_rect(
+    fill = "transparent"),
   legend.box.margin = unit(c(.5,.5,.5,.5), "cm")
 )
 
-Fig_5_A_plot = ggplot()  + geom_point(data = Fig_5_A_combined_data, aes(x = var_value, y = LL, color = Metric, shape = Metric)) +
-  scale_linetype_manual(values = c("blank", "solid")) +
-  rahul_man_figure_theme + rahul_big_panel_theme  +theme_white_background  +
-    geom_hline(data = Fig_5_A_combined_data, aes(yintercept = low_bound), color = 'white', linetype = 'blank') +
-   geom_line(data = rho_3_line_df, aes(x = var_value, y = LL), color = 'black', size = 1.0) +
-  scale_x_continuous(breaks = scales::pretty_breaks(n = 3)) +
+Fig_5_A_plot = ggplot()  +
+  geom_point(
+    data = Fig_5_A_combined_data,
+    aes(x = var_value,
+        y = LL, color = Metric,
+        shape = Metric)) +
+  scale_linetype_manual(
+    values = c("blank", "solid")) +
+  rahul_man_figure_theme +
+  rahul_big_panel_theme  +
+  theme_white_background  +
+  geom_hline(
+    data = Fig_5_A_combined_data,
+    aes(yintercept = low_bound),
+    color = 'white', linetype = 'blank') +
+  geom_line(
+    data = rho_3_line_df,
+    aes(x = var_value, y = LL),
+    color = 'black', size = 1.0) +
+  scale_x_continuous(
+    breaks = scales::pretty_breaks(n = 3)) +
   theme(
     aspect.ratio = 1,
     strip.background = element_blank(),
   ) + 
   theme(legend.position = "None") +
-  scale_color_manual(values = c("black", "red", "black", "white"),
-                     limits = c("LL", "Skips", "Show_Line", "No_Line")) +
+  scale_color_manual(
+    values = c("black", "red", "black", "white"),
+    limits = c("LL", "Skips", "Show_Line", "No_Line")) +
   scale_shape_manual(values = c(16, 1)) +
-  scale_y_continuous(breaks = scales::pretty_breaks(n = 4))  +
-  ylab(expression(paste(" Number of skips ", (n[c])))) +
+  scale_y_continuous(
+    breaks = scales::pretty_breaks(n = 4))  +
+  ylab(
+    expression(paste(
+      " Number of skips ", (n[c])))) +
   theme(axis.text.y = element_text(size = 16),
         axis.text.x = element_text(size = 16),
         axis.title.x = element_text(size = 15),
         strip.text = element_blank()
         ) +
-    xlab(expression(paste(" Reproductive Number ", (R[0])))) 
-
-#theme(axis.title.x=element_blank()) + 
+    xlab(expression(
+      paste(
+        " Reproductive Number ", (R[0])))) 
 Fig_5_A_plot
 ```
 
 ### Figure 5 Panel B
 ```{r}
-spark_data_90_only = filter(all_param_spark_data, spark_year == 1990)
+spark_data_90_only = filter(
+  all_param_spark_data,
+  spark_year == 1990)
 
-spark_90_size_20 = filter(spark_data_90_only, spark_size == 20)
+spark_90_size_20 = filter(
+  spark_data_90_only,
+  spark_size == 20)
 no_na_20 = na.omit(spark_90_size_20)
-
-#p
 
 ML_df = MLE_params
 ML_df$r = unique(no_na_20$r)
-ML_with_re_emerge_prob = join(ML_df, no_na_20)
+ML_with_re_emerge_prob =
+  join(ML_df, no_na_20)
 Fig_5_B_plot = ggplot(data = no_na_20,
-           aes(x =sigma_P, y = total_re_emergence_prob_1_year)) + geom_point(size = 3) +
-  xlab(expression(paste(" Process Noise ", (sigma[P])))) +
-  ylab(expression(paste("Re-Emergence Probability in ", 1990))) +
+           aes(x =sigma_P,
+               y = total_re_emergence_prob_1_year)) +
+  geom_point(size = 3) +
+  xlab(expression(paste(" Process Noise ",
+                        (sigma[P])))) +
+  ylab(expression(paste("Re-Emergence Probability in ",
+                        1990))) +
   geom_point(data = ML_with_re_emerge_prob,
-             aes(x = sigma_P, y = total_re_emergence_prob_1_year),
-             color = 'red', fill = "NA", size = 5, shape = 21, stroke = 3) +
-  rahul_man_figure_theme + rahul_big_panel_theme  +theme_white_background  +
+             aes(x = sigma_P,
+                 y = total_re_emergence_prob_1_year),
+             color = 'red', fill = "NA",
+             size = 5, shape = 21, stroke = 3) +
+  rahul_man_figure_theme +
+  rahul_big_panel_theme  +
+  theme_white_background  +
   theme(aspect.ratio = 1,
         axis.text.y = element_text(size = 16),
         axis.text.x = element_text(size = 16),
-        axis.title.y = element_text(face = "plain"),
+        axis.title.y = element_text(
+          face = "plain"),
         strip.text = element_blank()
         ) 
   
-#p
-
-
-
 ```
 
 ### Make Combined Plot of Figure 5
@@ -3046,8 +3302,10 @@ Fig_5_B_plot = ggplot(data = no_na_20,
 tiff(
   paste0(
     "../Figures/Manuscript_Figures/TIFF_Files/Fig5_raw.tiff"),
-  height = 5, width = 10, res = 500, units = "in")
-print(grid.arrange(Fig_5_A_plot, Fig_5_B_plot, ncol = 2))
+  height = 5, width = 10,
+  res = 500, units = "in")
+print(grid.arrange(
+  Fig_5_A_plot, Fig_5_B_plot, ncol = 2))
 dev.off()
 ```
 

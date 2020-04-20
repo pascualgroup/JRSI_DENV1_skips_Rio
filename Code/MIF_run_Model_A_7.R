@@ -3,10 +3,11 @@
 # ---- mif_code ----
 
 # Header ------------------------------------------------------------------
-## Name: MIF_run_Model_A_6.R
+## Name: MIF_run_Model_A_7.R
 ## Author: Rahul Subramanian
-## Description: Runs parameter combinations on midway for profile from original param grid
-## for SIR model with cosine function (Model A_6)
+## Description: Runs parameter combinations
+## on midway for profile from original param grid
+## for SIR model with cosine function (Model A_7)
 
 rm(list = ls())
 ptm <- proc.time()
@@ -17,7 +18,8 @@ source("rahul_theme.R")
 library(pomp2)
 
 args = commandArgs(trailingOnly = TRUE)
-#param_index = as.numeric(args[1]) + as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
+#param_index = as.numeric(args[1]) +
+# as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))
 
 profile_var = as.character(args[1])
 print(profile_var)
@@ -27,7 +29,8 @@ print(model_name)
 
 
 #Load dengue case data
-Rio_data_clean = read.csv("../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
+Rio_data_clean = read.csv(
+  "../Generated_Data/Rio_DENV1_Data_2_25_years_clean.csv")
 head(Rio_data_clean)
 t0 = as.numeric(as.Date("1986/05/01") - as.Date("1986/01/01"))
 
@@ -73,7 +76,9 @@ start_index = (param_index - 1) * group_size + 1
 end_index = param_index * group_size
 Num_mif_runs_per_start = 5
 param_data_subset_act = pd[start_index:end_index, ]
-param_data_subset = param_data_subset_act[rep(seq_len(nrow(param_data_subset_act)), each = Num_mif_runs_per_start), ]
+param_data_subset =
+  param_data_subset_act[rep(seq_len(nrow(param_data_subset_act)),
+                            each = Num_mif_runs_per_start), ]
 
 rw_sd_list_default = rw.sd(
   Beta_0 = ifelse(time <= 365 * 2.50, 0.02, 0),
@@ -87,28 +92,6 @@ rw_sd_list_default = rw.sd(
 
 
 
-# variable_params = c("I_0","rho","Beta_0", "delta", "phi", "gamma", "sigma_M", "sigma_P", "R_0","N_0")
-#
-# rw_sd_matrix= matrix(nrow = length(variable_params),
-#                      ncol = length(variable_params),
-#                      data = rep(0.02, length = length(variable_params)^2))
-# rw_sd_matrix[,ncol(rw_sd_matrix)] = 0  #Set rwsd for N_0 to 0 for all profiles
-# diag(rw_sd_matrix) = 0
-# rw_sd_df = as.data.frame(rw_sd_matrix)
-# colnames(rw_sd_df) = variable_params
-# rw_sd_df = cbind(profile_var = variable_params, rw_sd_df)
-#
-# single_profile_rw_sd_vector = filter(rw_sd_df, profile_var == profile_var)
-# rw.sd = rw.sd(Beta_0 = single_profile_rw_sd_vector$Beta_0,
-#               delta = single_profile_rw_sd_vector$delta,
-#               phi = single_profile_rw_sd_vector$phi,
-#               gamma = single_profile_rw_sd_vector$gamma,
-#               rho = single_profile_rw_sd_vector$rho,
-#               I_0 = single_profile_rw_sd_vector$I_0,
-#               sigma_P = single_profile_rw_sd_vector$sigma_P,
-#               sigma_M = single_profile_rw_sd_vector$sigma_M,
-#               R_0 = single_profile_rw_sd_vector$R_0,
-#               N_0 = single_profile_rw_sd_vector$N_0)
 
 
 get_rwsd = function(profile_var) {
@@ -243,7 +226,8 @@ get_rwsd = function(profile_var) {
                           gamma = 0
                         )
                         }else{
-                          stop("Profile var not specified in rwsd wrapper function")
+                          stop(
+                            "Profile var not specified in rwsd wrapper function")
                           
                         }
                       
@@ -269,14 +253,6 @@ get_rwsd = function(profile_var) {
 return(rw.sd)
 }
 
-# rw_sd_list_default[eval(profile_var)] = 0
-# rwsd_Beta_0 = as.numeric(rw_sd_list_default['Beta_0'])
-# rwsd_delta = as.numeric(rw_sd_list_default['delta'])
-# rwsd_phi = as.numeric(rw_sd_list_default['phi'])
-# rwsd_rho = as.numeric(rw_sd_list_default['rho'])
-# rwsd_I_0 = as.numeric(rw_sd_list_default['I_0'])
-#rw.sd = rw.sd(Beta_0 = eval(rwsd_Beta_0), delta = rwsd_delta, phi = rwsd_phi,
-#              rho = rwsd_rho, I_0 = rwsd_I_0)
 
 
 rw.sd = get_rwsd(profile_var = profile_var)
@@ -346,9 +322,6 @@ mif_single_subset_data <-
       )
     
   }
-# max_LL_per_starting_param_point = max(mif_single_param_output_all_runs$LL)
-#mif_single_param_output_max_run = filter(mif_single_param_output_all_runs,
-#                                         LL == max_LL_per_starting_param_point)
 
 mif_single_subset_data <- as.data.frame(mif_single_subset_data)
 stopCluster(cl)

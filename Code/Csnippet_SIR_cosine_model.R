@@ -27,7 +27,7 @@ rproc <- Csnippet("
                   
                   
                   if(R < 0 || I < 0 ||  N < 0){
-                    Rprintf(\"Negative state variable detected at  t = %lg \\n\", t);
+                    Rprintf(\"Neg state var det at  t = %lg \\n\", t);
                     Rprintf(\"I = %lg \\n\", I);
                     Rprintf(\"R = %lg \\n\", R);
                     Rprintf(\"N = %lg \\n\", N);
@@ -36,7 +36,7 @@ rproc <- Csnippet("
                   }
 
                   if(isnan(R) || isnan(I) || isnan(N) || isnan(S)){
-                    Rprintf(\"nan state variable detected at top of process model t = %lg \\n\", t);
+                    Rprintf(\"nan state var det at top of proc model t = %lg \\n\", t);
                     Rprintf(\"I = %lg \\n\", I);
                     Rprintf(\"R = %lg \\n\", R);
                     Rprintf(\"N = %lg \\n\", N);
@@ -114,7 +114,7 @@ rproc <- Csnippet("
                   }
                   
                   if(isnan(R) || isnan(I) ||isnan(N) || isnan(S)){
-                    Rprintf(\"nan state variable detected at bottom of process model t = %lg \\n\", t);
+                    Rprintf(\"nan state var det at bot of proc model t = %lg \\n\", t);
                     Rprintf(\"I = %lg \\n\", I);
                     Rprintf(\"R = %lg \\n\", R);
                     Rprintf(\"N = %lg \\n\", N);
@@ -222,7 +222,10 @@ init <- Csnippet("
                  ")
 
 # ---- par_trans ----
-par_trans = parameter_trans(log = c("mu_H", "Beta_0", "gamma", "sigma_P", "sigma_M", "r", "epsilon"),
+par_trans = parameter_trans(log = c("mu_H", "Beta_0",
+                                    "gamma", "sigma_P",
+                                    "sigma_M", "r",
+                                    "epsilon"),
                             logit = c("rho", "delta"))
 
 # ---- covar ----
@@ -295,7 +298,9 @@ get_MIF_final_params_and_pfilter_LL = function(data,
   MIF_single_param_output = params
   MIF_single_param_output$LL = NA
   if(detail_log == TRUE){
-    log_str = paste0(log_str, "mif warnings: \n ", warnings(), " \n Done with warnings \n")
+    log_str = paste0(log_str, "mif warnings: \n ",
+                     warnings(),
+                     " \n Done with warnings \n")
   }
   
   
@@ -337,7 +342,9 @@ get_MIF_final_params_and_pfilter_LL = function(data,
       if(is(ll,"error")) {}else{
         ll <- logmeanexp(ll)
         if(detail_log == TRUE){
-          log_str = paste0(log_str, "pfilter_warnings: \n ", warnings(), " \n Done with warnings \n")
+          log_str = paste0(log_str, "pfilter_warnings: \n ",
+                           warnings(),
+                           " \n Done with warnings \n")
         }
         
       }
