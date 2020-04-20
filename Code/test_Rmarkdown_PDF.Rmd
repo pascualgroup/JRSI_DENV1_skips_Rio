@@ -1,0 +1,134 @@
+---
+header-includes:
+  - \usepackage[utf8]{inputenc}
+  - \usepackage[T1]{fontenc}
+  - \usepackage{float}
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.pos = 'H')
+```
+
+# Set up baseline model
+
+##Load Non-POMP Libraries and Files
+```{r echo = TRUE, results = 'hide', warning=FALSE}
+rm(list = ls())
+source("load_libraries_essential.R")
+source("rahul_theme.R")
+```
+
+##Load POMP2
+```{r}
+library(pomp)
+```
+We consider fitting a simple SEIR spline model to monthly case counts of DENV1 incidence in the municipality of Rio de Janeiro from April 1,1986 to December 31, 1987. The data consist of monthly case counts that are reported each week and then aggregated by month. The dates correspond to notification dates, not date of disease onset. For example, if 535 cases were reported for April 1986, it means that 535 cases were observed between April 1st,1986-April 30th,1986.
+
+
+\pagebreak
+
+\begin{table}[]
+\centering
+\caption{State Variables and Covariates}
+\begin{tabular}{l|c|r}
+\hline
+Term & Definition & Type \\\hline
+$S(t)$ & Susceptible humans in city $i$  & State Variable  \\\hline
+$I(t)$ & Infected humans in city $i$ & State Variable\\\hline
+$R(t)$ & Recovered humans in city $i$ & State Variable\\\hline
+$C(t)$ & Reported Human Cases & State Variable \\\hline
+$N(t)$ &  Human Population & State Variable \\\hline
+ \end{tabular}
+\end{table}
+
+
+```{r}
+
+```
+
+## Parameters
+The force of infection $\lambda(t)$ is a function of the infected immigration rate $\epsilon$ and overall transmission rate $\beta(t)$ which in turn is assumed to be a  cosine function of time $t$ with mean $\beta_0$, amplitude $\delta$, frequency $\omega$ and phase $\phi$   which will be fit along with a gamma-distributed white noise parameter $\frac{d\Gamma}{dt}$. $\omega$ is fixed at an annual frequency ($\omega = \frac{2 \pi}{365}$).
+
+The white noise $\frac{d\Gamma}{dt}$ is drawn from a gamma distribution with intensity $\sigma = \sigma_{\text{P}}$ and duration of Euler step $dt = \Delta$, where $\Delta$ is the simulation time step of two hours (or $\frac{1}{12}$ in units of days). The intensity parameter $\sigma_{\text{P}}$ will be fit to the data.
+
+## Environmental Noise Intensity
+The discretization of the Gamma-distributed environmental noise in the model has the form:
+
+\begin{equation}
+\Delta \Gamma \sim rgammawn(\mu = dt, \sigma =  \sigma_{\text{P}})
+\end{equation}
+
+Formally, this is equivalent to a draw from a Gamma-distribution with shape parameter $\alpha = \frac{\delta}{\sigma_{\text{P}}^2}$ and scale parameter $\beta = \frac{1}{\sigma_{\text{P}}^2}$. (Note that $\delta = \Delta t$, and for all of this sub-section $\beta$ refers to the Gamma distribution scale parameter rather than the transmission rate function, which is reffered to as $\beta (t)$).
+
+\begin{equation}
+\Delta \Gamma \sim \Gamma (\frac{\delta}{\sigma_{\text{P}}^2}, \frac{1}{\sigma_{\text{P}}^2})
+\end{equation}
+
+
+## Population and Reporting
+
+We started the model with the estimated resident population of the municipality of Rio de Janeiro in 1991 according to the 1991 census. This estimated population is $N = 5 480 768$.
+The estimate was obtained from the IBGE's "Censo Demographico- 1991-Rio de Janeiro". The full description of the document in the IBGE catalog is "Censo demográfico : 1991 : resultados do universo relativos as características da população e dos domicílios"
+
+The document can be accessed at the following site on the IBGE catalog:
+https://biblioteca.ibge.gov.br/biblioteca-catalogo?id=782&view=detalhes
+
+At that site, the name of the file (which can be downloaded) is:
+cd_1991_n20_caracteristicas_populacao_domicilios_rj.pdf
+
+In this document, the population estimate was found under Table 1.4: "População residente, por grupos de idade, segundo tU lolesorregiàes, as Microrregiões, os Municípios,os Distritos e o sexo"
+
+The sub-section of the table (the sub-heading can be found on page 27 of the document (page 32 using the document's internal pagination)) was "Municipios e Distritos"
+
+The population estimate for the municipality of Rio de Janeiro can be found on page 36 of that document (page 41 using internal pagination) under the row "Rio de Janeiro" and column heading "Total".
+
+The population estimate again was $N=5480768$.
+
+We next obtained the estimated resident pouplation of the municipality of Rio de Janeiro in 2000 using the 2000 census from the IBGE website.
+
+We obtained estimates of the resident population of the municipality of Rio de Janeiro in 2000 from the 200 Brazil census (specific table page: https://ww2.ibge.gov.br/home/estatistica/populacao/censo2000/universo.php?tipo=31o/tabela13_1.shtm&paginaatual=1&uf=33&letra=R).
+
+Census website: https://ww2.ibge.gov.br/english/estatistica/populacao/censo2000/default.shtm
+
+Heading Type: População residente, sexo e situação do domicílio; Total column
+
+Estimated Population of Rio de Janeiro in 2000: 5,857,904
+
+Estimated Population of Rio de Janeiro in 2010 (for reference): 6,320,446 (based on the 2010 population
+estimate of the municipality of Rio de Janeiro from Table 1378 of the 2010 Brazilian census (accessed at https://sidra.ibge.gov.br/tabela/1378 ; original website https://sidra.ibge.gov.br/pesquisa/censo-demografico/demografico-2010/universo-caracteristicas-da-populacao-e-dos-domicilios ))
+
+We calculate the rate of human population growth from 1991 to 2000 assuming exponential growth. We will then use this rate to back-calculate an estimate of the muncipal resident population size in 1986 (again assuming exponential population growth).
+
+Let $r$ represent the per capita rate at which new individuals enter the population, while $\mu_{\text{H}}$ is the death rate.
+Let $h$ represent the per capita growth rate of the population (i.e. $h = r - \mu_{\text{H}}$). We assume that the net population growth rate is exponential:
+
+\begin{equation}
+\frac{dN}{dt} = h N(t)
+\end{equation}
+
+### Pop growth rate calculation
+
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
