@@ -1349,8 +1349,12 @@ rahul_poster_theme = theme(
                              color = "black")
 )
 model_name_list = c("A_7")
-model_label_list = factor(c("SIR Cosine No Immigration"))
-model_label_list = factor(model_label_list, levels = c("SIR Cosine No Immigration"))
+model_label_list = factor(
+  c("SIR Cosine No Immigration"))
+
+model_label_list = factor(
+  model_label_list,
+  levels = c("SIR Cosine No Immigration"))
 
 Csnippet_file_path_list = c(
   "Csnippet_SIR_cosine_model.R")
@@ -1806,8 +1810,6 @@ rahul_big_panel_theme = theme(
 ### Add Polynomial Fit Curves to Profiles for Figure 3
 
 ```{r}
-Fig_3_ABC_plot_data
-
 Fig_3_ABC_plot_data = join(
   Fig_3_ABC_plot_data, ML_df)
 cutoff_value  = -174 
@@ -2011,8 +2013,7 @@ Fig_3_comb_plot
 tiff(
   paste0(
     "../Figures/Manuscript_Figures/TIFF_Files/Fig3_raw.tiff"),
-  height = 5, width = 10, res = 500, units = "in")# print(grid.arrange(Sup_Fig_3_A_comb, Sup_Fig_3_B_comb, legend,Sup_Fig_3_C_comb, Sup_Fig_3_D_comb,
-#                    ncol = 3, widths = c(1,1,0.9)))
+  height = 5, width = 10, res = 500, units = "in")
 Fig_3_comb_plot
 dev.off()
 ```
@@ -2028,7 +2029,10 @@ model_name  = "A_7"
 
 bio_good_2_LL = read.csv(paste0(
   "../Generated_Data/Profiles/",
-  model_name, "_Model/",model_name, "_Model_BP_top_2_LL_all_params_bio_good_2_LL.csv"))
+  model_name,
+  "_Model/",
+  model_name,
+  "_Model_BP_top_2_LL_all_params_bio_good_2_LL.csv"))
 ML_combo_num = which(
   bio_good_2_LL$LL == max(bio_good_2_LL$LL))
 all_R0_data = 
@@ -2731,7 +2735,7 @@ Fig_4_combined =
   facet_wrap(~panel, ncol = 1,
              scales = "free",
              strip.position = "left")
-Fig_4_combined
+
 Fig_4_combined = Fig_4_combined +
   scale_color_manual(name = "",
                      values = c("red",

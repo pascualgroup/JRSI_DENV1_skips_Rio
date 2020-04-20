@@ -14,4 +14,4 @@ echo $SLURM_ARRAY_TASK_ID
 
 module load gcc
 module load R/3.5.1
-R CMD BATCH --vanilla '--args sigma_M A_7' MIF_run_Model_A_7.R   OUT_sigma_M/out.$SLURM_ARRAY_TASK_ID 
+R CMD BATCH --vanilla '--args sigma_M A_7' MIF_run_Model_A_7.R OUT_si_M/out.$SLURM_ARRAY_TASK_ID 
