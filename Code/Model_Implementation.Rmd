@@ -1,18 +1,19 @@
 ---
 title: "Supporting Information: Implementation of Stochastic SIR Cosine Model"
 author: "Rahul Subramanian"
-date: "March 23, 2020"
+date: "April 20, 2020"
+header-includes:
+  - \usepackage[utf8]{inputenc}
+  - \usepackage[T1]{fontenc}
+  - \usepackage{float}
 output:
+  pdf_document: default
   html_document: 
     toc: true
     toc_float: true
-  pdf_document: default
 ---
 
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
 
-\usepackage{float}
 
 
 ```{r setup, include=FALSE}
@@ -162,8 +163,7 @@ The sub-section of the table (the sub-heading can be found on page 27 of the doc
 
 The population estimate for the municipality of Rio de Janeiro can be found on page 36 of that document (page 41 using internal pagination) under the row "Rio de Janeiro" and column heading "Total".
 
-The population estimate again was $N = 5 480 768$
-
+The population estimate again was $N=5480768$.
 
 We next obtained the estimated resident pouplation of the municipality of Rio de Janeiro in 2000 using the 2000 census from the IBGE website.
 
@@ -215,8 +215,8 @@ We assume a duration of infection ($\frac{1}{\gamma}$) of
 
 The model framework contains the parameterization necessary to incorporate population growth.
 
-Let $r$ represent the per capita rate at which new individuals enter the population, while $\mu_{\text{H}}$ is the death rate. Let $h$ represent the per capita growth rate of the population (i.e. $h = r − \mu_{\text{H}}$). We assume that the net
-population growth rate is exponential:
+Let $r$ represent the per capita rate at which new individuals enter the population, while $\mu_{\text{H}}$ is the death rate.
+Let $h$ represent the per capita growth rate of the population (i.e. $h = r - \mu_{\text{H}}$). We assume that the net population growth rate is exponential:
 
 \begin{equation}
 \frac{dN}{dt} = h N(t)
