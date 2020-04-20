@@ -2008,7 +2008,7 @@ Fig_3_comb_plot = ggplot()  +
       "Reporting Rate)      ")
     )
 
-Fig_3_comb_plot
+#Fig_3_comb_plot
 
 tiff(
   paste0(
@@ -2176,7 +2176,7 @@ Fig_4_Panel_A = ggplot(data = all_R_0_ribbon_df_melt) +
   ylab(expression(paste(R[0]))) +
   rahul_man_figure_theme +
   theme(legend.margin = margin(t = 0, unit='cm'))
-Fig_4_Panel_A
+#Fig_4_Panel_A
 
 ```
 
@@ -2768,7 +2768,7 @@ Fig_4_combined = Fig_4_combined +
         axis.title.y = element_text(size = 20)) +
   theme(legend.text = element_text(size = 15.5,
                                    face = "plain"))
-Fig_4_combined
+#Fig_4_combined
 
 
 
@@ -3009,7 +3009,8 @@ A_7_max_R_naught_act = max(
 
 A_7_bio_good_2_LL = read.csv(
   paste0("../Generated_Data/Profiles/",
-         model_name, "_Model/",model_name, "_Model_BP_top_2_LL_all_params_bio_good_2_LL.csv"))
+         model_name, "_Model/",model_name,
+         "_Model_BP_top_2_LL_all_params_bio_good_2_LL.csv"))
 
 A_7_bio_good_2_LL$R_naught_theo =
   A_7_bio_good_2_LL$Beta_0/(
@@ -3267,7 +3268,7 @@ Fig_5_A_plot
 ```
 
 ### Figure 5 Panel B
-```{r}
+```{r warning=FALSE}
 spark_data_90_only = filter(
   all_param_spark_data,
   spark_year == 1990)
@@ -3280,7 +3281,15 @@ no_na_20 = na.omit(spark_90_size_20)
 ML_df = MLE_params
 ML_df$r = unique(no_na_20$r)
 ML_with_re_emerge_prob =
-  join(ML_df, no_na_20)
+  join(ML_df, no_na_20,
+       by = c("sigma_P", "gamma",
+              "phi", "sigma_M",
+              "rho", "Beta_0",
+              "delta", "mu_H",
+              "N_0", "I_0",
+              "R_0", "C_0",
+              "r", "omega",
+              "epsilon", "R_naught"))
 Fig_5_B_plot = ggplot(data = no_na_20,
            aes(x =sigma_P,
                y = total_re_emergence_prob_1_year)) +
