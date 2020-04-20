@@ -974,11 +974,11 @@ knitr::read_chunk('TIFF_Man_Fig_1_Panel_A.R')
 
 ```
 
-```{r TIFF_Man_Fig_1}
+```{r TIFF_Man_Fig_1, eval = FALSE, echo = TRUE}
 
 ```
 
-```{r TIFF_Man_Fig_1_Panel_A}
+```{r TIFF_Man_Fig_1_Panel_A, eval = FALSE, echo = TRUE}
 
 ```
 
@@ -2796,8 +2796,14 @@ The following code was run in parallel on a computer cluster:
 
 
 ```{r, cache=FALSE}
-knitr::read_chunk('Man_Fig_5_gardner_top_2_LL_Model_A_7.R')
+knitr::read_chunk('Man_Fig_5_gardner_code.R')
 ```
+
+```{r Fig_5_Cluster_Code, eval = FALSE, echo = TRUE}
+
+```
+
+
 
 ### Script for running code on computer cluster (uchicago BSD Gardner)
 

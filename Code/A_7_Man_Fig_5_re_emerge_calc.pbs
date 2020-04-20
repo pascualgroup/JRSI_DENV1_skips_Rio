@@ -8,4 +8,4 @@ echo $MOAB_JOBARRAYINDEX
 module load gcc/6.2.0
 module load R/3.5.0
 
-R CMD BATCH --vanilla  '--args A_7' Man_Fig_5_gardner_top_2_LL_Model_A_7.R  OUT_re_prob_2/out.$MOAB_JOBARRAYINDEX
+R CMD BATCH --vanilla '--args A_7' Man_Fig_5_gardner_code.R O/out.$MOAB_JOBARRAYINDEX
