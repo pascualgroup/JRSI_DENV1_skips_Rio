@@ -95,7 +95,7 @@ source("Csnippet_SIR_cosine_model.R")
 knitr::read_chunk('Csnippet_SIR_cosine_model.R')
 ```
 
-## Define covariate time range
+## Define co-variate time range
 ```{r covar_time_names}
 
 ```
@@ -140,7 +140,7 @@ The discretization of the Gamma-distributed environmental noise in the model has
 \Delta \Gamma \sim rgammawn(\mu = dt, \sigma =  \sigma_{\text{P}})
 \end{equation}
 
-Formally, this is equivalent to a draw from a Gamma-distribution with shape parameter $\alpha = \frac{\delta}{\sigma_{\text{P}}^2}$ and scale parameter $\beta = \frac{1}{\sigma_{\text{P}}^2}$. (Note that $\delta = \Delta t$, and for all of this sub-section $\beta$ refers to the Gamma distribution scale parameter rather than the transmission rate function, which is reffered to as $\beta (t)$).
+Formally, this is equivalent to a draw from a Gamma-distribution with shape parameter $\alpha = \frac{\delta}{\sigma_{\text{P}}^2}$ and scale parameter $\beta = \frac{1}{\sigma_{\text{P}}^2}$. (Note that $\delta = \Delta t$, and for all of this sub-section $\beta$ refers to the Gamma distribution scale parameter rather than the transmission rate function, which is referred to as $\beta (t)$).
 
 \begin{equation}
 \Delta \Gamma \sim \Gamma (\frac{\delta}{\sigma_{\text{P}}^2}, \frac{1}{\sigma_{\text{P}}^2})
@@ -180,7 +180,7 @@ Estimated Population of Rio de Janeiro in 2000: 5,857,904
 Estimated Population of Rio de Janeiro in 2010 (for reference): 6,320,446 (based on the 2010 population
 estimate of the municipality of Rio de Janeiro from Table 1378 of the 2010 Brazilian census (accessed at https://sidra.ibge.gov.br/tabela/1378 ; original website https://sidra.ibge.gov.br/pesquisa/censo-demografico/demografico-2010/universo-caracteristicas-da-populacao-e-dos-domicilios ))
 
-We calculate the rate of human population growth from 1991 to 2000 assuming exponential growth. We will then use this rate to back-calculate an estimate of the muncipal resident population size in 1986 (again assuming exponential population growth).
+We calculate the rate of human population growth from 1991 to 2000 assuming exponential growth. We will then use this rate to back-calculate an estimate of the municipal resident population size in 1986 (again assuming exponential population growth).
 
 ### Pop growth rate calculation
 ```{r}
@@ -201,7 +201,7 @@ Population_Rio_1986 = Population_Rio_1991/
   (exp(human_pop_growth_rate*time_before_1991_census_dates))
 ```
 
-Thus, the estimated pouplation fo Rio de Janeiro is approximately $N_0 = 5281842$
+Thus, the estimated pouplation of Rio de Janeiro is approximately $N_0 = 5281842$
 
 
 
@@ -292,7 +292,7 @@ Let $\mu_{\cdot N}$ represent the rate of net population growth.
  \mu_{\cdot N} = h
 \end{equation}
 
-Let $\mu_{\cdot S}$ represent the rate at which indiduals who die are replaced by susceptible individuals.
+Let $\mu_{\cdot S}$ represent the rate at which individuals who die are replaced by susceptible individuals.
 We assume that this replacement rate is equivalent to the death rate. 
 
 \begin{equation}
@@ -305,7 +305,7 @@ We assume that this replacement rate is equivalent to the death rate.
 
 ### Discretizations
 
-#### Discretization of poupulation growth
+#### Discretization of population growth
 
 \begin{equation}
   \Delta \tilde N_{\cdot N} \sim  Binomial (\tilde N(t),  1 - e^{-\tilde \mu_{\cdot N} \Delta t })
@@ -363,7 +363,7 @@ Discretization of compartment flows from time $t$ to  time $t + \Delta t$
   \Delta \tilde N_{R \cdot}
 \end{equation}
 
-We note several notational differences between the written equations and the R implementation. First, the variable descirbed as $h$ in the writeup is instead denoted by $r$. The variable $r$ in the writeup is not explicityly reffered to in the code in this document. Secondly, the variable $\Delta \tilde N_{\cdot N}$ is written as $dBS_N$ in the code while the variable $\Delta \tilde N_{\cdot S}$ in the writeup is written as $dBS$. Finally, in the written implementation, the reporting rate is multiplied by the true cases $C$ in the measurement model. In the R Code, $\rho$ is multiplied by $C$ as $C$ is calculated in the process model Csnippet, instead of being multiplied in the measurement model. This does not change the results of the calculation.  
+We note several notation differences between the written equations and the R implementation. First, the variable described as $h$ in the write-up is instead denoted by $r$. The variable $r$ in the write-up is not explicitly referred to in the code in this document. Secondly, the variable $\Delta \tilde N_{\cdot N}$ is written as $dBS_N$ in the code while the variable $\Delta \tilde N_{\cdot S}$ in the write-up is written as $dBS$. Finally, in the written implementation, the reporting rate is multiplied by the true cases $C$ in the measurement model. In the R Code, $\rho$ is multiplied by $C$ as $C$ is calculated in the process model Csnippet, instead of being multiplied in the measurement model. This does not change the results of the calculation.  
 
 ```{r rproc}
 
@@ -522,7 +522,7 @@ cat Midway_script_Model_A_7_phi_Profile.sbatch
 
 ```
 
-## Combine Midway output susbsets
+## Combine Midway output subsets
 Once all of the 50 array jobs submitted to Midway for a particular profile have finished running on the cluster, the output from each of those 50 jobs is combined into one data frame  with combinations and likelihoods for a particular profile.
 
 
@@ -2805,7 +2805,7 @@ knitr::read_chunk('Man_Fig_5_gardner_code.R')
 
 
 
-### Script for running code on computer cluster (uchicago BSD Gardner)
+### Script for running code on computer cluster (Uchicago BSD Gardner)
 
 
 ```{r engine='bash', comment=''}

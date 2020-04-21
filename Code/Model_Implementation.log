@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  20 APR 2020 18:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  20 APR 2020 19:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1396,15 +1396,15 @@ Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 5796.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 5796.
 
 Package rerunfilecheck Info: File `Model_Implementation.out' has not changed.
-(rerunfilecheck)             Checksum: 8F9CA3BCA38D51B6998EEE3F366D4579;11255.
+(rerunfilecheck)             Checksum: 84A47E3BC77DACFC3F19E6D9B3B14105;11255.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 5796.
  ) 
 Here is how much of TeX's memory you used:
- 13275 strings out of 493089
- 195969 string characters out of 6134842
- 376744 words of memory out of 5000000
+ 13271 strings out of 493089
+ 195923 string characters out of 6134842
+ 376743 words of memory out of 5000000
  16207 multiletter control sequences out of 15000+600000
- 76971 words of font info for 106 fonts, out of 8000000 for 9000
+ 76805 words of font info for 104 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  31i,13n,35p,484b,453s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local
@@ -1429,7 +1429,7 @@ c/lm/lmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/lm/lmsy5
 local/texlive/2015/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texl
 ive/2015/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2015/t
 exmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Model_Implementation.pdf (101 pages, 586938 bytes).
+Output written on Model_Implementation.pdf (101 pages, 587149 bytes).
 PDF statistics:
  1050 PDF objects out of 1200 (max. 8388607)
  885 compressed objects within 9 object streams

@@ -1626,8 +1626,8 @@ write.csv(Rio_data_clean,
 <h2>Source Csnippets</h2>
 <pre class="r"><code>knitr::read_chunk('Csnippet_SIR_cosine_model.R')</code></pre>
 </div>
-<div id="define-covariate-time-range" class="section level2">
-<h2>Define covariate time range</h2>
+<div id="define-co-variate-time-range" class="section level2">
+<h2>Define co-variate time range</h2>
 <pre class="r"><code>#Start covariates 1 month before start of data
 covar_start = 0
 
@@ -1658,7 +1658,7 @@ obsnames = c(&quot;Y&quot;)</code></pre>
 <p><span class="math display">\[\begin{equation}
 \Delta \Gamma \sim rgammawn(\mu = dt, \sigma =  \sigma_{\text{P}})
 \end{equation}\]</span></p>
-<p>Formally, this is equivalent to a draw from a Gamma-distribution with shape parameter <span class="math inline">\(\alpha = \frac{\delta}{\sigma_{\text{P}}^2}\)</span> and scale parameter <span class="math inline">\(\beta = \frac{1}{\sigma_{\text{P}}^2}\)</span>. (Note that <span class="math inline">\(\delta = \Delta t\)</span>, and for all of this sub-section <span class="math inline">\(\beta\)</span> refers to the Gamma distribution scale parameter rather than the transmission rate function, which is reffered to as <span class="math inline">\(\beta (t)\)</span>).</p>
+<p>Formally, this is equivalent to a draw from a Gamma-distribution with shape parameter <span class="math inline">\(\alpha = \frac{\delta}{\sigma_{\text{P}}^2}\)</span> and scale parameter <span class="math inline">\(\beta = \frac{1}{\sigma_{\text{P}}^2}\)</span>. (Note that <span class="math inline">\(\delta = \Delta t\)</span>, and for all of this sub-section <span class="math inline">\(\beta\)</span> refers to the Gamma distribution scale parameter rather than the transmission rate function, which is referred to as <span class="math inline">\(\beta (t)\)</span>).</p>
 <p><span class="math display">\[\begin{equation}
 \Delta \Gamma \sim \Gamma (\frac{\delta}{\sigma_{\text{P}}^2}, \frac{1}{\sigma_{\text{P}}^2})
 \end{equation}\]</span></p>
@@ -1679,7 +1679,7 @@ obsnames = c(&quot;Y&quot;)</code></pre>
 <p>Heading Type: População residente, sexo e situação do domicílio; Total column</p>
 <p>Estimated Population of Rio de Janeiro in 2000: 5,857,904</p>
 <p>Estimated Population of Rio de Janeiro in 2010 (for reference): 6,320,446 (based on the 2010 population estimate of the municipality of Rio de Janeiro from Table 1378 of the 2010 Brazilian census (accessed at <a href="https://sidra.ibge.gov.br/tabela/1378" class="uri">https://sidra.ibge.gov.br/tabela/1378</a> ; original website <a href="https://sidra.ibge.gov.br/pesquisa/censo-demografico/demografico-2010/universo-caracteristicas-da-populacao-e-dos-domicilios" class="uri">https://sidra.ibge.gov.br/pesquisa/censo-demografico/demografico-2010/universo-caracteristicas-da-populacao-e-dos-domicilios</a> ))</p>
-<p>We calculate the rate of human population growth from 1991 to 2000 assuming exponential growth. We will then use this rate to back-calculate an estimate of the muncipal resident population size in 1986 (again assuming exponential population growth).</p>
+<p>We calculate the rate of human population growth from 1991 to 2000 assuming exponential growth. We will then use this rate to back-calculate an estimate of the municipal resident population size in 1986 (again assuming exponential population growth).</p>
 <div id="pop-growth-rate-calculation" class="section level3">
 <h3>Pop growth rate calculation</h3>
 <pre class="r"><code>Population_Rio_2000 = 5857904 #Census
@@ -1696,7 +1696,7 @@ human_pop_growth_rate</code></pre>
 <pre class="r"><code>time_before_1991_census_dates = 1991*365 - 1986*365
 Population_Rio_1986 = Population_Rio_1991/
   (exp(human_pop_growth_rate*time_before_1991_census_dates))</code></pre>
-<p>Thus, the estimated pouplation fo Rio de Janeiro is approximately <span class="math inline">\(N_0 = 5281842\)</span></p>
+<p>Thus, the estimated pouplation of Rio de Janeiro is approximately <span class="math inline">\(N_0 = 5281842\)</span></p>
 <p>This version of the model assumes a constant population size with demographic turnover <span class="math inline">\(\mu\)</span> given by the inverse of the life expectancy of Brazil in 2012 (74.49 years <a href="https://censo2010.ibge.gov.br/en/noticias-censo.html?busca=1&amp;id=1&amp;idnoticia=2528&amp;t=life-expectancy-at-birth-was-74-6-years-in-2012&amp;view=noticia" class="uri">https://censo2010.ibge.gov.br/en/noticias-censo.html?busca=1&amp;id=1&amp;idnoticia=2528&amp;t=life-expectancy-at-birth-was-74-6-years-in-2012&amp;view=noticia</a> ).</p>
 <p>A fraction <span class="math inline">\(\rho\)</span> of newly infected cases are reported and enter the reported case category <span class="math inline">\(C\)</span>. We will be fitting the reporting rate.</p>
 <p>The observed monthly cases are assumed to have a negative binomial distribution with mean equal to the true number of monthly cases and size parameter equal to <span class="math inline">\(\frac{1}{\sigma_{\text{M}}^2}\)</span>, where <span class="math inline">\(\sigma_{\text{M}}\)</span> will be fit to the data.</p>
@@ -1754,7 +1754,7 @@ Population_Rio_1986 = Population_Rio_1991/
 <p><span class="math display">\[\begin{equation}
  \mu_{\cdot N} = h
 \end{equation}\]</span></p>
-<p>Let <span class="math inline">\(\mu_{\cdot S}\)</span> represent the rate at which indiduals who die are replaced by susceptible individuals. We assume that this replacement rate is equivalent to the death rate.</p>
+<p>Let <span class="math inline">\(\mu_{\cdot S}\)</span> represent the rate at which individuals who die are replaced by susceptible individuals. We assume that this replacement rate is equivalent to the death rate.</p>
 <p><span class="math display">\[\begin{equation}
  \mu_{\cdot S} = \mu_{H}
 \end{equation}\]</span></p>
@@ -1764,8 +1764,8 @@ Population_Rio_1986 = Population_Rio_1991/
 </div>
 <div id="discretizations" class="section level3">
 <h3>Discretizations</h3>
-<div id="discretization-of-poupulation-growth" class="section level4">
-<h4>Discretization of poupulation growth</h4>
+<div id="discretization-of-population-growth" class="section level4">
+<h4>Discretization of population growth</h4>
 <p><span class="math display">\[\begin{equation}
   \Delta \tilde N_{\cdot N} \sim  Binomial (\tilde N(t),  1 - e^{-\tilde \mu_{\cdot N} \Delta t })
 \end{equation}\]</span></p>
@@ -1806,7 +1806,7 @@ Population_Rio_1986 = Population_Rio_1991/
   \Delta \tilde N = \Delta \tilde N_{\cdot N} + \Delta \tilde N_{\cdot S}  - \Delta \tilde N_{S \cdot}  - \Delta \tilde N_{I \cdot}  -
   \Delta \tilde N_{R \cdot}
 \end{equation}\]</span></p>
-<p>We note several notational differences between the written equations and the R implementation. First, the variable descirbed as <span class="math inline">\(h\)</span> in the writeup is instead denoted by <span class="math inline">\(r\)</span>. The variable <span class="math inline">\(r\)</span> in the writeup is not explicityly reffered to in the code in this document. Secondly, the variable <span class="math inline">\(\Delta \tilde N_{\cdot N}\)</span> is written as <span class="math inline">\(dBS_N\)</span> in the code while the variable <span class="math inline">\(\Delta \tilde N_{\cdot S}\)</span> in the writeup is written as <span class="math inline">\(dBS\)</span>. Finally, in the written implementation, the reporting rate is multiplied by the true cases <span class="math inline">\(C\)</span> in the measurement model. In the R Code, <span class="math inline">\(\rho\)</span> is multiplied by <span class="math inline">\(C\)</span> as <span class="math inline">\(C\)</span> is calculated in the process model Csnippet, instead of being multiplied in the measurement model. This does not change the results of the calculation.</p>
+<p>We note several notation differences between the written equations and the R implementation. First, the variable described as <span class="math inline">\(h\)</span> in the write-up is instead denoted by <span class="math inline">\(r\)</span>. The variable <span class="math inline">\(r\)</span> in the write-up is not explicitly referred to in the code in this document. Secondly, the variable <span class="math inline">\(\Delta \tilde N_{\cdot N}\)</span> is written as <span class="math inline">\(dBS_N\)</span> in the code while the variable <span class="math inline">\(\Delta \tilde N_{\cdot S}\)</span> in the write-up is written as <span class="math inline">\(dBS\)</span>. Finally, in the written implementation, the reporting rate is multiplied by the true cases <span class="math inline">\(C\)</span> in the measurement model. In the R Code, <span class="math inline">\(\rho\)</span> is multiplied by <span class="math inline">\(C\)</span> as <span class="math inline">\(C\)</span> is calculated in the process model Csnippet, instead of being multiplied in the measurement model. This does not change the results of the calculation.</p>
 <pre class="r"><code>#Process model Csnippet
 rproc &lt;- Csnippet(&quot;
                   
@@ -2927,8 +2927,8 @@ R CMD BATCH --vanilla '--args phi A_7' MIF_run_Model_A_7.R O/out.$SLURM_ARRAY_TA
 </div>
 </div>
 </div>
-<div id="combine-midway-output-susbsets" class="section level2">
-<h2>Combine Midway output susbsets</h2>
+<div id="combine-midway-output-subsets" class="section level2">
+<h2>Combine Midway output subsets</h2>
 <p>Once all of the 50 array jobs submitted to Midway for a particular profile have finished running on the cluster, the output from each of those 50 jobs is combined into one data frame with combinations and likelihoods for a particular profile.</p>
 <pre class="r"><code>  # ---- combine_profile_output ----
 
@@ -5648,7 +5648,7 @@ write.csv(
   row.names = FALSE
 )</code></pre>
 <div id="script-for-running-code-on-computer-cluster-uchicago-bsd-gardner" class="section level3">
-<h3>Script for running code on computer cluster (uchicago BSD Gardner)</h3>
+<h3>Script for running code on computer cluster (Uchicago BSD Gardner)</h3>
 <pre class="bash"><code>
 #knitr::read_chunk('A_7_Man_Fig_5_re_emerge_calc.pbs')
 cat A_7_Man_Fig_5_re_emerge_calc.pbs
